@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fatores Determinantes em Saúde – Avaliação Familiar (APS)</title>
+<style>
+:root{
+  --bg:#f5f5f7;
+  --card:#fff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --ok:#065f46;
+  --ok-bg:#d1fae5;
+  --warn:#92400e;
+  --warn-bg:#ffedd5;
+  --bad:#7f1d1d;
+  --bad-bg:#fee2e2;
+  --focus:#4f46e5;
+  --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+}
+
+*{box-sizing:border-box}
+
+/* Fundo geral estilo “site” */
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
+  background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+  font-size:0.9rem;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* HEADER / NAVBAR */
+header.site-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+  border-bottom:1px solid rgba(209,213,219,.7);
+}
+
+.nav-inner{
+  max-width:900px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  border:1px solid #111827;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.brand-title{
+  font-size:.95rem;
+  font-weight:600;
+}
+
+.brand-subtitle{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-size:.82rem;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.78rem;
+  background:#ffffff;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s;
+}
+
+.nav-back span:first-child{
+  font-size:.9rem;
+  transform:translateY(1px);
+}
+
+.nav-back:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+
+.nav-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:#ffffff;
+}
+
+/* PAGE WRAPPER */
+.page{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+/* HERO */
+.hero-det{
+  margin-bottom:18px;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 11px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.5);
+  font-size:.75rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(18px);
+}
+
+.hero-badge-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#22c55e;
+  box-shadow:0 0 0 4px rgba(34,197,94,.2);
+}
+
+.hero-title{
+  margin:14px 0 4px;
+  font-size:clamp(1.7rem,2.3vw,2rem);
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+
+.hero-title span{
+  display:block;
+  font-weight:300;
+  color:var(--muted);
+}
+
+.hero-text{
+  margin:0;
+  margin-top:6px;
+  font-size:.92rem;
+  color:var(--muted);
+  max-width:640px;
+}
+
+/* CARD WRAPPER (onde entra o conteúdo original) */
+.card-wrapper{
+  background:var(--card);
+  border-radius:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-soft);
+  padding:16px 16px 18px;
+}
+
+/* CONTEÚDO ORIGINAL */
+.container{
+  max-width:650px;
+  margin:auto;
+  padding:0;
+}
+h1{
+  margin:0 0 4px;
+  font-size:1.4rem;
+}
+.sub{
+  color:var(--muted);
+  margin:0 0 12px;
+  font-size:0.85rem;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+  margin-bottom:10px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:6px;
+  font-size:0.85rem;
+}
+th,td{
+  border-bottom:1px solid var(--border);
+  padding:6px;
+  text-align:center;
+  vertical-align:middle;
+}
+th{
+  background:#0f4d6d;
+  color:#fff;
+  font-weight:700;
+  font-size:0.8rem;
+}
+td:first-child{
+  text-align:left;
+}
+input[type=radio]{
+  transform:scale(1.1);
+}
+.result{
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card);
+  padding:10px;
+  margin-top:8px;
+  font-size:0.9rem;
+}
+.value{
+  font-size:1.3rem;
+  font-weight:700;
+}
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:.8rem;
+}
+.pill-ok{background:var(--ok-bg);color:var(--ok)}
+.pill-warn{background:var(--warn-bg);color:var(--warn)}
+.pill-bad{background:var(--bad-bg);color:var(--bad)}
+.small{
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* BOTÕES */
+.btns{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+button{
+  background:var(--focus);
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:0.8rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  box-shadow:0 4px 10px rgba(15,23,42,.2);
+  transition:background .2s, transform .08s, box-shadow .2s;
+}
+button:hover{
+  background:#3730a3;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(15,23,42,.25);
+}
+
+/* FOOTER */
+footer.site-footer{
+  border-top:1px solid rgba(209,213,219,.7);
+  margin-top:32px;
+  padding:14px 20px 20px;
+  font-size:.8rem;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+footer.site-footer strong{
+  font-weight:500;
+  color:#111827;
+}
+
+/* RESPONSIVO */
+@media (max-width:640px){
+  .nav-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .page{
+    padding:22px 16px 40px;
+  }
+}
+
+/* IMPRESSÃO – A5, agressivamente compacto para caber em 1 página */
+@media print{
+  @page{
+    size:A5 portrait;
+    margin:0.3cm;
+  }
+  header.site-header,
+  footer.site-footer,
+  .hero-det{
+    display:none !important;
+  }
+  body{
+    background:#fff;
+    font-size:0.7rem;
+  }
+  .page{
+    max-width:none;
+    padding:4px 3px;
+    margin:0;
+  }
+  .card-wrapper{
+    border:none;
+    box-shadow:none;
+    padding:0;
+  }
+  .container{
+    max-width:none;
+    padding:0;
+  }
+  h1{
+    font-size:1rem;
+    margin-bottom:2px;
+  }
+  .sub,
+  .btns{
+    display:none !important;
+  }
+  .card,
+  .result{
+    box-shadow:none;
+    border-color:#bbb;
+    padding:4px;
+    margin-bottom:4px;
+  }
+  table{
+    font-size:0.6rem;
+    margin-bottom:4px;
+  }
+  th,td{
+    padding:2px 3px;
+  }
+  th{
+    font-size:0.6rem;
+  }
+  td:first-child{
+    font-size:0.6rem;
+  }
+  input[type=radio]{
+    transform:scale(0.9);
+  }
+  .value{
+    font-size:0.9rem;
+  }
+  .pill{
+    font-size:0.55rem;
+    padding:2px 4px;
+  }
+  .small{
+    font-size:0.55rem;
+  }
+}
+</style>
+</head>
+<body>
+
+  <!-- HEADER GLOBAL -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <div class="brand-title">Medicina Integrada</div>
+          <div class="brand-subtitle">USF • Determinantes</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-back">
+          <span>⬅</span>
+          <span>Voltar à USF</span>
+        </a>
+        <span class="nav-pill">Fatores determinantes em saúde</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero-det">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AVALIAÇÃO FAMILIAR • CONTEXTO
+      </div>
+      <h1 class="hero-title">
+        Fatores Determinantes em Saúde
+        <span>Leitura sintética de vulnerabilidade biológica, social e ambiental.</span>
+      </h1>
+      <p class="hero-text">
+        Instrumento inspirado no modelo de determinantes da saúde da Atenção Primária.
+        Cada fator recebe pontuação de 0 a 2, permitindo compor um índice de vulnerabilidade familiar.
+      </p>
+    </section>
+
+    <!-- CARD PRINCIPAL COM O FORM -->
+    <section class="card-wrapper">
+      <div class="container">
+        <h1>Fatores Determinantes em Saúde</h1>
+        <p class="sub">
+          Avaliação baseada no modelo de determinantes da saúde da Atenção Primária (MS/SUS).
+          Cada fator recebe pontuação de 0 a 2 conforme vulnerabilidade.
+        </p>
+
+        <section class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Determinante</th>
+                <th>0<br>Condição adequada</th>
+                <th>1<br>Vulnerável</th>
+                <th>2<br>Risco / Agravo</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+
+          <div>
+            <label class="small"><b>Observações</b></label>
+            <input id="obs" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;">
+          </div>
+        </section>
+
+        <div id="painel" class="result">
+          Responda todos os fatores para calcular o índice de vulnerabilidade.
+        </div>
+
+        <p class="small">
+          <b>Interpretação:</b> 0–4 → Baixa vulnerabilidade · 5–8 → Vulnerabilidade moderada · ≥9 → Alta vulnerabilidade social/familiar.<br>
+          <b>Fonte:</b> Ministério da Saúde – Determinantes Sociais da Saúde (DSS), Política Nacional de Atenção Básica.
+        </p>
+
+        <!-- BOTÕES -->
+        <div class="btns">
+          <button id="btnVoltar">⬅️ Voltar</button>
+          <button id="btnPrint">🖨️ Imprimir</button>
+          <button id="btnNext">➡️ Próximo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+    <span>Módulo USF • Determinantes em Saúde</span>
+  </footer>
+
+<script>
+(function(){
+  const fatores = [
+    {grupo:"Biológicos", itens:[
+      "Idade extrema (menor de 1 ano ou maior de 70 anos)",
+      "Presença de doenças crônicas (ex: DM2, HAS, DPOC, renal crônico)",
+      "Deficiência física ou mental"
+    ]},
+    {grupo:"Comportamentais", itens:[
+      "Hábito de tabagismo, etilismo ou uso de drogas",
+      "Sedentarismo / má alimentação",
+      "Adesão inadequada ao tratamento / autocuidado"
+    ]},
+    {grupo:"Socioeconômicos e culturais", itens:[
+      "Baixa renda (≤1 SM per capita)",
+      "Baixa escolaridade / analfabetismo",
+      "Desemprego ou trabalho informal"
+    ]},
+    {grupo:"Ambientais", itens:[
+      "Saneamento inadequado (água, esgoto, lixo)",
+      "Moradia precária / superlotação",
+      "Risco ambiental (alagamento, contaminação, violência)"
+    ]},
+    {grupo:"Acesso aos serviços de saúde", itens:[
+      "Dificuldade de acesso à UBS / transporte precário",
+      "Falta de vínculo com equipe de saúde",
+      "Falta de medicamentos ou acompanhamento contínuo"
+    ]}
+  ];
+
+  const tbody=document.getElementById('tbody');
+  fatores.forEach(f=>{
+    const trHead=document.createElement('tr');
+    trHead.innerHTML=`<td colspan="4" style="background:#f1f5f9;font-weight:700;font-size:0.75rem;">${f.grupo}</td>`;
+    tbody.appendChild(trHead);
+
+    f.itens.forEach((item,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td>${item}</td>
+        <td><input type="radio" name="${f.grupo+i}" value="0"></td>
+        <td><input type="radio" name="${f.grupo+i}" value="1"></td>
+        <td><input type="radio" name="${f.grupo+i}" value="2"></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+
+  const painel=document.getElementById('painel');
+  let avaliacaoPronta = false;
+
+  function calc(){
+    let total=0,respondidas=0;
+    document.querySelectorAll('input[type=radio]').forEach(i=>{
+      if(i.checked){total+=Number(i.value);respondidas++}
+    });
+    const totalPerg=fatores.reduce((a,b)=>a+b.itens.length,0);
+    if(respondidas<totalPerg){
+      avaliacaoPronta = false;
+      painel.textContent=`Responda todos os ${totalPerg} fatores (${respondidas}/${totalPerg}).`;
+      return;
+    }
+
+    let cat={txt:"Baixa vulnerabilidade",pill:"pill-ok"};
+    if(total>=5 && total<=8)cat={txt:"Vulnerabilidade moderada",pill:"pill-warn"};
+    if(total>=9)cat={txt:"Alta vulnerabilidade social/familiar",pill:"pill-bad"};
+
+    // salva no localStorage para síntese geral
+    localStorage.setItem('determinantesTotal', total);
+    localStorage.setItem('determinantesCategoria', cat.txt);
+    localStorage.setItem('determinantesObs', document.getElementById('obs').value || '');
+
+    avaliacaoPronta = true;
+
+    painel.innerHTML=`
+      <div class="value">${total} pontos</div>
+      <span class="pill ${cat.pill}">${cat.txt}</span>
+      <div class="small" style="margin-top:6px">Observações: ${document.getElementById('obs').value||'—'}</div>
+    `;
+  }
+
+  document.addEventListener('change',e=>{
+    if(e.target.type==='radio' || e.target.id==='obs')calc();
+  });
+
+  // Botões
+  document.getElementById('btnVoltar').addEventListener('click', ()=>history.back());
+  document.getElementById('btnPrint').addEventListener('click', ()=>window.print());
+  document.getElementById('btnNext').addEventListener('click', ()=>{
+    if(!avaliacaoPronta){
+      alert('Preencha todos os fatores antes de continuar.');
+      return;
+    }
+    window.location.href = 'escalacoelhosavassi.html';
+  });
+})();
+</script>
+</body>
+</html>

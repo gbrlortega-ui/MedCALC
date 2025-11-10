@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pediatria – Calculadora de Z-score</title>
+
+<style>
+:root{
+  --bg:#f5f5f7;
+  --bg-section:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --focus:#4f46e5;
+  --ok:#065f46;--ok-bg:#d1fae5;
+  --warn:#92400e;--warn-bg:#ffedd5;
+  --bad:#7f1d1d;--bad-bg:#fee2e2;
+  --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font-size:0.9rem;
+}
+
+/* LINKS */
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* HEADER / NAVBAR (mesmo estilo do USF) */
+header.site-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+  border-bottom:1px solid rgba(209,213,219,.7);
+}
+
+.nav-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  border:1px solid #111827;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.brand-title{
+  font-size:.95rem;
+  font-weight:600;
+}
+
+.brand-subtitle{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-size:.82rem;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.78rem;
+  background:#ffffff;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s;
+}
+
+.nav-back span:first-child{
+  font-size:.9rem;
+  transform:translateY(1px);
+}
+
+.nav-back:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+
+.nav-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:#ffffff;
+}
+
+/* PAGE WRAPPER */
+.page{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+/* HERO */
+.hero-ped{
+  margin-bottom:22px;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 11px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.5);
+  font-size:.75rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(18px);
+}
+
+.hero-badge-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#22c55e;
+  box-shadow:0 0 0 4px rgba(34,197,94,.2);
+}
+
+.hero-title{
+  margin:14px 0 4px;
+  font-size:clamp(1.8rem,2.4vw,2.1rem);
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+
+.hero-title span{
+  display:block;
+  font-weight:300;
+  color:var(--muted);
+}
+
+.hero-text{
+  margin:0;
+  margin-top:6px;
+  font-size:.92rem;
+  color:var(--muted);
+  max-width:660px;
+}
+
+/* SEÇÃO / CARD PRINCIPAL */
+.section-title{
+  font-size:.9rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.section-headline{
+  font-size:1.1rem;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.section-text{
+  font-size:.86rem;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.section-block{
+  background:var(--bg-section);
+  border-radius:20px;
+  border:1px solid rgba(209,213,219,.9);
+  box-shadow:var(--shadow-soft);
+  padding:16px 16px 16px;
+  margin-bottom:18px;
+}
+
+/* FORMULÁRIO CALCULADORA */
+.calc-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:10px;
+}
+@media (max-width:640px){
+  .calc-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.form-field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  font-size:.85rem;
+}
+
+.form-field label{
+  color:var(--muted);
+}
+
+.form-field input,
+.form-field select{
+  padding:7px 9px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  font-size:.85rem;
+  background:#f9fafb;
+}
+
+.form-field input:focus,
+.form-field select:focus{
+  outline:2px solid var(--focus);
+  outline-offset:1px;
+  background:#ffffff;
+}
+
+/* NOVO: wrapper para idade + unidade */
+.idade-wrapper{
+  display:flex;
+  gap:6px;
+}
+
+.idade-wrapper select{
+  max-width:120px;
+}
+
+.calc-actions{
+  margin-top:12px;
+  display:flex;
+  justify-content:flex-start;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.button-primary{
+  padding:8px 14px;
+  border-radius:999px;
+  border:none;
+  font-size:.85rem;
+  font-weight:600;
+  background:var(--focus);
+  color:#f9fafb;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(79,70,229,.35);
+  transition:transform .12s,box-shadow .12s,background .12s;
+}
+
+.button-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 16px 35px rgba(79,70,229,.5);
+  background:#4338ca;
+}
+
+.button-secondary{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  font-size:.85rem;
+  font-weight:500;
+  background:#ffffff;
+  color:var(--muted);
+  cursor:pointer;
+  transition:background .12s,transform .12s,box-shadow .12s;
+}
+.button-secondary:hover{
+  background:#f3f4f6;
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(15,23,42,.08);
+}
+
+/* RESULTADOS */
+.zs-results{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+@media (max-width:700px){
+  .zs-results{
+    grid-template-columns:1fr;
+  }
+}
+
+.zs-card{
+  border-radius:14px;
+  padding:9px 10px;
+  font-size:.8rem;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:transform .12s, box-shadow .12s, border-color .12s;
+}
+.zs-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(15,23,42,.12);
+  border-color:#4f46e5;
+}
+
+.zs-label{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--muted);
+  margin-bottom:3px;
+}
+
+.zs-main{
+  font-size:.9rem;
+  font-weight:600;
+}
+
+.zs-extra{
+  margin-top:3px;
+  font-size:.78rem;
+}
+
+.ok{background:var(--ok-bg);border-color:rgba(16,185,129,.35);color:var(--ok);}
+.warn{background:var(--warn-bg);border-color:rgba(245,158,11,.5);color:var(--warn);}
+.bad{background:var(--bad-bg);border-color:rgba(239,68,68,.6);color:var(--bad);}
+
+/* GRÁFICO */
+.graph-wrapper{
+  margin-top:18px;
+}
+.graph-title{
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+#grafico-imc{
+  width:100%;
+  max-width:420px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#f9fafb;
+  display:block;
+}
+
+/* FOOTER */
+footer.site-footer{
+  border-top:1px solid rgba(209,213,219,.7);
+  margin-top:32px;
+  padding:14px 20px 20px;
+  font-size:.8rem;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:980px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+footer.site-footer strong{
+  font-weight:500;
+  color:#111827;
+}
+
+/* RESPONSIVO HEADER */
+@media (max-width:640px){
+  .nav-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .page{
+    padding:22px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-subtitle">Módulo • Pediatria</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <!-- agora volta para o index da própria pediatria -->
+      <a href="index.html" class="nav-back">
+        <span>⬅</span>
+        <span>Voltar à Pediatria</span>
+      </a>
+      <span class="nav-pill">Pediatria</span>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <!-- HERO -->
+  <section class="hero-ped">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      MÓDULO PEDIATRIA • ANTROPOMETRIA
+    </div>
+    <h1 class="hero-title">
+      Calculadora de Z-score OMS 0–19 anos
+      <span>Peso, estatura, perímetro cefálico e IMC com interpretação rápida.</span>
+    </h1>
+    <p class="hero-text">
+      Informe sexo, idade em <strong>meses ou anos</strong> e as medidas antropométricas para obter o Z-score e o percentil
+      aproximado em relação às curvas de referência da OMS (0–19 anos). Clique em cada cartão para
+      visualizar o gráfico com as curvas de Z-score.
+    </p>
+  </section>
+
+  <!-- BLOCO – CALCULADORA -->
+  <section class="section-block">
+    <div class="section-title">Ferramenta</div>
+    <div class="section-headline">Calculadora de Z-score</div>
+    <p class="section-text">
+      Use idade em meses ou anos (ex.: 6 meses, 2 anos, 10 anos), peso em kg, estatura em cm e perímetro cefálico em cm.
+      O IMC é calculado automaticamente. Percentis são aproximados a partir do Z-score (distribuição normal).
+    </p>
+
+    <div class="calc-grid">
+      <div class="form-field">
+        <label for="sexo">Sexo</label>
+        <select id="sexo">
+          <option value="M">Menino</option>
+          <option value="F">Menina</option>
+        </select>
+      </div>
+
+      <!-- NOVO: unidade de idade + campo idade no mesmo bloco -->
+      <div class="form-field">
+        <label for="idade">Idade</label>
+        <div class="idade-wrapper">
+          <select id="idade-unidade" onchange="atualizarPlaceholderIdade()">
+            <option value="meses">Meses</option>
+            <option value="anos">Anos</option>
+          </select>
+          <input type="number" id="idade" placeholder="Ex: 6, 24, 120">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="peso">Peso (kg)</label>
+        <input type="number" step="0.01" id="peso" placeholder="Ex: 14.2">
+      </div>
+
+      <div class="form-field">
+        <label for="altura">Estatura / Altura (cm)</label>
+        <input type="number" step="0.1" id="altura" placeholder="Ex: 95.5">
+      </div>
+
+      <div class="form-field">
+        <label for="pc">Perímetro cefálico (cm)</label>
+        <input type="number" step="0.1" id="pc" placeholder="Opcional (RN / lactentes)">
+      </div>
+    </div>
+
+    <div class="calc-actions">
+      <button class="button-primary" onclick="calcularZ()">Calcular Z-score</button>
+      <button class="button-secondary" type="button" onclick="window.print()">Imprimir</button>
+    </div>
+
+    <div id="saida" class="zs-results"></div>
+
+    <div class="graph-wrapper">
+      <div class="graph-title" id="graph-title">
+        Clique em um dos cartões de resultado para ver o gráfico e as curvas de Z-score.
+      </div>
+      <canvas id="grafico-imc" width="420" height="220"></canvas>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+  <span>Módulo Pediatria • Plataforma USF</span>
+</footer>
+
+<script>
+// ------------------------------------------------------------
+// Tabelas resumidas OMS (pontos-chave 0–19 anos, em meses)
+// Interpolação linear entre pontos para manter o arquivo leve.
+// ------------------------------------------------------------
+const pontos = [0,1,2,3,4,5,6,9,12,18,24,36,48,60,84,120,156,180,204,228];
+
+// Peso (kg) – meninos / meninas (mediana aproximada OMS)
+const pesoM = [3.3,4.5,5.6,6.4,7.0,7.6,8.0,8.9,9.6,11.0,12.2,14.3,16.3,18.3,23.0,30.1,40.5,52.5,61.0,68.0];
+const pesoF = [3.2,4.3,5.3,6.1,6.7,7.3,7.8,8.6,8.9,10.3,11.5,13.5,15.5,17.3,22.0,28.9,38.0,50.2,56.0,60.0];
+
+// Estatura / altura (cm) – meninos / meninas
+const altM = [49.9,54.7,58.4,61.1,63.5,65.7,67.6,71.0,75.7,80.7,87.8,96.1,103.3,110.0,124.0,138.0,152.0,164.0,171.0,176.0];
+const altF = [49.1,53.7,57.1,59.8,62.1,64.0,65.7,69.0,74.0,79.0,86.4,95.1,102.7,109.0,125.0,140.0,153.0,162.0,166.0,168.0];
+
+// Perímetro cefálico (cm) – meninos / meninas (principalmente 0–60 meses)
+const pcM = [34.5,37.3,39.1,40.5,41.6,42.5,43.0,44.5,46.1,47.4,48.3,49.0,49.6,50.2,50.5,50.8,51.0,51.1,51.2,51.3];
+const pcF = [34.2,36.5,38.3,39.7,40.8,41.8,42.4,43.9,45.6,46.8,47.8,48.5,49.1,49.9,50.3,50.6,50.8,50.9,51.0,51.1];
+
+// IMC (kg/m²) – meninos / meninas
+const imcM = [13.5,15.0,15.8,16.0,16.1,16.2,16.3,16.5,16.0,15.8,15.6,15.5,16.1,17.0,18.2,19.5,20.8,21.5,22.0,22.3];
+const imcF = [13.4,14.8,15.5,15.7,15.8,15.9,16.0,16.2,15.7,15.5,15.3,15.3,16.2,17.5,18.7,19.8,20.5,21.0,21.8,22.0];
+
+// Desvios-padrão relativos aproximados (DP%)
+const dpPeso = 0.12;   // ~12% da média
+const dpAlt  = 0.025;  // ~2,5% da média
+const dpIMC  = 0.06;   // ~6% da média
+const dpPC   = 0.02;   // ~2% da média
+
+// Para reusar no gráfico ao clicar nos cartões
+let ultSexo = null;
+let ultIdade = null;
+let ultPeso = null;
+let ultAltura = null;
+let ultPC = null;
+let ultIMC = null;
+
+// -------------------------------------
+// Funções auxiliares
+// -------------------------------------
+function interpola(tab, idade){
+  if (idade <= pontos[0]) return tab[0];
+  if (idade >= pontos[pontos.length-1]) return tab[tab.length-1];
+  for (let i=0;i<pontos.length-1;i++){
+    if (idade >= pontos[i] && idade <= pontos[i+1]){
+      const frac = (idade - pontos[i]) / (pontos[i+1] - pontos[i]);
+      return tab[i] + frac * (tab[i+1] - tab[i]);
+    }
+  }
+}
+
+function normalCDF(z){
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const d = 0.3989423 * Math.exp(-z*z/2);
+  let prob = d * t * (0.3193815 + t*(-0.3565638 + t*(1.781478 + t*(-1.821256 + t*1.330274))));
+  if (z > 0) prob = 1 - prob;
+  return prob;
+}
+
+function zscore(valor, media, dpRel){
+  const dpAbs = media * dpRel;
+  return (valor - media) / dpAbs;
+}
+
+function classificarZ(z){
+  if (z < -3) return ["Muito abaixo do esperado","bad"];
+  if (z < -2) return ["Abaixo do esperado","warn"];
+  if (z <= 2) return ["Dentro da faixa esperada","ok"];
+  if (z <= 3) return ["Acima do esperado","warn"];
+  return ["Muito acima do esperado","bad"];
+}
+
+// NOVO: atualiza placeholder conforme unidade de idade
+function atualizarPlaceholderIdade(){
+  const unidade = document.getElementById("idade-unidade").value;
+  const input = document.getElementById("idade");
+  if (unidade === "meses"){
+    input.placeholder = "Ex: 6, 24, 120";
+  } else {
+    input.placeholder = "Ex: 0.5, 2, 10";
+  }
+}
+
+// -------------------------------------
+// Gráfico genérico com curvas de Z-score
+// tipo = 'imc' | 'peso' | 'altura' | 'pc'
+// -------------------------------------
+function desenharGrafico(tipo){
+  if (ultSexo === null || ultIdade === null) return;
+
+  const canvas = document.getElementById("grafico-imc");
+  const titulo = document.getElementById("graph-title");
+  if (!canvas.getContext) return;
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+
+  let tabMediana, labelY, valorPonto, dpRel;
+
+  if (tipo === 'imc'){
+    tabMediana = (ultSexo === "M") ? imcM : imcF;
+    labelY = "IMC (kg/m²)";
+    valorPonto = ultIMC;
+    dpRel = dpIMC;
+  } else if (tipo === 'peso'){
+    tabMediana = (ultSexo === "M") ? pesoM : pesoF;
+    labelY = "Peso (kg)";
+    valorPonto = ultPeso;
+    dpRel = dpPeso;
+  } else if (tipo === 'altura'){
+    tabMediana = (ultSexo === "M") ? altM : altF;
+    labelY = "Estatura (cm)";
+    valorPonto = ultAltura;
+    dpRel = dpAlt;
+  } else if (tipo === 'pc'){
+    tabMediana = (ultSexo === "M") ? pcM : pcF;
+    labelY = "Perímetro cefálico (cm)";
+    valorPonto = ultPC;
+    dpRel = dpPC;
+  } else {
+    return;
+  }
+
+  titulo.textContent = `${labelY} × idade com curvas aproximadas de Z-score (−3 a +3)`;
+
+  // Curvas de Z = -3, -2, -1, 0, +1, +2, +3
+  const zLevels = [-3,-2,-1,0,1,2,3];
+  const curves = zLevels.map(z => tabMediana.map(m => m + z*(m*dpRel)));
+
+  // Limpa
+  ctx.clearRect(0,0,w,h);
+
+  const marginLeft = 40;
+  const marginRight = 8;
+  const marginTop = 16;
+  const marginBottom = 24;
+
+  let minRef = Infinity, maxRef = -Infinity;
+  curves.forEach(cur => {
+    cur.forEach(v=>{
+      if (v<minRef) minRef=v;
+      if (v>maxRef) maxRef=v;
+    });
+  });
+  const padding = 0.08*(maxRef-minRef);
+  minRef -= padding;
+  maxRef += padding;
+
+  function xScale(m){
+    return marginLeft + (m / 228) * (w - marginLeft - marginRight);
+  }
+  function yScale(v){
+    return h - marginBottom - ((v - minRef)/(maxRef - minRef)) * (h - marginTop - marginBottom);
+  }
+
+  // Eixos
+  ctx.strokeStyle = "#d1d5db";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(marginLeft, marginTop);
+  ctx.lineTo(marginLeft, h-marginBottom);
+  ctx.lineTo(w-marginRight, h-marginBottom);
+  ctx.stroke();
+
+  // Ticks X
+  ctx.fillStyle = "#6b7280";
+  ctx.font = "10px system-ui";
+  [0,60,120,180,228].forEach(m=>{
+    const x = xScale(m);
+    ctx.beginPath();
+    ctx.moveTo(x, h-marginBottom);
+    ctx.lineTo(x, h-marginBottom+3);
+    ctx.stroke();
+    ctx.fillText(m.toString(), x-6, h-marginBottom+13);
+  });
+  ctx.fillText("Idade (meses)", (w/2)-35, h-5);
+
+  // Ticks Y
+  const yTicks = 4;
+  for (let i=0;i<=yTicks;i++){
+    const v = minRef + (i/yTicks)*(maxRef-minRef);
+    const y = yScale(v);
+    ctx.beginPath();
+    ctx.moveTo(marginLeft-3, y);
+    ctx.lineTo(marginLeft, y);
+    ctx.stroke();
+    ctx.fillText(v.toFixed(0), 5, y+3);
+  }
+  ctx.fillText(labelY, 5, marginTop-4);
+
+  // Curvas de Z
+  zLevels.forEach((z, idx)=>{
+    const curva = curves[idx];
+    ctx.beginPath();
+    if (z === 0){
+      ctx.strokeStyle = "#4f46e5";
+      ctx.lineWidth = 2;
+    } else if (Math.abs(z) === 2){
+      ctx.strokeStyle = "#f97316";
+      ctx.lineWidth = 1;
+    } else if (Math.abs(z) === 3){
+      ctx.strokeStyle = "#ef4444";
+      ctx.lineWidth = 1;
+    } else {
+      ctx.strokeStyle = "#cbd5f5";
+      ctx.lineWidth = 1;
+    }
+    for (let i=0;i<pontos.length;i++){
+      const x = xScale(pontos[i]);
+      const y = yScale(curva[i]);
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  });
+
+  // Ponto da criança
+  if (!isNaN(ultIdade) && !isNaN(valorPonto)){
+    const x = xScale(Math.max(0, Math.min(228, ultIdade)));
+    const y = yScale(Math.max(minRef, Math.min(maxRef, valorPonto)));
+    ctx.fillStyle = "#111827";
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = "#f97316";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(x,y,6,0,Math.PI*2);
+    ctx.stroke();
+  }
+}
+
+// -------------------------------------
+// Cálculo principal
+// -------------------------------------
+function calcularZ(){
+  const sexo   = document.getElementById("sexo").value;
+  const unidadeIdade = document.getElementById("idade-unidade").value; // NOVO
+  const idadeInput = parseFloat(document.getElementById("idade").value);
+  const peso   = parseFloat(document.getElementById("peso").value);
+  const altura = parseFloat(document.getElementById("altura").value);
+  const pc     = parseFloat(document.getElementById("pc").value);
+  const saida  = document.getElementById("saida");
+
+  // converte idade para meses
+  let idadeMeses = idadeInput;
+  if (!isNaN(idadeInput) && unidadeIdade === "anos"){
+    idadeMeses = idadeInput * 12;
+  }
+
+  if (isNaN(idadeInput) || isNaN(peso) || isNaN(altura)) {
+    saida.innerHTML = '<div class="zs-card bad"><div class="zs-main">Preencha pelo menos idade, peso e estatura.</div></div>';
+    document.getElementById("graph-title").textContent =
+      "Clique em um dos cartões de resultado para ver o gráfico e as curvas de Z-score.";
+    const ctx = document.getElementById("grafico-imc").getContext("2d");
+    ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    ultSexo = ultIdade = null;
+    return;
+  }
+
+  const tPeso = (sexo === "M") ? pesoM : pesoF;
+  const tAlt  = (sexo === "M") ? altM  : altF;
+  const tIMC  = (sexo === "M") ? imcM  : imcF;
+  const tPC   = (sexo === "M") ? pcM   : pcF;
+
+  const mPeso = interpola(tPeso, idadeMeses);
+  const mAlt  = interpola(tAlt,  idadeMeses);
+  const mIMC  = interpola(tIMC,  idadeMeses);
+  const mPC   = interpola(tPC,   idadeMeses);
+
+  const imc = peso / Math.pow(altura/100,2);
+
+  const zPeso = zscore(peso,  mPeso, dpPeso);
+  const zAlt  = zscore(altura,mAlt,  dpAlt);
+  const zIMC  = zscore(imc,   mIMC,  dpIMC);
+  const zPC   = isNaN(pc) ? null : zscore(pc, mPC, dpPC);
+
+  const cPeso = classificarZ(zPeso);
+  const cAlt  = classificarZ(zAlt);
+  const cIMC  = classificarZ(zIMC);
+  const cPC   = zPC === null ? null : classificarZ(zPC);
+
+  const pIMC  = Math.round(normalCDF(zIMC)*100);
+  const pPeso = Math.round(normalCDF(zPeso)*100);
+  const pAlt  = Math.round(normalCDF(zAlt)*100);
+  const pPC   = zPC === null ? null : Math.round(normalCDF(zPC)*100);
+
+  ultSexo   = sexo;
+  ultIdade  = idadeMeses;     // NOVO: sempre em meses
+  ultPeso   = peso;
+  ultAltura = altura;
+  ultPC     = isNaN(pc) ? null : pc;
+  ultIMC    = imc;
+
+  let html = `
+    <div class="zs-card ${cIMC[1]}" onclick="desenharGrafico('imc')">
+      <div class="zs-label">IMC para idade</div>
+      <div class="zs-main">${imc.toFixed(1)} kg/m² — Z = ${zIMC.toFixed(2)}</div>
+      <div class="zs-extra">${cIMC[0]} • Percentil ≈ P${pIMC}</div>
+    </div>
+
+    <div class="zs-card ${cPeso[1]}" onclick="desenharGrafico('peso')">
+      <div class="zs-label">Peso para idade</div>
+      <div class="zs-main">${peso.toFixed(1)} kg — Z = ${zPeso.toFixed(2)}</div>
+      <div class="zs-extra">${cPeso[0]} • Percentil ≈ P${pPeso}</div>
+    </div>
+
+    <div class="zs-card ${cAlt[1]}" onclick="desenharGrafico('altura')">
+      <div class="zs-label">Estatura para idade</div>
+      <div class="zs-main">${altura.toFixed(1)} cm — Z = ${zAlt.toFixed(2)}</div>
+      <div class="zs-extra">${cAlt[0]} • Percentil ≈ P${pAlt}</div>
+    </div>
+  `;
+
+  if (zPC !== null){
+    html += `
+      <div class="zs-card ${cPC[1]}" onclick="desenharGrafico('pc')">
+        <div class="zs-label">Perímetro cefálico para idade</div>
+        <div class="zs-main">${pc.toFixed(1)} cm — Z = ${zPC.toFixed(2)}</div>
+        <div class="zs-extra">${cPC[0]} • Percentil ≈ P${pPC}</div>
+      </div>
+    `;
+  }
+
+  saida.innerHTML = html;
+
+  // Por padrão, mostra gráfico de IMC
+  desenharGrafico('imc');
+}
+
+// inicia placeholder correto ao carregar
+atualizarPlaceholderIdade();
+</script>
+
+</body>
+</html>

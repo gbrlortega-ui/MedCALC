@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anamnese – Criança Pré-Escolar (2–5 anos) | UBS</title>
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --bg-section:#ffffff;
+    --card:#fff;
+    --text:#0f172a;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --focus:#4f46e5;
+    --ok:#16a34a;
+    --warn:#ea580c;
+    --danger:#dc2626;
+    --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:0.9rem;
+  }
+
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
+
+  /* HEADER / NAVBAR – padrão dos outros formulários */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(16px);
+    background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+    border-bottom:1px solid rgba(209,213,219,.7);
+  }
+
+  .nav-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .brand-mark{
+    width:28px;
+    height:28px;
+    border-radius:999px;
+    border:1px solid #111827;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    font-weight:600;
+  }
+
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+  }
+
+  .brand-title{
+    font-size:.95rem;
+    font-weight:600;
+  }
+
+  .brand-subtitle{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+  }
+
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:.82rem;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+
+  .nav-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.78rem;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .15s,transform .12s,color .15s;
+  }
+
+  .nav-back span:first-child{
+    font-size:.9rem;
+    transform:translateY(1px);
+  }
+
+  .nav-back:hover{
+    background:#111827;
+    color:#f9fafb;
+    transform:translateY(-1px);
+  }
+
+  .nav-pill{
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    background:#ffffff;
+  }
+
+  /* PAGE WRAPPER */
+  .page{
+    max-width:1160px;
+    margin:0 auto;
+    padding:26px 16px 40px;
+  }
+
+  /* HERO / TÍTULO */
+  .hero-pre{
+    margin-bottom:18px;
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:4px 11px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.5);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(18px);
+  }
+
+  .hero-badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:999px;
+    background:#22c55e;
+    box-shadow:0 0 0 4px rgba(34,197,94,.2);
+  }
+
+  .hero-title{
+    margin:14px 0 4px;
+    font-size:clamp(1.6rem,2.2vw,2.0rem);
+    line-height:1.1;
+    letter-spacing:.02em;
+  }
+
+  .hero-title span{
+    display:block;
+    font-weight:300;
+    color:var(--muted);
+  }
+
+  .hero-text{
+    margin:0;
+    margin-top:6px;
+    font-size:.9rem;
+    color:var(--muted);
+    max-width:720px;
+  }
+
+  /* CARDS / FORMULÁRIO */
+  section.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 16px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+
+  .sub{color:var(--muted);margin:0 0 18px}
+
+  .grid{display:grid;gap:12px;grid-template-columns:1fr}
+  @media(min-width:980px){.grid{grid-template-columns:repeat(12,1fr)}}
+  .col-2{grid-column:span 2}
+  .col-3{grid-column:span 3}
+  .col-4{grid-column:span 4}
+  .col-5{grid-column:span 5}
+  .col-6{grid-column:span 6}
+  .col-7{grid-column:span 7}
+  .col-8{grid-column:span 8}
+  .col-12{grid-column:1/-1}
+
+  label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:650;
+    font-size:.9rem;
+  }
+
+  input,select,textarea{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:.9rem;
+    background:#fff;
+  }
+
+  textarea{min-height:110px;resize:vertical}
+
+  input:focus,select:focus,textarea:focus{
+    border-color:var(--focus);
+    box-shadow:0 0 0 3px rgba(79,70,229,.15);
+    outline:none;
+  }
+
+  .hstack{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:.8rem;font-weight:700}
+  .hint{color:var(--muted);font-size:.85rem}
+  .section-title{font-weight:800}
+  .note{font-size:.9rem;color:#374151}
+  .soft{color:#6b7280}
+
+  .kpi{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{padding:4px 10px;border-radius:999px;border:1px solid var(--border);font-size:.85rem}
+  .pill.ok{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+  .pill.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+  .pill.danger{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+
+  .hr{height:1px;background:var(--border);margin:14px 0}
+
+  .result{
+    white-space:pre-wrap;
+    border:1px dashed var(--border);
+    padding:12px;
+    border-radius:12px;
+    background:#fcfcff;
+    font-size:.9rem;
+  }
+
+  .split{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:980px){.split{grid-template-columns:1.2fr .8fr}}
+
+  @media (max-width:640px){
+    .nav-inner{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .page{
+      padding:20px 14px 32px;
+    }
+  }
+
+  /* IMPRESSÃO */
+  @media print{
+    @page{size:A4;margin:12mm}
+    :root{--bg:#fff}
+    body{background:#fff;font-size:0.9rem}
+    header.site-header,
+    .hero-pre{display:none!important}
+    .page{max-width:none;padding:0}
+    section.card{box-shadow:none;border:0;padding:0}
+    .hr{margin:8px 0}
+    .sub{margin-bottom:8px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-subtitle">Pediatria • Pré-escolar 2–5a</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-back">
+        <span>⬅</span>
+        <span>Voltar ao módulo Pediatria</span>
+      </a>
+      <span class="nav-pill">Pré-escolar 2–5a</span>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <!-- HERO -->
+  <section class="hero-pre">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      ANAMNESE PEDIÁTRICA • PRÉ-ESCOLAR
+    </div>
+    <h1 class="hero-title">
+      Anamnese Pediátrica – Criança Pré-Escolar (2 a 5 anos)
+      <span>Roteiro para consultas em UBS, avaliação de agravos e acompanhamento de desenvolvimento.</span>
+    </h1>
+    <p class="hero-text">
+      Roteiro sugerido: Identificação → QP → HMA → ISDA → Antecedentes → Familiares →
+      Social/Ambiente → Hábitos → DNPM → Escola → Exposição/Segurança → Observações → Síntese.
+    </p>
+  </section>
+
+  <!-- 1. Identificação -->
+  <section class="card" style="margin-bottom:12px">
+    <div class="hstack" style="margin-bottom:8px">
+      <div class="badge">1. Identificação</div>
+      <span class="hint">Dados da criança e do(s) acompanhante(s).</span>
+    </div>
+    <div class="grid">
+      <div class="col-6"><label>Nome completo</label><input id="id_nome"></div>
+      <div class="col-3"><label>Data de nascimento</label><input id="id_dob" type="date"></div>
+      <div class="col-3"><label>Idade (anos)</label><input id="id_idade_a" type="number" min="2" max="5" placeholder="auto" title="Calculado pela data de nascimento"></div>
+      <div class="col-3"><label>Idade (meses)</label><input id="id_idade_m" type="number" min="24" max="71" placeholder="auto" title="Total de meses"></div>
+      <div class="col-3"><label>Sexo</label><input id="id_sexo" placeholder="F, M, intersexo"></div>
+      <div class="col-6"><label>Acompanhantes e vínculo</label><input id="id_acomp" placeholder="pai, mãe, responsável"></div>
+      <div class="col-3"><label>Confiabilidade do informante</label>
+        <select id="id_conf">
+          <option value="">—</option>
+          <option>Boa</option>
+          <option>Regular</option>
+          <option>Duvidosa</option>
+        </select>
+      </div>
+      <div class="col-6"><label>Naturalidade e procedência</label><input id="id_natproc" placeholder="Cidade/UF; bairro"></div>
+    </div>
+  </section>
+
+  <div class="split">
+    <div>
+      <!-- 2. QP -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">2. QP</div>
+          <span class="section-title">Queixa principal</span>
+        </div>
+        <input id="qp" placeholder="Ex.: 'Tosse há 1 semana', 'não come bem', 'agitado', 'xixi na cama'">
+        <div class="hint" style="margin-top:6px">Registrar tempo de evolução e contexto.</div>
+      </section>
+
+      <!-- 3. HMA -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">3. HMA</div>
+          <span class="section-title">História da Moléstia Atual</span>
+        </div>
+        <textarea id="hma" placeholder="Início, duração, evolução, intensidade; sintomas (febre, dor, tosse, inapetência, irritabilidade, sono, evacuação/diurese); impacto em alimentação/sono/brincadeiras; fala da criança (onde dói?, quando começou?); condutas já realizadas e resposta."></textarea>
+      </section>
+
+      <!-- 4. ISDA -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">4. ISDA</div>
+          <span class="section-title">Interrogatório sobre os diversos aparelhos</span>
+        </div>
+        <div class="grid">
+          <div class="col-12"><label>Geral</label><input id="isda_geral" placeholder="febre, perda de peso, cansaço, apetite, sono"></div>
+          <div class="col-6"><label>Respiratório</label><input id="isda_resp" placeholder="tosse, coriza, chiado, dispneia"></div>
+          <div class="col-6"><label>Cardiovascular</label><input id="isda_cardio" placeholder="cianose, cansaço, palpitações"></div>
+          <div class="col-6"><label>Digestivo</label><input id="isda_dig" placeholder="náuseas, vômitos, evacuações, dor abd., seletividade"></div>
+          <div class="col-6"><label>Urinário</label><input id="isda_urin" placeholder="frequência, enurese, disúria"></div>
+          <div class="col-6"><label>Neurológico</label><input id="isda_neuro" placeholder="convulsões, quedas, comportamento, atenção, aprendizado"></div>
+          <div class="col-6"><label>Pele</label><input id="isda_pele" placeholder="alergias, prurido, lesões"></div>
+        </div>
+      </section>
+
+      <!-- 5. Antecedentes pessoais -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">5. Antecedentes</div>
+          <span class="section-title">Pessoais</span>
+        </div>
+        <div class="grid">
+          <div class="col-12"><span class="note"><strong>a) Gestacionais e neonatais</strong></span></div>
+          <div class="col-6"><label>Gestação/parto (resumo)</label><input id="ant_gest_parto" placeholder="contextualizar repercussões"></div>
+          <div class="col-3"><label>Peso ao nascer (g)</label><input id="ant_peso" type="number"></div>
+          <div class="col-3"><label>Apgar 1’/5’</label><input id="ant_apgar" placeholder="ex.: 8/9"></div>
+          <div class="col-6"><label>Aleitamento/desmame</label><input id="ant_lm" placeholder="tempo de AME e desmame"></div>
+
+          <div class="col-12"><div class="hr"></div><span class="note"><strong>b) Patológicos</strong></span></div>
+          <div class="col-6"><label>Doenças prévias e alergias</label><input id="ant_doencas"></div>
+          <div class="col-6"><label>Hospitalizações/cirurgias</label><input id="ant_hosp"></div>
+          <div class="col-6"><label>Medicações de uso contínuo</label><input id="ant_meds"></div>
+          <div class="col-6"><label>Infecções recorrentes</label><input id="ant_recorr" placeholder="respiratórias, urinárias, otites"></div>
+
+          <div class="col-12"><div class="hr"></div><span class="note"><strong>c) Vacinação</strong></span></div>
+          <div class="col-12"><label>Cartão vacinal (PNI)</label><input id="ant_vac" placeholder="em dia? atrasos? reações?"></div>
+        </div>
+      </section>
+
+      <!-- 6. Familiares -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">6. Familiares</div>
+          <span class="section-title">Antecedentes familiares</span>
+        </div>
+        <div class="grid">
+          <div class="col-6"><label>Doenças genéticas/crônicas/psiquiátricas</label><input id="fam_doenc"></div>
+          <div class="col-6"><label>Asma/alergias/obesidade/epilepsia/TDD</label><input id="fam_asma" placeholder="TDD: transtornos do desenvolvimento"></div>
+          <div class="col-6"><label>Consanguinidade dos pais</label><input id="fam_consan"></div>
+        </div>
+      </section>
+
+      <!-- 7. Social/Ambiental -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">7. Social/Ambiente</div>
+          <span class="section-title">Contexto e rotina familiar</span>
+        </div>
+        <div class="grid">
+          <div class="col-6"><label>Composição familiar/moradores</label><input id="soc_moradores"></div>
+          <div class="col-6"><label>Escolaridade/ocupação dos pais</label><input id="soc_pais"></div>
+          <div class="col-6"><label>Condições de moradia</label><input id="soc_moradia" placeholder="saneamento, ventilação, água potável, animais"></div>
+          <div class="col-6"><label>Segurança doméstica</label><input id="soc_segur" placeholder="tomadas, escadas, fogão, objetos pequenos"></div>
+          <div class="col-6"><label>Telas/dia (min)</label><input id="soc_telas" type="number" min="0" step="5" placeholder="tempo e supervisão"></div>
+          <div class="col-6"><label>Observações sociais</label><input id="soc_obs" placeholder="apoio, renda, vulnerabilidade"></div>
+        </div>
+      </section>
+
+      <!-- 8. Hábitos e rotina -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">8. Hábitos</div>
+          <span class="section-title">Alimentação, sono, higiene, atividades</span>
+        </div>
+        <div class="grid">
+          <div class="col-12"><label>Recordatório alimentar (24h)</label><textarea id="hab_record" placeholder="descrever refeições, horários e líquidos"></textarea></div>
+          <div class="col-6"><label>Seletividade/recusa/ultraprocessados</label><input id="hab_sel"></div>
+          <div class="col-6"><label>Preferência por doces/nível de apetite</label><input id="hab_doces"></div>
+          <div class="col-4"><label>Sono: horário e duração</label><input id="hab_sono"></div>
+          <div class="col-4"><label>Despertares/pesadelos</label><input id="hab_sono2"></div>
+          <div class="col-4"><label>Higiene/escovação/dentista</label><input id="hab_hig" placeholder="freq. de banho, escovação, última consulta"></div>
+          <div class="col-6"><label>Atividade física e lazer</label><input id="hab_ativ" placeholder="brincadeiras, ao ar livre, interações"></div>
+          <div class="col-6"><label>Controle de esfíncteres</label><input id="hab_esf" placeholder="desfralde, escapes, enurese/encoprese"></div>
+        </div>
+      </section>
+
+      <!-- 9. DNPM -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">9. DNPM</div>
+          <span class="section-title">Desenvolvimento neuropsicomotor</span>
+        </div>
+        <div class="grid">
+          <div class="col-6"><label>Motor grosso</label><input id="dnpm_grosso" placeholder="corre, pula, triciclo, sobe escadas alternando"></div>
+          <div class="col-6"><label>Motor fino</label><input id="dnpm_fino" placeholder="desenha, copia linhas/círculos, torre, usa talheres"></div>
+          <div class="col-6"><label>Linguagem</label><input id="dnpm_ling" placeholder="frases completas, canta, narra"></div>
+          <div class="col-6"><label>Cognitivo</label><input id="dnpm_cog" placeholder="cores, conta até 10, partes do corpo"></div>
+          <div class="col-6"><label>Socioemocional</label><input id="dnpm_soc" placeholder="faz de conta, compartilha, empatia"></div>
+          <div class="col-6"><label>Autonomia</label><input id="dnpm_auto" placeholder="veste-se com ajuda, alimenta-se, tarefas simples"></div>
+          <div class="col-12"><label>Marcos por idade</label><input id="dnpm_marcos" placeholder="comparar 2/3/4/5 anos; atrasos → investigar"></div>
+        </div>
+      </section>
+
+      <!-- 10. Escola e socialização -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">10. Escola</div>
+          <span class="section-title">Escola e socialização</span>
+        </div>
+        <div class="grid">
+          <div class="col-4"><label>Frequenta creche/pré-escola?</label><input id="esc_freq" placeholder="sim/não + onde"></div>
+          <div class="col-4"><label>Comportamento</label><input id="esc_comport" placeholder="com colegas/professores"></div>
+          <div class="col-4"><label>Adaptação/aprendizado</label><input id="esc_adapta" placeholder="atenção, concentração"></div>
+          <div class="col-12"><label>Observações</label><input id="esc_obs" placeholder="isolamento, agressividade, timidez"></div>
+        </div>
+      </section>
+
+      <!-- 11. Exposição e segurança -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">11. Exposição/Segurança</div>
+          <span class="section-title">Proteção e riscos</span>
+        </div>
+        <div class="grid">
+          <div class="col-4"><label>Exposição solar / protetor</label><input id="seg_solar"></div>
+          <div class="col-4"><label>Transporte</label><input id="seg_transp" placeholder="cadeirinha/assento de elevação"></div>
+          <div class="col-4"><label>Situações de risco/violência</label><input id="seg_risco"></div>
+        </div>
+      </section>
+
+      <!-- 12. Observações do cuidador -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">12. Observações</div>
+          <span class="section-title">Dos cuidadores</span>
+        </div>
+        <textarea id="obs_cuid" placeholder="Dúvidas e preocupações (crescimento, comportamento, fala); rotina familiar; vínculo; situação emocional dos cuidadores."></textarea>
+      </section>
+
+      <!-- 13. Síntese avaliativa -->
+      <section class="card">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">13. Síntese</div>
+          <span class="section-title">Avaliativa e plano</span>
+        </div>
+        <div class="grid">
+          <div class="col-12"><label>Principais achados/suspeitas</label><textarea id="sint_achados"></textarea></div>
+          <div class="col-12"><label>Marcos alcançados/atrasos</label><textarea id="sint_marcos"></textarea></div>
+          <div class="col-12"><label>Riscos (ambientais/sociais/comportamentais)</label><textarea id="sint_riscos"></textarea></div>
+          <div class="col-12"><label>Condutas</label><textarea id="sint_cond" placeholder="promoção de saúde, prevenção de acidentes, alimentação e sono"></textarea></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Painel lateral -->
+    <div>
+      <section class="card">
+        <div class="hstack" style="justify-content:space-between;align-items:center">
+          <strong>Síntese da Anamnese (gerada automaticamente)</strong>
+          <span class="hint">Imprimir: Ctrl+P / ⌘P</span>
+        </div>
+        <div class="hr"></div>
+        <div class="kpi" id="kpi_bar">
+          <div class="pill" id="kpi_idade">Idade: —</div>
+          <div class="pill" id="kpi_meses">Meses: —</div>
+          <div class="pill" id="kpi_escola">Escola: —</div>
+          <div class="pill" id="kpi_telas">Telas/dia: —</div>
+          <div class="pill" id="kpi_vac">Vacinas: —</div>
+          <div class="pill" id="kpi_seg">Segurança: —</div>
+        </div>
+        <div class="hr"></div>
+        <div class="result" id="preview">Preencha os campos para gerar a nota.</div>
+      </section>
+
+      <section class="card" style="margin-top:14px">
+        <div class="hstack" style="margin-bottom:8px">
+          <div class="badge">Checklist</div>
+          <span class="section-title">Sinais de Alerta (2–5 anos)</span>
+        </div>
+        <ul class="soft" style="margin:0 0 0 18px; padding:0 0 0 4px; line-height:1.6">
+          <li>Perda ponderal, febre persistente, apatia incomum</li>
+          <li>Tosse/dispneia com esforço importante, cianose</li>
+          <li>Dor persistente, vômitos biliosos, diarreia com desidratação</li>
+          <li>Convulsões, regressão de marcos, alterações neurológicas agudas</li>
+          <li>Comportamento agressivo extremo, isolamento social marcado</li>
+          <li>Sinais de negligência/maus-tratos ou insegurança doméstica grave</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <p class="hint" style="margin-top:12px">
+    Dica: sempre cruzar QP/HMA com impacto funcional (alimentação, sono, brincadeiras) e revisar DNPM vs. marcos esperados para 2, 3, 4 e 5 anos.
+  </p>
+</main>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const fields=[
+    'id_nome','id_dob','id_idade_a','id_idade_m','id_sexo','id_acomp','id_conf','id_natproc',
+    'qp','hma',
+    'isda_geral','isda_resp','isda_cardio','isda_dig','isda_urin','isda_neuro','isda_pele',
+    'ant_gest_parto','ant_peso','ant_apgar','ant_lm',
+    'ant_doencas','ant_hosp','ant_meds','ant_recorr','ant_vac',
+    'fam_doenc','fam_asma','fam_consan',
+    'soc_moradores','soc_pais','soc_moradia','soc_segur','soc_telas','soc_obs',
+    'hab_record','hab_sel','hab_doces','hab_sono','hab_sono2','hab_hig','hab_ativ','hab_esf',
+    'dnpm_grosso','dnpm_fino','dnpm_ling','dnpm_cog','dnpm_soc','dnpm_auto','dnpm_marcos',
+    'esc_freq','esc_comport','esc_adapta','esc_obs',
+    'seg_solar','seg_transp','seg_risco',
+    'obs_cuid',
+    'sint_achados','sint_marcos','sint_riscos','sint_cond'
+  ];
+
+  fields.forEach(id=>$(id)?.addEventListener('input',update));
+
+  // Cálculo automático da idade (anos e meses totais)
+  $('id_dob')?.addEventListener('change',()=>{
+    const val = $('id_dob').value;
+    if(!val){ update(); return;}
+    const dob = new Date(val+'T00:00');
+    const now = new Date();
+    let months=(now.getFullYear()-dob.getFullYear())*12 + (now.getMonth()-dob.getMonth());
+    if(now.getDate()<dob.getDate()) months-=1;
+    months=Math.max(0,months);
+    $('id_idade_m').value = months;
+    $('id_idade_a').value = Math.floor(months/12);
+    update();
+  });
+
+  function lineIf(label,val){const v=(val||'').toString().trim();return v?`${label}: ${v}`:''}
+  function join(lines,sep='\n'){return lines.filter(Boolean).join(sep)||'—'}
+
+  function badges(){
+    const idadeA = ($('id_idade_a').value||'').trim();
+    const idadeM = ($('id_idade_m').value||'').trim();
+    $('kpi_idade').textContent = `Idade: ${idadeA? idadeA+"a":"—"}`;
+    $('kpi_meses').textContent = `Meses: ${idadeM||'—'}`;
+
+    const escola = ($('esc_freq').value||''_

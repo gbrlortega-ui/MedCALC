@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anamnese – Adolescente (10–19 anos) | UBS</title>
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --bg-section:#ffffff;
+    --card:#fff;
+    --text:#0f172a;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --focus:#4f46e5;
+    --ok:#16a34a;
+    --warn:#ea580c;
+    --danger:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:.9rem;
+  }
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
+
+  /* HEADER / NAVBAR */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(16px);
+    background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+    border-bottom:1px solid rgba(209,213,219,.7);
+  }
+  .nav-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-mark{
+    width:28px;
+    height:28px;
+    border-radius:999px;
+    border:1px solid #111827;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    font-weight:600;
+  }
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+  }
+  .brand-title{
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .brand-subtitle{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:.82rem;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.78rem;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .15s,transform .12s,color .15s;
+  }
+  .nav-back span:first-child{
+    font-size:.9rem;
+    transform:translateY(1px);
+  }
+  .nav-back:hover{
+    background:#111827;
+    color:#f9fafb;
+    transform:translateY(-1px);
+  }
+  .nav-pill{
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    background:#ffffff;
+  }
+
+  /* PAGE WRAPPER */
+  .page{
+    max-width:1160px;
+    margin:0 auto;
+    padding:26px 16px 40px;
+  }
+
+  /* HERO / TÍTULO */
+  .hero-adolescente{
+    margin-bottom:18px;
+  }
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:4px 11px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.5);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(18px);
+  }
+  .hero-badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:999px;
+    background:#22c55e;
+    box-shadow:0 0 0 4px rgba(34,197,94,.2);
+  }
+  .hero-title{
+    margin:14px 0 4px;
+    font-size:clamp(1.6rem,2.2vw,2.0rem);
+    line-height:1.1;
+    letter-spacing:.02em;
+  }
+  .hero-title span{
+    display:block;
+    font-weight:300;
+    color:var(--muted);
+  }
+  .hero-text{
+    margin:0;
+    margin-top:6px;
+    font-size:.9rem;
+    color:var(--muted);
+    max-width:720px;
+  }
+
+  /* FORMULÁRIO / CARDS */
+  section.card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 16px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  .grid{display:grid;gap:12px;grid-template-columns:1fr}
+  @media(min-width:980px){.grid{grid-template-columns:repeat(12,1fr)}}
+  .col-2{grid-column:span 2}
+  .col-3{grid-column:span 3}
+  .col-4{grid-column:span 4}
+  .col-5{grid-column:span 5}
+  .col-6{grid-column:span 6}
+  .col-8{grid-column:span 8}
+  .col-12{grid-column:1/-1}
+
+  label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:650;
+    font-size:.9rem;
+  }
+  input,select,textarea{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:.9rem;
+    background:#fff;
+  }
+  textarea{min-height:110px;resize:vertical}
+  input:focus,select:focus,textarea:focus{
+    border-color:var(--focus);
+    box-shadow:0 0 0 3px rgba(79,70,229,.15);
+    outline:none;
+  }
+
+  .hstack{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:.8rem;font-weight:700}
+  .hint{color:var(--muted);font-size:.85rem}
+  .section-title{font-weight:800}
+  .note{font-size:.92rem;color:#374151}
+  .soft{color:#6b7280}
+
+  .kpi{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{padding:4px 10px;border-radius:999px;border:1px solid var(--border);font-size:.85rem}
+  .pill.ok{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+  .pill.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+  .pill.danger{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+
+  .hr{height:1px;background:var(--border);margin:14px 0}
+
+  .result{
+    white-space:pre-wrap;
+    border:1px dashed var(--border);
+    padding:12px;
+    border-radius:12px;
+    background:#fcfcff;
+    font-size:.9rem;
+  }
+
+  .split{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:980px){.split{grid-template-columns:1.2fr .8fr}}
+
+  .privacy{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    color:#14532d;
+    padding:10px 12px;
+    border-radius:10px;
+    font-size:.94rem;
+  }
+
+  @media (max-width:640px){
+    .nav-inner{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .page{
+      padding:20px 14px 32px;
+    }
+  }
+
+  /* IMPRESSÃO */
+  @media print{
+    @page{size:A4;margin:12mm}
+    :root{--bg:#fff}
+    body{background:#fff;font-size:.9rem}
+    header.site-header,
+    .hero-adolescente{display:none!important}
+    .page{max-width:none;padding:0}
+    section.card{box-shadow:none;border:0;padding:0}
+    .hr{margin:8px 0}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-subtitle">Pediatria • Adolescente 10–19a</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-back">
+        <span>⬅</span>
+        <span>Voltar ao módulo Pediatria</span>
+      </a>
+      <span class="nav-pill">Adolescente 10–19a</span>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <!-- HERO -->
+  <section class="hero-adolescente">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      ANAMNESE • ADOLESCENTE
+    </div>
+    <h1 class="hero-title">
+      Anamnese Pediátrica – Adolescente (10 a 19 anos)
+      <span>Roteiro para consultas em UBS, saúde sexual/reprodutiva, mental e prevenção de riscos.</span>
+    </h1>
+    <p class="hero-text">
+      Roteiro: Identificação → QP → HMA → ISDA → Antecedentes → Familiares →
+      Social/Escolar → Hábitos → Desenvolvimento puberal → HEEADSSS → Exame físico → Observações → Síntese.
+    </p>
+  </section>
+
+  <!-- Aviso de sigilo -->
+  <section class="card" style="margin-bottom:12px">
+    <div class="privacy"><strong>Sigilo e acolhimento:</strong> parte desta conversa é confidencial entre profissional e adolescente. Exceções ocorrem quando há risco à segurança do próprio adolescente ou de terceiros.</div>
+  </section>
+
+  <!-- 1. Identificação -->
+  <section class="card" style="margin-bottom:12px">
+    <div class="hstack" style="margin-bottom:8px"><div class="badge">1. Identificação</div><span class="hint">Dados do adolescente e do(s) responsável(is).</span></div>
+    <div class="grid">
+      <div class="col-6"><label>Nome completo</label><input id="id_nome"></div>
+      <div class="col-3"><label>Data de nascimento</label><input id="id_dob" type="date"></div>
+      <div class="col-3"><label>Idade (anos)</label><input id="id_idade_a" type="number" min="10" max="19" placeholder="auto"></div>
+      <div class="col-3"><label>Idade (meses)</label><input id="id_idade_m" type="number" min="120" max="239" placeholder="auto"></div>
+      <div class="col-3"><label>Sexo biológico</label><input id="id_sexo"></div>
+      <div class="col-6"><label>Identidade de gênero (se desejar informar)</label><input id="id_genero"></div>
+      <div class="col-6"><label>Pais/Responsáveis (nomes e vínculo)</label><input id="id_resp"></div>
+      <div class="col-4"><label>Escolaridade/Série atual</label><input id="id_escola"></div>
+      <div class="col-4"><label>Procedência</label><input id="id_proc"></div>
+      <div class="col-4"><label>Confiabilidade do informante</label>
+        <select id="id_conf"><option value="">—</option><option>Adolescente</option><option>Acompanhante</option><option>Ambos</option></select>
+      </div>
+    </div>
+  </section>
+
+  <div class="split">
+    <div>
+      <!-- 2. QP -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">2. QP</div><span class="section-title">Queixa principal</span></div>
+        <input id="qp" placeholder="Ex.: 'Cefaleia', 'menstruação', 'sono ruim', 'ansiedade'">
+        <div class="hint" style="margin-top:6px">Priorizar fala do adolescente; registrar duração e circunstâncias.</div>
+      </section>
+
+      <!-- 3. HMA -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">3. HMA</div><span class="section-title">História da Moléstia Atual</span></div>
+        <textarea id="hma" placeholder="Início, duração, frequência, intensidade; fatores; sintomas associados (febre, dor, apetite, humor, sono, ciclo menstrual); impacto escolar/social/familiar; condutas prévias e resposta."></textarea>
+      </section>
+
+      <!-- 4. ISDA -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">4. ISDA</div><span class="section-title">Interrogatório sobre os diversos aparelhos</span></div>
+        <div class="grid">
+          <div class="col-12"><label>Geral</label><input id="isda_geral" placeholder="febre, perda de peso, fadiga, apetite"></div>
+          <div class="col-6"><label>Cardiovascular</label><input id="isda_cardio" placeholder="palpitações, dor torácica, síncope"></div>
+          <div class="col-6"><label>Respiratório</label><input id="isda_resp" placeholder="tosse, dispneia, tabagismo"></div>
+          <div class="col-6"><label>Digestivo</label><input id="isda_dig" placeholder="dor abdominal, náusea, diarreia, constipação"></div>
+          <div class="col-6"><label>Urinário/Genital</label><input id="isda_urin" placeholder="disúria, secreções, alterações urinárias"></div>
+          <div class="col-6"><label>Neurológico</label><input id="isda_neuro" placeholder="cefaleia, tontura, convulsões, sono"></div>
+          <div class="col-6"><label>Músculo-esquelético</label><input id="isda_musc" placeholder="dor, postura, lesões esportivas"></div>
+          <div class="col-12"><label>Pele</label><input id="isda_pele" placeholder="acne, lesões, tatuagens/piercings"></div>
+        </div>
+      </section>
+
+      <!-- 5. Antecedentes pessoais -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">5. Antecedentes</div><span class="section-title">Pessoais</span></div>
+        <div class="grid">
+          <div class="col-6"><label>Doenças prévias / alergias</label><input id="ant_doenc"></div>
+          <div class="col-6"><label>Hospitalizações / cirurgias</label><input id="ant_hosp"></div>
+          <div class="col-6"><label>Medicações contínuas</label><input id="ant_meds"></div>
+          <div class="col-6"><label>Vacinação (PNI)</label><input id="ant_vac" placeholder="reforços, HPV"></div>
+          <div class="col-6"><label>Aprendizado/Neurodesenvolvimento</label><input id="ant_neuro" placeholder="TDAH, dislexia, ansiedade"></div>
+          <div class="col-6"><label>Alergias alimentares/medicamentosas</label><input id="ant_alerg"></div>
+        </div>
+      </section>
+
+      <!-- 6. Familiares -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">6. Familiares</div><span class="section-title">Antecedentes familiares</span></div>
+        <div class="grid">
+          <div class="col-6"><label>Crônicas/hereditárias</label><input id="fam_cron" placeholder="HAS, DM, dislipidemia, obesidade, psiquiátricas"></div>
+          <div class="col-6"><label>Contextos de risco</label><input id="fam_risco" placeholder="violência, abuso de substâncias, suicídio"></div>
+        </div>
+      </section>
+
+      <!-- 7. Social e escolar -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">7. Social/Escolar</div><span class="section-title">Contexto</span></div>
+        <div class="grid">
+          <div class="col-6"><label>Com quem mora / dinâmica</label><input id="soc_casa"></div>
+          <div class="col-6"><label>Condições de moradia</label><input id="soc_cond" placeholder="saneamento, alimentação, privacidade"></div>
+          <div class="col-6"><label>Escola / série / desempenho</label><input id="soc_escola"></div>
+          <div class="col-6"><label>Relações sociais</label><input id="soc_rel" placeholder="colegas, professores"></div>
+          <div class="col-6"><label>Atividades / trabalho</label><input id="soc_ativ" placeholder="esportes, extracurriculares, trabalho"></div>
+          <div class="col-6"><label>Planos futuros</label><input id="soc_planos"></div>
+        </div>
+      </section>
+
+      <!-- 8. Hábitos -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">8. Hábitos</div><span class="section-title">Rotina</span></div>
+        <div class="grid">
+          <div class="col-6"><label>Sono</label><input id="hab_sono" placeholder="horas, insônia, telas à noite"></div>
+          <div class="col-6"><label>Alimentação</label><input id="hab_ali" placeholder="refeições, restrições, fast food"></div>
+          <div class="col-6"><label>Atividade física</label><input id="hab_ativ" placeholder="frequência, esportes / sedentarismo"></div>
+          <div class="col-6"><label>Lazer e telas</label><input id="hab_lazer" placeholder="redes sociais, tempo de tela, hobbies"></div>
+        </div>
+      </section>
+
+      <!-- 9. Desenvolvimento puberal -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">9. Puberal</div><span class="section-title">Desenvolvimento</span></div>
+        <div class="grid">
+          <div class="col-6"><label>Telarca / Pubarca / Menarca (meninas)</label><input id="pub_meninas" placeholder="idade dos eventos; ciclo (regularidade, duração)"></div>
+          <div class="col-6"><label>Pelos, voz, poluções (meninos)</label><input id="pub_meninos"></div>
+          <div class="col-6"><label>Tanner (quando exame físico)</label><input id="pub_tanner" placeholder="M/P ou G/P (1–5)"></div>
+          <div class="col-6"><label>Imagem corporal</label><input id="pub_imagem" placeholder="percepção corporal, mudanças"></div>
+        </div>
+      </section>
+
+      <!-- 10. HEEADSSS -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">10. HEEADSSS</div><span class="section-title">Entrevista comportamental</span><span class="hint">Conduzir com sigilo, empatia e sem julgamentos.</span></div>
+        <div class="grid">
+          <div class="col-6"><label>H – Home (casa)</label><textarea id="h_home" placeholder="relação familiar, rotina, apoio"></textarea></div>
+          <div class="col-6"><label>E – Education/Employment (escola/trabalho)</label><textarea id="h_edu" placeholder="desempenho, planos, bullying"></textarea></div>
+          <div class="col-6"><label>E – Eating (alimentação)</label><textarea id="h_eat" placeholder="hábitos, imagem corporal"></textarea></div>
+          <div class="col-6"><label>A – Activities (atividades)</label><textarea id="h_act" placeholder="lazer, amigos, redes sociais"></textarea></div>
+          <div class="col-6"><label>D – Drugs (drogas)</label><textarea id="h_drug" placeholder="álcool, cigarro, maconha, outras"></textarea></div>
+          <div class="col-6"><label>S – Sexuality (sexualidade)</label><textarea id="h_sex" placeholder="atração, práticas, contracepção, ISTs"></textarea></div>
+          <div class="col-6"><label>S – Suicide/Depression (saúde mental)</label><textarea id="h_psy" placeholder="humor, autoestima, ideação"></textarea></div>
+          <div class="col-6"><label>S – Safety (segurança)</label><textarea id="h_safe" placeholder="violência, direção, internet, relacionamentos"></textarea></div>
+          <div class="col-12"><label>Classificação de risco global (HEEADSSS)</label>
+            <select id="h_risco">
+              <option value="">—</option><option>Baixo</option><option>Moderado</option><option>Alto</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. Exame físico (resumo) -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">11. Exame</div><span class="section-title">Físico (resumo)</span></div>
+        <div class="grid">
+          <div class="col-3"><label>Peso (kg)</label><input id="aux_peso" type="number" step="0.1"></div>
+          <div class="col-3"><label>Estatura (cm)</label><input id="aux_alt" type="number" step="0.1"></div>
+          <div class="col-3"><label>IMC (kg/m²)</label><input id="aux_imc" readonly placeholder="auto"></div>
+          <div class="col-3"><label>Status nutricional</label><input id="aux_nutri" readonly placeholder="indicativo"></div>
+          <div class="col-12"><label>Outros achados</label><textarea id="ex_achados" placeholder="pele, visão, postura, CV/resp, ortopédico, acne, anemia"></textarea></div>
+        </div>
+      </section>
+
+      <!-- 12. Observações -->
+      <section class="card" style="margin-bottom:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">12. Observações</div><span class="section-title">Adolescente e pais</span></div>
+        <textarea id="obs_geral" placeholder="preocupações sobre corpo, humor, sono, rendimento, relações; conflitos familiares/comportamentais"></textarea>
+      </section>
+
+      <!-- 13. Síntese avaliativa -->
+      <section class="card">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">13. Síntese</div><span class="section-title">Avaliativa e plano</span></div>
+        <div class="grid">
+          <div class="col-12"><label>Crescimento/puberal</label><textarea id="sint_puberal" placeholder="estágio puberal e crescimento"></textarea></div>
+          <div class="col-12"><label>Estado emocional e social</label><textarea id="sint_emo"></textarea></div>
+          <div class="col-12"><label>Riscos comportamentais/vulnerabilidades</label><textarea id="sint_riscos"></textarea></div>
+          <div class="col-12"><label>Condutas e orientações</label><textarea id="sint_cond" placeholder="hábitos saudáveis, autocuidado, saúde sexual/mental, vacinação, segurança"></textarea></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Painel lateral -->
+    <div>
+      <section class="card">
+        <div class="hstack" style="justify-content:space-between;align-items:center">
+          <strong>Síntese da Anamnese (gerada automaticamente)</strong>
+          <span class="hint">Imprimir: Ctrl+P / ⌘P</span>
+        </div>
+        <div class="hr"></div>
+        <div class="kpi" id="kpi_bar">
+          <div class="pill" id="kpi_idade">Idade: —</div>
+          <div class="pill" id="kpi_meses">Meses: —</div>
+          <div class="pill" id="kpi_escola">Escola: —</div>
+          <div class="pill" id="kpi_tela">Tela: —</div>
+          <div class="pill" id="kpi_vac">Vacinas: —</div>
+          <div class="pill" id="kpi_risco">HEEADSSS: —</div>
+          <div class="pill" id="kpi_imc">IMC: —</div>
+        </div>
+        <div class="hr"></div>
+        <div class="result" id="preview">Preencha os campos para gerar a nota.</div>
+      </section>
+
+      <section class="card" style="margin-top:14px">
+        <div class="hstack" style="margin-bottom:8px"><div class="badge">Checklist</div><span class="section-title">Sinais de Alerta no Adolescente</span></div>
+        <ul class="soft" style="margin:0 0 0 18px; padding:0 0 0 4px; line-height:1.6">
+          <li>Perda ponderal importante, febre prolongada, síncope</li>
+          <li>Dor torácica em esforço, dispneia significativa</li>
+          <li>Cefaleia intensa associada a sinais neurológicos</li>
+          <li>Ideação/plano suicida, automutilação, abuso grave de substâncias</li>
+          <li>Violência doméstica/sexual, relacionamento abusivo, coerção</li>
+          <li>Restrição alimentar severa, purgação, amenorreia prolongada</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <p class="hint" style="margin-top:12px">
+    Dica: explique o sigilo no início, combine limites de segurança e convide o adolescente a falar primeiro; depois, inclua os responsáveis.
+  </p>
+</main>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const fields=[
+    'id_nome','id_dob','id_idade_a','id_idade_m','id_sexo','id_genero','id_resp','id_escola','id_proc','id_conf',
+    'qp','hma',
+    'isda_geral','isda_cardio','isda_resp','isda_dig','isda_urin','isda_neuro','isda_musc','isda_pele',
+    'ant_doenc','ant_hosp','ant_meds','ant_vac','ant_neuro','ant_alerg',
+    'fam_cron','fam_risco',
+    'soc_casa','soc_cond','soc_escola','soc_rel','soc_ativ','soc_planos',
+    'hab_sono','hab_ali','hab_ativ','hab_lazer',
+    'pub_meninas','pub_meninos','pub_tanner','pub_imagem',
+    'h_home','h_edu','h_eat','h_act','h_drug','h_sex','h_psy','h_safe','h_risco',
+    'aux_peso','aux_alt','aux_imc','aux_nutri','ex_achados',
+    'obs_geral',
+    'sint_puberal','sint_emo','sint_riscos','sint_cond'
+  ];
+
+  fields.forEach(id=>$(id)?.addEventListener('input',update));
+
+  // Idade automática (anos e meses totais)
+  $('id_dob')?.addEventListener('change',()=>{
+    const v=$('id_dob').value; if(!v){update();return;}
+    const dob=new Date(v+'T00:00'), now=new Date();
+    let months=(now.getFullYear()-dob.getFullYear())*12 + (now.getMonth()-dob.getMonth());
+    if(now.getDate()<dob.getDate()) months-=1;
+    months=Math.max(0,months);
+    $('id_idade_m').value=months;
+    $('id_idade_a').value=Math.floor(months/12);
+    update();
+  });
+
+  // IMC automático (indicativo, sem percentis pediátricos)
+  function calcIMC(){
+    const peso=parseFloat(($('aux_peso').value||'').replace(',','.'));
+    const alt=parseFloat(($('aux_alt').value||'').replace(',','.'));
+    if(!isFinite(peso)||!isFinite(alt)||alt<=0) return null;
+    const m=alt/100.0; return peso/(m*m);
+  }
+  function nutriLabel(imc){
+    if(imc==null) return '';
+    if(imc<16) return 'Muito baixo (indicativo)';
+    if(imc<18.5) return 'Abaixo (indicativo)';
+    if(imc<25) return 'Eutrófico (indicativo)';
+    if(imc<30) return 'Sobrepeso (indicativo)';
+    return 'Obesidade (indicativo)';
+  }
+
+  function lineIf(label,val){const v=(val||'').toString().trim();return v?`${label}: ${v}`:''}
+  function join(lines,sep='\n'){return lines.filter(Boolean).join(sep)||'—'}
+
+  function badges(){
+    const a=($('id_idade_a').value||'').trim();
+    const m=($('id_idade_m').value||'').trim();
+    $('kpi_idade').textContent=`Idade: ${a? a+'a':'—'}`;
+    $('kpi_meses').textContent=`Meses: ${m||'—'}`;
+
+    const escola=($('id_escola').value||$('soc_escola').value||'').trim();
+    $('kpi_escola').textContent=`Escola: ${escola? 'sim':''}` || 'Escola: —';
+
+    const tela=(( $('hab_lazer').value||'' )).match(/(\d+)\s*(min|mins|minutos|h|horas)/i);
+    $('kpi_tela').textContent=`Tela: ${tela? tela[0] :'—'}`;
+
+    const vac=($('ant_vac').value||'').trim();
+    $('kpi_vac').textContent=`Vacinas: ${vac? 'verificado':''}` || 'Vacinas: —';
+
+    const risco=($('h_risco').value||'').trim();
+    $('kpi_risco').textContent=`HEEADSSS: ${risco||'—'}`;
+
+    const imc=calcIMC();
+    $('aux_imc').value=imc!=null? imc.toFixed(1):'';
+    $('aux_nutri').value=nutriLabel(imc);
+    $('kpi_imc').textContent=`IMC: ${imc!=null? imc.toFixed(1):'—'}`;
+  }
+
+  function update(){
+    badges();
+
+    const blocoId=join([
+      lineIf('Nome', $('id_nome').value),
+      lineIf('Data de nascimento', $('id_dob').value),
+      lineIf('Idade (anos)', $('id_idade_a').value),
+      lineIf('Idade (meses)', $('id_idade_m').value),
+      lineIf('Sexo biológico', $('id_sexo').value),
+      lineIf('Identidade de gênero', $('id_genero').value),
+      lineIf('Responsáveis', $('id_resp').value),
+      lineIf('Escolaridade/Série', $('id_escola').value),
+      lineIf('Procedência', $('id_proc').value),
+      lineIf('Confiabilidade', $('id_conf').value)
+    ], ' · ');
+
+    const blocoQP=$('qp').value||'—';
+    const blocoHMA=$('hma').value||'—';
+
+    const blocoISDA=join([
+      lineIf('Geral', $('isda_geral').value),
+      lineIf('Cardiovascular', $('isda_cardio').value),
+      lineIf('Respiratório', $('isda_resp').value),
+      lineIf('Digestivo', $('isda_dig').value),
+      lineIf('Urinário/Genital', $('isda_urin').value),
+      lineIf('Neurológico', $('isda_neuro').value),
+      lineIf('Músculo-esquelético', $('isda_musc').value),
+      lineIf('Pele', $('isda_pele').value)
+    ]);
+
+    const blocoAnt=join([
+      lineIf('Doenças/alergias', $('ant_doenc').value),
+      lineIf('Hosp./Cirurgias', $('ant_hosp').value),
+      lineIf('Medicações contínuas', $('ant_meds').value),
+      lineIf('Vacinação (PNI)', $('ant_vac').value),
+      lineIf('Aprendizado/Neurodesenvolvimento', $('ant_neuro').value),
+      lineIf('Alergias ali./medicamentosas', $('ant_alerg').value)
+    ]);
+
+    const blocoFam=join([
+      lineIf('Crônicas/hereditárias', $('fam_cron').value),
+      lineIf('Riscos familiares', $('fam_risco').value)
+    ]);
+
+    const blocoSoc=join([
+      lineIf('Casa/dinâmica', $('soc_casa').value),
+      lineIf('Condições de moradia', $('soc_cond').value),
+      lineIf('Escola/série/desempenho', $('soc_escola').value),
+      lineIf('Relações sociais', $('soc_rel').value),
+      lineIf('Atividades/Trabalho', $('soc_ativ').value),
+      lineIf('Planos futuros', $('soc_planos').value)
+    ]);
+
+    const blocoHab=join([
+      lineIf('Sono', $('hab_sono').value),
+      lineIf('Alimentação', $('hab_ali').value),
+      lineIf('Atividade física', $('hab_ativ').value),
+      lineIf('Lazer/Telas', $('hab_lazer').value)
+    ]);
+
+    const blocoPub=join([
+      lineIf('Meninas', $('pub_meninas').value),
+      lineIf('Meninos', $('pub_meninos').value),
+      lineIf('Tanner', $('pub_tanner').value),
+      lineIf('Imagem corporal', $('pub_imagem').value)
+    ]);
+
+    const blocoHEEADSSS=join([
+      lineIf('Home', $('h_home').value),
+      lineIf('Education/Employment', $('h_edu').value),
+      lineIf('Eating', $('h_eat').value),
+      lineIf('Activities', $('h_act').value),
+      lineIf('Drugs', $('h_drug').value),
+      lineIf('Sexuality', $('h_sex').value),
+      lineIf('Suicide/Depression', $('h_psy').value),
+      lineIf('Safety', $('h_safe').value),
+      lineIf('Risco global', $('h_risco').value)
+    ]);
+
+    const imcTxt = $('aux_imc').value? `${$('aux_imc').value} kg/m²` : '';
+    const blocoEx=join([
+      lineIf('IMC', imcTxt),
+      lineIf('Status nutricional (indicativo)', $('aux_nutri').value),
+      lineIf('Achados', $('ex_achados').value)
+    ]);
+
+    const blocoObs=$('obs_geral').value||'—';
+
+    const blocoSint=join([
+      lineIf('Crescimento/puberal', $('sint_puberal').value),
+      lineIf('Estado emocional/social', $('sint_emo').value),
+      lineIf('Riscos/vulnerabilidades', $('sint_riscos').value),
+      lineIf('Condutas e orientações', $('sint_cond').value)
+    ]);
+
+    const nota=
+`1. Identificação
+${blocoId}
+
+2. Queixa principal (QP)
+${blocoQP}
+
+3. História da Moléstia Atual (HMA)
+${blocoHMA}
+
+4. Interrogatório sobre os diversos aparelhos (ISDA)
+${blocoISDA}
+
+5. Antecedentes pessoais
+${blocoAnt}
+
+6. Antecedentes familiares
+${blocoFam}
+
+7. História social e escolar
+${blocoSoc}
+
+8. Hábitos e rotina
+${blocoHab}
+
+9. Desenvolvimento puberal
+${blocoPub}
+
+10. HEEADSSS
+${blocoHEEADSSS}
+
+11. Exame físico (resumo)
+${blocoEx}
+
+12. Observações do adolescente e dos pais
+${blocoObs}
+
+13. Síntese avaliativa e plano
+${blocoSint}`;
+
+    $('preview').textContent=nota.trim();
+  }
+
+  // inicializa
+  update();
+})();
+</script>
+</body>
+</html>
