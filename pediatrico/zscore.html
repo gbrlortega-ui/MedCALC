@@ -60,34 +60,20 @@ header.site-header{
   gap:10px;
 }
 
-.brand-mark{
-  width:28px;
-  height:28px;
-  border-radius:999px;
-  border:1px solid #111827;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:.85rem;
-  font-weight:600;
+/* LOGO gráfica (substitui o "P") */
+.brand-logo{
+  height:56px;
+  width:auto;
+  border-radius:12px;
+  border:none;
+  display:block;
 }
 
+/* mantém por acessibilidade, mas sem exibir texto ao lado do logo */
 .brand-text{
-  display:flex;
+  display:none;
   flex-direction:column;
   line-height:1.2;
-}
-
-.brand-title{
-  font-size:.95rem;
-  font-weight:600;
-}
-
-.brand-subtitle{
-  font-size:.7rem;
-  text-transform:uppercase;
-  letter-spacing:.16em;
-  color:var(--muted);
 }
 
 .nav-links{
@@ -97,6 +83,13 @@ header.site-header{
   font-size:.82rem;
   color:var(--muted);
   flex-wrap:wrap;
+}
+
+.nav-back,
+.nav-back:link,
+.nav-back:visited{
+  color:inherit;
+  text-decoration:none;
 }
 
 .nav-back{
@@ -189,6 +182,35 @@ header.site-header{
   max-width:660px;
 }
 
+/* TOOLBAR / BOTÃO IMPRESSÃO */
+.toolbar{
+  display:flex;
+  justify-content:flex-end;
+  margin:12px 0 10px;
+}
+
+.btn-print{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  background:#ffffff;
+  font-size:.78rem;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s,box-shadow .15s;
+  box-shadow:0 8px 20px rgba(15,23,42,.09);
+}
+.btn-print span:first-child{
+  font-size:.9rem;
+}
+.btn-print:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+
 /* SEÇÃO / CARD PRINCIPAL */
 .section-title{
   font-size:.9rem;
@@ -259,7 +281,7 @@ header.site-header{
   background:#ffffff;
 }
 
-/* NOVO: wrapper para idade + unidade */
+/* wrapper para idade + unidade */
 .idade-wrapper{
   display:flex;
   gap:6px;
@@ -413,6 +435,107 @@ footer.site-footer strong{
     padding:22px 16px 40px;
   }
 }
+
+/* PRINT – A4, compacta para caber em 1 página */
+@media print{
+  @page{
+    size:A4;
+    margin:8mm;
+  }
+
+  header.site-header,
+  footer.site-footer,
+  .toolbar{
+    display:none !important;
+  }
+
+  body{
+    background:#fff;
+    font-size:0.8rem;
+  }
+
+  .page{
+    max-width:none;
+    padding:0;
+  }
+
+  .hero-ped{
+    margin-bottom:6px;
+  }
+  .hero-badge{
+    font-size:.65rem;
+    padding:3px 8px;
+  }
+  .hero-title{
+    font-size:1.3rem;
+    margin:6px 0 2px;
+  }
+  .hero-text{
+    font-size:.78rem;
+    margin-top:2px;
+  }
+
+  .section-block{
+    box-shadow:none;
+    border:0;
+    padding:8px 6px 10px;
+    border-radius:0;
+    margin-bottom:10px;
+  }
+
+  .section-title{
+    font-size:.75rem;
+    margin-bottom:3px;
+  }
+  .section-headline{
+    font-size:.95rem;
+    margin-bottom:2px;
+  }
+  .section-text{
+    font-size:.75rem;
+    margin-bottom:6px;
+  }
+
+  .calc-grid{
+    gap:8px;
+  }
+
+  .form-field input,
+  .form-field select{
+    padding:5px 7px;
+    font-size:.78rem;
+  }
+
+  .calc-actions{
+    margin-top:6px;
+  }
+
+  .zs-results{
+    margin-top:10px;
+    gap:6px;
+  }
+  .zs-card{
+    padding:6px 7px;
+    font-size:.75rem;
+  }
+  .zs-label{
+    font-size:.68rem;
+  }
+  .zs-main{
+    font-size:.82rem;
+  }
+  .zs-extra{
+    font-size:.72rem;
+  }
+
+  .graph-wrapper{
+    margin-top:10px;
+  }
+  #grafico-imc{
+    max-width:100%;
+    height:auto;
+  }
+}
 </style>
 </head>
 <body>
@@ -420,19 +543,19 @@ footer.site-footer strong{
 <header class="site-header">
   <div class="nav-inner">
     <div class="brand">
-      <div class="brand-mark">P</div>
+      <img src="logo.png" alt="Logo" class="brand-logo">
       <div class="brand-text">
-        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-title">MedCALC</div>
         <div class="brand-subtitle">Módulo • Pediatria</div>
       </div>
     </div>
     <nav class="nav-links">
-      <!-- agora volta para o index da própria pediatria -->
+      <!-- volta para o index da própria pediatria -->
       <a href="index.html" class="nav-back">
         <span>⬅</span>
         <span>Voltar à Pediatria</span>
       </a>
-      <span class="nav-pill">Pediatria</span>
+      <span class="nav-pill">Z-score</span>
     </nav>
   </div>
 </header>
@@ -455,6 +578,14 @@ footer.site-footer strong{
     </p>
   </section>
 
+  <!-- BOTÃO IMPRIMIR -->
+  <div class="toolbar">
+    <button type="button" class="btn-print" onclick="window.print()">
+      <span>🖨️</span>
+      <span>Imprimir em A4</span>
+    </button>
+  </div>
+
   <!-- BLOCO – CALCULADORA -->
   <section class="section-block">
     <div class="section-title">Ferramenta</div>
@@ -473,7 +604,7 @@ footer.site-footer strong{
         </select>
       </div>
 
-      <!-- NOVO: unidade de idade + campo idade no mesmo bloco -->
+      <!-- unidade de idade + campo idade no mesmo bloco -->
       <div class="form-field">
         <label for="idade">Idade</label>
         <div class="idade-wrapper">
@@ -503,7 +634,7 @@ footer.site-footer strong{
 
     <div class="calc-actions">
       <button class="button-primary" onclick="calcularZ()">Calcular Z-score</button>
-      <button class="button-secondary" type="button" onclick="window.print()">Imprimir</button>
+      <button class="button-secondary" type="button" onclick="window.print()">Imprimir em A4</button>
     </div>
 
     <div id="saida" class="zs-results"></div>
@@ -594,7 +725,7 @@ function classificarZ(z){
   return ["Muito acima do esperado","bad"];
 }
 
-// NOVO: atualiza placeholder conforme unidade de idade
+// atualiza placeholder conforme unidade de idade
 function atualizarPlaceholderIdade(){
   const unidade = document.getElementById("idade-unidade").value;
   const input = document.getElementById("idade");
@@ -647,11 +778,9 @@ function desenharGrafico(tipo){
 
   titulo.textContent = `${labelY} × idade com curvas aproximadas de Z-score (−3 a +3)`;
 
-  // Curvas de Z = -3, -2, -1, 0, +1, +2, +3
   const zLevels = [-3,-2,-1,0,1,2,3];
   const curves = zLevels.map(z => tabMediana.map(m => m + z*(m*dpRel)));
 
-  // Limpa
   ctx.clearRect(0,0,w,h);
 
   const marginLeft = 40;
@@ -758,7 +887,7 @@ function desenharGrafico(tipo){
 // -------------------------------------
 function calcularZ(){
   const sexo   = document.getElementById("sexo").value;
-  const unidadeIdade = document.getElementById("idade-unidade").value; // NOVO
+  const unidadeIdade = document.getElementById("idade-unidade").value;
   const idadeInput = parseFloat(document.getElementById("idade").value);
   const peso   = parseFloat(document.getElementById("peso").value);
   const altura = parseFloat(document.getElementById("altura").value);
@@ -809,7 +938,7 @@ function calcularZ(){
   const pPC   = zPC === null ? null : Math.round(normalCDF(zPC)*100);
 
   ultSexo   = sexo;
-  ultIdade  = idadeMeses;     // NOVO: sempre em meses
+  ultIdade  = idadeMeses;
   ultPeso   = peso;
   ultAltura = altura;
   ultPC     = isNaN(pc) ? null : pc;

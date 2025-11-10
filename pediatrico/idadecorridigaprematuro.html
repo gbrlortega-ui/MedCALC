@@ -48,16 +48,13 @@ header.site-header{
   align-items:center;
   gap:10px;
 }
-.brand-mark{
-  width:28px;
-  height:28px;
-  border-radius:999px;
-  border:1px solid #111827;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:.85rem;
-  font-weight:600;
+/* logo padrão */
+.brand-logo{
+  height:56px;
+  width:auto;
+  border-radius:12px;
+  border:none;
+  display:block;
 }
 .brand-text{
   display:flex;
@@ -81,6 +78,13 @@ header.site-header{
   font-size:.82rem;
   color:var(--muted);
   flex-wrap:wrap;
+}
+/* links do header sem azul/sublinhado */
+.nav-back,
+.nav-back:link,
+.nav-back:visited{
+  color:inherit;
+  text-decoration:none;
 }
 .nav-back{
   display:inline-flex;
@@ -128,6 +132,34 @@ h1{
   color:var(--muted);
   margin:0 0 18px;
   font-size:.9rem;
+}
+
+/* TOOLBAR / IMPRESSÃO */
+.toolbar{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:12px;
+}
+.btn-print{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  background:#ffffff;
+  font-size:.78rem;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s,box-shadow .15s;
+  box-shadow:0 8px 20px rgba(15,23,42,.09);
+}
+.btn-print span:first-child{
+  font-size:.9rem;
+}
+.btn-print:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
 }
 
 /* CARD / SEÇÃO */
@@ -238,10 +270,14 @@ footer.site-footer strong{
   }
 }
 
-/* PRINT */
+/* PRINT – A4 */
 @media print{
   @page{size:A4;margin:12mm}
-  header.site-header,footer.site-footer{display:none}
+  header.site-header,
+  footer.site-footer,
+  .toolbar{
+    display:none !important;
+  }
   body{background:#fff}
   .page{max-width:none;padding:0}
   .section-block{box-shadow:none;border:0;padding:0}
@@ -253,9 +289,9 @@ footer.site-footer strong{
 <header class="site-header">
   <div class="nav-inner">
     <div class="brand">
-      <div class="brand-mark">P</div>
+      <img src="logo.png" alt="Logo" class="brand-logo">
       <div class="brand-text">
-        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-title">MedCALC</div>
         <div class="brand-subtitle">Módulo • Pediatria</div>
       </div>
     </div>
@@ -275,6 +311,13 @@ footer.site-footer strong{
     Calculadora para estimar idade cronológica e idade corrigida (até 24 meses) em crianças nascidas pré-termo,
     para uso em seguimento do crescimento e desenvolvimento, conforme recomendações da SBP.
   </p>
+
+  <div class="toolbar">
+    <button type="button" class="btn-print" onclick="window.print()">
+      <span>🖨️</span>
+      <span>Imprimir em A4</span>
+    </button>
+  </div>
 
   <section class="section-block">
     <div class="grid">

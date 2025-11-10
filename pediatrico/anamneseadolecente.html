@@ -30,7 +30,7 @@
     text-decoration:none;
   }
 
-  /* HEADER / NAVBAR */
+  /* HEADER / NAVBAR – padrão plataforma MedCALC */
   header.site-header{
     position:sticky;
     top:0;
@@ -53,19 +53,15 @@
     align-items:center;
     gap:10px;
   }
-  .brand-mark{
-    width:28px;
-    height:28px;
-    border-radius:999px;
-    border:1px solid #111827;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:.85rem;
-    font-weight:600;
+  .brand-logo{
+    height:56px;
+    width:auto;
+    border-radius:12px;
+    border:none;
+    display:block;
   }
   .brand-text{
-    display:flex;
+    display:none;
     flex-direction:column;
     line-height:1.2;
   }
@@ -244,6 +240,50 @@
     font-size:.94rem;
   }
 
+  /* BOTÃO IMPRIMIR SÍNTESE */
+  button{
+    padding:8px 13px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:.85rem;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:background .18s,transform .08s,box-shadow .18s;
+  }
+  .btn-print{
+    background:#4f46e5;
+    color:#fff;
+    box-shadow:0 12px 24px rgba(79,70,229,.25);
+  }
+  .btn-print:hover{
+    background:#3730a3;
+    transform:translateY(-1px);
+    box-shadow:0 16px 32px rgba(55,48,163,.45);
+  }
+
+  /* FOOTER – padrão plataforma */
+  footer.site-footer{
+    border-top:1px solid rgba(209,213,219,.7);
+    margin-top:26px;
+    padding:12px 16px 18px;
+    font-size:.8rem;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
+    max-width:900px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  footer.site-footer strong{
+    font-weight:500;
+    color:#111827;
+  }
+
   @media (max-width:640px){
     .nav-inner{
       flex-direction:column;
@@ -254,12 +294,13 @@
     }
   }
 
-  /* IMPRESSÃO */
+  /* IMPRESSÃO DA PÁGINA PRINCIPAL (Ctrl+P) */
   @media print{
     @page{size:A4;margin:12mm}
     :root{--bg:#fff}
     body{background:#fff;font-size:.9rem}
     header.site-header,
+    footer.site-footer,
     .hero-adolescente{display:none!important}
     .page{max-width:none;padding:0}
     section.card{box-shadow:none;border:0;padding:0}
@@ -272,18 +313,18 @@
 <header class="site-header">
   <div class="nav-inner">
     <div class="brand">
-      <div class="brand-mark">P</div>
+      <img src="logo.png" alt="Logo MedCALC" class="brand-logo">
       <div class="brand-text">
-        <div class="brand-title">Medicina Integrada</div>
-        <div class="brand-subtitle">Pediatria • Adolescente 10–19a</div>
+        <div class="brand-title">MedCALC</div>
+        <div class="brand-subtitle">Módulo • Pediatria</div>
       </div>
     </div>
     <nav class="nav-links">
       <a href="index.html" class="nav-back">
         <span>⬅</span>
-        <span>Voltar ao módulo Pediatria</span>
+        <span>Voltar</span>
       </a>
-      <span class="nav-pill">Adolescente 10–19a</span>
+      <span class="nav-pill">Pediatria</span>
     </nav>
   </div>
 </header>
@@ -471,7 +512,7 @@
       <section class="card">
         <div class="hstack" style="justify-content:space-between;align-items:center">
           <strong>Síntese da Anamnese (gerada automaticamente)</strong>
-          <span class="hint">Imprimir: Ctrl+P / ⌘P</span>
+          <span class="hint">Use o botão abaixo para imprimir em A4</span>
         </div>
         <div class="hr"></div>
         <div class="kpi" id="kpi_bar">
@@ -485,6 +526,9 @@
         </div>
         <div class="hr"></div>
         <div class="result" id="preview">Preencha os campos para gerar a nota.</div>
+        <div style="margin-top:10px;display:flex;justify-content:flex-end;">
+          <button type="button" class="btn-print" id="btnPrint">🖨️ Imprimir síntese</button>
+        </div>
       </section>
 
       <section class="card" style="margin-top:14px">
@@ -505,6 +549,11 @@
     Dica: explique o sigilo no início, combine limites de segurança e convide o adolescente a falar primeiro; depois, inclua os responsáveis.
   </p>
 </main>
+
+<footer class="site-footer">
+  <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+  <span>Módulo Pediatria • Anamnese Adolescente</span>
+</footer>
 
 <script>
 (function(){
@@ -564,13 +613,13 @@
     $('kpi_meses').textContent=`Meses: ${m||'—'}`;
 
     const escola=($('id_escola').value||$('soc_escola').value||'').trim();
-    $('kpi_escola').textContent=`Escola: ${escola? 'sim':''}` || 'Escola: —';
+    $('kpi_escola').textContent = escola ? 'Escola: sim' : 'Escola: —';
 
     const tela=(( $('hab_lazer').value||'' )).match(/(\d+)\s*(min|mins|minutos|h|horas)/i);
     $('kpi_tela').textContent=`Tela: ${tela? tela[0] :'—'}`;
 
     const vac=($('ant_vac').value||'').trim();
-    $('kpi_vac').textContent=`Vacinas: ${vac? 'verificado':''}` || 'Vacinas: —';
+    $('kpi_vac').textContent = vac ? 'Vacinas: verificado' : 'Vacinas: —';
 
     const risco=($('h_risco').value||'').trim();
     $('kpi_risco').textContent=`HEEADSSS: ${risco||'—'}`;
@@ -718,6 +767,83 @@ ${blocoSint}`;
 
     $('preview').textContent=nota.trim();
   }
+
+  // helpers impressão
+  function escapeHtml(str){
+    return str.replace(/&/g,"&amp;")
+              .replace(/</g,"&lt;")
+              .replace(/>/g,"&gt;");
+  }
+
+  $('btnPrint')?.addEventListener('click',()=>{
+    let conteudo = $('preview').textContent || '';
+    conteudo = conteudo.replace(/\n{3,}/g, '\n\n');
+
+    const nome = ($('id_nome')?.value || '').trim();
+    const titulo = nome ? `Síntese – ${nome}` : 'Síntese do atendimento';
+
+    const win = window.open('', '', 'width=900,height=900');
+    if(!win) return;
+
+    win.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>${titulo}</title>
+<style>
+  @page{
+    size:A4 portrait;
+    margin:12mm;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:0.8rem;
+    color:#111827;
+    line-height:1.35;
+    margin:0;
+  }
+  .wrapper{
+    padding:4mm 0 0;
+  }
+  .header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    margin-bottom:6px;
+  }
+  .header img{
+    height:28px;
+    width:auto;
+    border-radius:6px;
+  }
+  h1{
+    font-size:0.9rem;
+    margin:4px 0 8px;
+  }
+  .box{
+    border:1px solid #e5e7eb;
+    border-radius:6px;
+    padding:6px 8px;
+    white-space:pre-wrap;
+  }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <img src="logo.png" alt="Logo MedCALC">
+    </div>
+    <h1>${titulo}</h1>
+    <div class="box">${escapeHtml(conteudo)}</div>
+  </div>
+</body>
+</html>`);
+    win.document.close();
+    win.focus();
+    win.print();
+    // win.close(); // opcional
+  });
 
   // inicializa
   update();
