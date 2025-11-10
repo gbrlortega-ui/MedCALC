@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Ciclo Vital da Família</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --text:#1f2937;
+    --muted:#4b5563;
+    --card-bg:#ffffff;
+    --violet:#b686f5;
+    --violet-light:#eadcfb;
+    --green:#1f8b5f;
+    --green-light:#cfeee0;
+    --yellow:#f4b83c;
+    --yellow-light:#fde9b8;
+    --orange:#f07c4b;
+    --orange-light:#ffd2bf;
+    --highlight:#111827;
+    --focus:#4f46e5;
+    --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html, body{height:100%}
+
+  body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+    color:var(--text);
+    font-size:0.85rem;
+  }
+
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
+
+  /* HEADER / NAVBAR */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(16px);
+    background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+    border-bottom:1px solid rgba(209,213,219,.7);
+  }
+
+  .nav-inner{
+    max-width:900px;
+    margin:0 auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .brand-mark{
+    width:28px;
+    height:28px;
+    border-radius:999px;
+    border:1px solid #111827;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    font-weight:600;
+  }
+
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+  }
+
+  .brand-title{
+    font-size:.95rem;
+    font-weight:600;
+  }
+
+  .brand-subtitle{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+  }
+
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:.82rem;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+
+  .nav-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.78rem;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .15s,transform .12s,color .15s;
+  }
+
+  .nav-back span:first-child{
+    font-size:.9rem;
+    transform:translateY(1px);
+  }
+
+  .nav-back:hover{
+    background:#111827;
+    color:#f9fafb;
+    transform:translateY(-1px);
+  }
+
+  .nav-pill{
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    background:#ffffff;
+  }
+
+  /* PAGE WRAPPER */
+  main.page{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+  }
+
+  .card-wrapper{
+    background:var(--card-bg);
+    border-radius:20px;
+    border:1px solid #e5e7eb;
+    box-shadow:var(--shadow-soft);
+    padding:18px 18px 20px;
+  }
+
+  /* HERO */
+  .hero-ciclo{
+    margin-bottom:18px;
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:4px 11px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.5);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(18px);
+  }
+
+  .hero-badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:999px;
+    background:#22c55e;
+    box-shadow:0 0 0 4px rgba(34,197,94,.2);
+  }
+
+  .hero-title{
+    margin:14px 0 4px;
+    font-size:clamp(1.6rem,2.2vw,1.9rem);
+    letter-spacing:.04em;
+  }
+
+  .hero-title span{
+    display:block;
+    font-weight:300;
+    color:var(--muted);
+    font-size:.95rem;
+    letter-spacing:0;
+  }
+
+  .hero-text{
+    margin:0;
+    margin-top:6px;
+    font-size:.9rem;
+    color:var(--muted);
+    max-width:640px;
+  }
+
+  /* CONTEÚDO ORIGINAL (DENTRO DO CARD) */
+
+  .wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+
+  .page-inner{
+    width:100%;
+    max-width:780px;
+    background:transparent;
+    padding:4px 2px 0;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+  }
+
+  header.form-header{
+    text-align:center;
+    margin-bottom:4px;
+  }
+  header.form-header h1{
+    font-size:1.5rem;
+    letter-spacing:.05em;
+    margin-bottom:2px;
+  }
+  header.form-header h2{
+    font-size:.8rem;
+    font-weight:600;
+    letter-spacing:.08em;
+    color:var(--muted);
+  }
+
+  .marcacao{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin:8px 0 8px;
+    font-size:.75rem;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+
+  .marcacao strong{
+    font-size:.78rem;
+    color:var(--highlight);
+  }
+
+  .marcacao label{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:3px 7px;
+    border-radius:999px;
+    background:#f3f4ff;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:background .15s, border-color .15s, transform .1s;
+  }
+
+  .marcacao input[type="radio"]{
+    accent-color:#4f46e5;
+    cursor:pointer;
+  }
+
+  .marcacao label.marcacao--active{
+    border-color:#4f46e5;
+    background:#e0e7ff;
+    transform:translateY(-1px);
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 6px 14px rgba(0,0,0,.05);
+    font-size:.75rem;
+    line-height:1.3;
+    border:1.5px solid transparent;
+  }
+
+  .card-header{
+    padding:8px 12px;
+    text-align:left;
+    font-weight:700;
+    color:#111827;
+  }
+
+  .card-body{
+    padding:8px 12px 10px;
+  }
+
+  .card-body p{
+    margin-bottom:4px;
+  }
+
+  .card-body ul{
+    list-style:disc;
+    padding-left:16px;
+    margin-top:2px;
+  }
+
+  .card-body li{
+    margin-bottom:3px;
+  }
+
+  .card-footer{
+    margin-top:6px;
+    font-weight:600;
+  }
+
+  .card--1 .card-header{background:var(--violet);}
+  .card--1 .card-body{background:var(--violet-light);}
+  .card--2 .card-header{background:var(--green);color:#f9fafb;}
+  .card--2 .card-body{background:var(--green-light);}
+  .card--3 .card-header{background:var(--yellow);}
+  .card--3 .card-body{background:var(--yellow-light);}
+  .card--4 .card-header{background:var(--orange);}
+  .card--4 .card-body{background:var(--orange-light);}
+  .card--5 .card-header{background:var(--violet);}
+  .card--5 .card-body{background:var(--violet-light);}
+
+  .hidden{display:none;}
+
+  footer.form-footer{
+    text-align:center;
+    font-size:.75rem;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  /* BOTÕES FIXOS */
+  .controls{
+    position:fixed;
+    bottom:10px;
+    right:14px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    background:var(--focus);
+    color:#fff;
+    border:none;
+    padding:5px 9px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:0.78rem;
+    font-weight:600;
+    box-shadow:0 4px 10px rgba(15,23,42,.2);
+    display:flex;
+    align-items:center;
+    gap:4px;
+    transition:background .2s, transform .08s, box-shadow .2s;
+  }
+
+  .btn:hover{
+    background:#3730a3;
+    transform:translateY(-1px);
+    box-shadow:0 8px 18px rgba(15,23,42,.25);
+  }
+
+  /* FOOTER GLOBAL */
+  footer.site-footer{
+    border-top:1px solid rgba(209,213,219,.7);
+    margin-top:10px;
+    padding:14px 20px 20px;
+    font-size:.8rem;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
+    max-width:900px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  footer.site-footer strong{
+    font-weight:500;
+    color:#111827;
+  }
+
+  @media (max-width:900px){
+    main.page{padding:22px 14px 46px;}
+    .nav-inner{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .page-inner{padding:4px 0 0;}
+    header.form-header h1{font-size:1.4rem;}
+    header.form-header h2{font-size:.75rem;}
+    .card{font-size:.72rem;}
+  }
+
+  /* IMPRESSÃO – A5 retrato, sem botões / header global */
+  @media print{
+    @page{
+      size:A5 portrait;
+      margin:0.4cm;
+    }
+    body{
+      background:#fff;
+      font-size:0.8rem;
+    }
+    header.site-header,
+    footer.site-footer,
+    .hero-ciclo,
+    .controls{
+      display:none !important;
+    }
+    main.page{
+      max-width:none;
+      padding:8px 8px 6px;
+    }
+    .card-wrapper{
+      box-shadow:none;
+      border:none;
+      padding:0;
+    }
+    .page-inner{
+      max-width:none;
+      padding:0;
+    }
+    header.form-header h1{
+      font-size:1.3rem;
+    }
+    header.form-header h2{
+      font-size:.8rem;
+    }
+    .card{
+      box-shadow:none;
+      border-width:1px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER GLOBAL -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <div class="brand-title">Medicina Integrada</div>
+          <div class="brand-subtitle">USF • Ciclo Vital</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="apgar.html" class="nav-back">
+          <span>⬅</span>
+          <span>Voltar ao APGAR</span>
+        </a>
+        <span class="nav-pill">Ciclo de vida familiar</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero-ciclo">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AVALIAÇÃO FAMILIAR • CICLO VITAL
+      </div>
+      <h1 class="hero-title">
+        Ciclo Vital da Família
+        <span>Mapeie a fase atual para apoiar a leitura estrutural e as intervenções.</span>
+      </h1>
+      <p class="hero-text">
+        Selecione a etapa do ciclo de vida em que a família se encontra. Em seguida, utilize a descrição
+        como referência para hipóteses sistêmicas e planejamento das condutas na Atenção Primária.
+      </p>
+    </section>
+
+    <!-- CARD PRINCIPAL COM O FORMULÁRIO -->
+    <section class="card-wrapper">
+      <div class="wrapper">
+        <div class="page-inner" id="printArea">
+
+          <header class="form-header">
+            <h1>CICLO VITAL DA FAMÍLIA</h1>
+            <h2>ASPECTOS RELEVANTES A SEREM OBSERVADOS EM CADA CICLO</h2>
+          </header>
+
+          <div class="marcacao">
+            <strong>Marcar fase atual:</strong>
+            <label data-fase="1"><input type="radio" name="fase" value="1"> Formação do casal</label>
+            <label data-fase="2"><input type="radio" name="fase" value="2"> Filho pequeno</label>
+            <label data-fase="3"><input type="radio" name="fase" value="3"> Filho adolescente</label>
+            <label data-fase="4"><input type="radio" name="fase" value="4"> Filho jovem/adulto</label>
+            <label data-fase="5"><input type="radio" name="fase" value="5"> Estágio tardio</label>
+          </div>
+
+          <!-- Descrição da fase escolhida -->
+          <section id="detalhe" class="card hidden">
+            <!-- preenchido via JS -->
+          </section>
+
+          <footer class="form-footer">Marcella Carvalhosa – Terapeuta Familiar</footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER GLOBAL -->
+  <footer class="site-footer">
+    <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+    <span>Módulo USF • Ciclo Vital da Família</span>
+  </footer>
+
+  <!-- BOTÕES FLOTANTES -->
+  <div class="controls">
+    <button class="btn" id="btnVoltar">⬅️ Voltar</button>
+    <button class="btn" id="btnPrint">🖨️ Imprimir / PDF</button>
+    <button class="btn" id="btnPDF">💾 Baixar PDF</button>
+    <button class="btn" id="btnProximo">➡️ Próximo</button>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+(function(){
+  const radios = document.querySelectorAll('input[name="fase"]');
+  const labels = document.querySelectorAll('.marcacao label');
+  const detalhe = document.getElementById('detalhe');
+  let faseAtual = null; // controla se algo foi selecionado
+
+  const fases = {
+    1: {
+      titulo: 'Formação do casal',
+      corpo: `
+        <ul>
+          <li>É a formação do sistema conjugal;</li>
+          <li>Realinhar relacionamentos com família e amigos para incluir o cônjuge;</li>
+          <li>Reconhecer e agradecer aos pais e se “despedir” deles, passando a ser visita;</li>
+          <li>Fazer combinados/contratos sobre tarefas e responsabilidades.</li>
+        </ul>
+      `,
+      footer: ''
+    },
+    2: {
+      titulo: 'Família com filho pequeno',
+      corpo: `
+        <p>Aproximadamente até 11 anos.</p>
+        <ul>
+          <li>Ajustar o sistema conjugal para a chegada do novo membro;</li>
+          <li>Realinhar os relacionamentos com a família ampliada;</li>
+          <li>Pais devem estar disponíveis e unidos para cuidar e educar os filhos;</li>
+          <li>Dar voz de comando – limites e regras;</li>
+          <li>Pais se sentem úteis.</li>
+        </ul>
+      `,
+      footer: 'Casal sendo casal.'
+    },
+    3: {
+      titulo: 'Família com filho adolescente',
+      corpo: `
+        <p>Aproximadamente de 12 a 17 anos.</p>
+        <ul>
+          <li>Pais dão voz de orientação, supervisionando;</li>
+          <li>“Liberdade” patrocinada – adolescentes vão se “soltando”;</li>
+          <li>Flexibilização das fronteiras, incluindo a independência;</li>
+          <li>O adolescente precisa se sentir útil na família.</li>
+        </ul>
+      `,
+      footer: 'Casal sendo casal.'
+    },
+    4: {
+      titulo: 'Família com filho jovem/adulto',
+      corpo: `
+        <p>A partir de 18 anos.</p>
+        <ul>
+          <li>Pais observam e legitimam as escolhas profissionais e afetivas dos filhos;</li>
+          <li>Formam um time – o jovem traz as ideias;</li>
+          <li>Desenvolver responsabilidades emocionais e financeiras;</li>
+          <li>Promover identidade e autonomia do jovem;</li>
+          <li>Jovem deve se sentir útil na sociedade.</li>
+        </ul>
+      `,
+      footer: 'Casal sendo casal.'
+    },
+    5: {
+      titulo: 'Família no estágio tardio da vida',
+      corpo: `
+        <ul>
+          <li>Filhos saem de casa, casando ou morando sozinhos;</li>
+          <li>Reorganizar o sistema conjugal como dupla novamente;</li>
+          <li>O ninho fica vazio;</li>
+          <li>Comunicação e parceria fortalecidas ao longo do tempo;</li>
+          <li>Desenvolver relacionamento entre adultos com filhos, cônjuges e netos;</li>
+          <li>Lidar com incapacidade dos pais e com a morte.</li>
+        </ul>
+      `,
+      footer: 'Desfrutar do casal sendo casal.'
+    }
+  };
+
+  function renderDetalhe(valor){
+    const fase = fases[valor];
+    if(!fase) return;
+
+    detalhe.className = 'card card--' + valor;
+    detalhe.innerHTML = `
+      <div class="card-header">${fase.titulo}</div>
+      <div class="card-body">
+        ${fase.corpo}
+        ${fase.footer ? `<p class="card-footer">${fase.footer}</p>` : ''}
+      </div>
+    `;
+    detalhe.classList.remove('hidden');
+  }
+
+  function ativaFase(valor){
+    faseAtual = valor;
+    // marca radio/label
+    radios.forEach(r=>{
+      r.checked = (r.value === valor);
+    });
+    labels.forEach(l=>{
+      l.classList.toggle('marcacao--active', l.dataset.fase === valor);
+    });
+    // mostra card
+    renderDetalhe(valor);
+    // salva para síntese global
+    const fase = fases[valor];
+    localStorage.setItem('cicloFase', valor);
+    localStorage.setItem('cicloTitulo', fase ? fase.titulo : '');
+  }
+
+  radios.forEach(radio=>{
+    radio.addEventListener('change', ()=>ativaFase(radio.value));
+  });
+
+  labels.forEach(label=>{
+    label.addEventListener('click', ()=>{
+      const fase = label.dataset.fase;
+      ativaFase(fase);
+    });
+  });
+
+  document.getElementById('btnVoltar').addEventListener('click', ()=>{ window.history.back(); });
+  document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
+
+  // PDF em A5, 1 página
+  document.getElementById('btnPDF').addEventListener('click', ()=>{
+    const element = document.getElementById('printArea');
+    const opt = {
+      margin: 5, // mm
+      filename: 'Ciclo_Vital_Familia.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  });
+
+  // Próximo → Conceito Familiar
+  document.getElementById('btnProximo').addEventListener('click', ()=>{
+    if(!faseAtual){
+      alert('Selecione a fase atual da família antes de continuar.');
+      return;
+    }
+    window.location.href = 'conceitofamiliar.html';
+  });
+})();
+</script>
+
+</body>
+</html>

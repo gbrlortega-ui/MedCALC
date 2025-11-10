@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SOAP – Prontuário Simplificado (UBS)</title>
+<style>
+  :root{
+    --bg:#f7f7fb;       /* fundo principal */
+    --bg-soft:#f7f7fb;  /* mesmo tom para o container */
+    --card:#f7f7fb;     /* mesmo tom para os cards */
+    --text:#111827;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --focus:#4f46e5;
+    --ok:#065f46;
+    --warn:#92400e;
+    --bad:#7f1d1d;
+  }
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  }
+
+  /* HEADER / NAVBAR – mesmo padrão da plataforma */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(16px);
+    background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+    border-bottom:1px solid rgba(209,213,219,.7);
+  }
+  .nav-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-mark{
+    width:28px;
+    height:28px;
+    border-radius:999px;
+    border:1px solid #111827;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    font-weight:600;
+  }
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+  }
+  .brand-title{
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .brand-subtitle{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:.82rem;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
+  .nav-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.78rem;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .15s,transform .12s,color .15s;
+  }
+  .nav-back span:first-child{
+    font-size:.9rem;
+    transform:translateY(1px);
+  }
+  .nav-back:hover{
+    background:#111827;
+    color:#f9fafb;
+    transform:translateY(-1px);
+  }
+  .nav-pill{
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    background:#ffffff;
+  }
+
+  /* PAGE WRAPPER + HERO */
+  .page{
+    max-width:1040px;
+    margin:0 auto;
+    padding:22px 14px 46px;
+  }
+
+  .hero-soap{
+    margin-bottom:18px;
+  }
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:4px 11px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.5);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(18px);
+  }
+  .hero-badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:999px;
+    background:#22c55e;
+    box-shadow:0 0 0 4px rgba(34,197,94,.2);
+  }
+  .hero-title{
+    margin:14px 0 4px;
+    font-size:clamp(1.7rem,2.3vw,2rem);
+    line-height:1.1;
+    letter-spacing:.02em;
+  }
+  .hero-title span{
+    display:block;
+    font-weight:300;
+    color:var(--muted);
+  }
+  .hero-text{
+    margin:0;
+    margin-top:6px;
+    font-size:.92rem;
+    color:var(--muted);
+    max-width:640px;
+  }
+
+  /* CARD WRAPPER em volta do SOAP */
+  .card-wrapper{
+    background:#ffffff;
+    border-radius:20px;
+    border:1px solid #e5e7f0;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    padding:18px 14px 22px;
+  }
+
+  /* Estrutura SOAP original (levemente ajustada para caber no wrapper) */
+  .shell{
+    max-width:100%;
+    margin:0 auto;
+    padding:0;
+  }
+
+  .app-header{
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(10px);
+    border-radius:16px;
+    border:1px solid var(--border);
+    padding:12px 14px;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .app-title{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .app-title h1{
+    margin:0;
+    font-size:1.4rem;
+    letter-spacing:.02em;
+  }
+  .app-title span{
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  .pill{
+    font-size:.8rem;
+    border-radius:999px;
+    padding:4px 10px;
+    border:1px solid var(--border);
+    color:var(--muted);
+    background:#f9fafb;
+  }
+
+  .container{
+    background:var(--bg-soft);
+    border-radius:14px;
+    border:1px solid #e5e7f0;
+    box-shadow:none;
+    padding:14px 10px 18px;
+  }
+
+  section.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 14px;
+    box-shadow:none;
+    margin-bottom:16px;
+  }
+
+  .grid{
+    display:grid;
+    gap:12px;
+    grid-template-columns:1fr;
+  }
+  @media(min-width:900px){
+    .grid{
+      grid-template-columns:repeat(12,1fr);
+    }
+  }
+  .col-6{grid-column:span 6}
+  .col-4{grid-column:span 4}
+  .col-3{grid-column:span 3}
+  .col-12{grid-column:1/-1}
+
+  /* Objetivo: 1 coluna no mobile, 2 no desktop */
+  .obj-grid{
+    display:grid;
+    gap:12px;
+    grid-template-columns:1fr;
+  }
+  @media(min-width:900px){
+    .obj-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+  }
+  .obj-grid .full{grid-column:1/-1;}
+
+  label{
+    display:block;
+    margin-bottom:4px;
+    font-weight:600;
+    font-size:.92rem;
+  }
+  input,select,textarea{
+    width:100%;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:0.96rem;
+    background:#fff;
+  }
+  textarea{min-height:110px;resize:vertical}
+  input:focus,select:focus,textarea:focus{
+    border-color:var(--focus);
+    box-shadow:0 0 0 3px rgba(79,70,229,.18);
+    outline:none;
+  }
+
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{
+    appearance:none;
+    border:1px solid var(--border);
+    background:#fff;
+    padding:8px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s,border-color .15s,transform .05s,box-shadow .15s;
+    font-size:.9rem;
+  }
+  .btn.small{padding:6px 10px;font-size:.86rem}
+  .btn:hover{
+    background:#f3f4ff;
+    border-color:#c7d2fe;
+    box-shadow:0 1px 4px rgba(79,70,229,.25);
+  }
+  .btn:active{transform:scale(.97)}
+
+  .hstack{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 10px;
+    border-radius:999px;
+    background:#eef2ff;
+    color:#4338ca;
+    font-size:.78rem;
+    font-weight:600;
+  }
+  .hint{color:var(--muted);font-size:.9rem}
+  .kpi{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .kpi-item{
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.86rem;
+    background:#f9fafb;
+  }
+  .value{font-weight:700}
+
+  .result{
+    white-space:pre-wrap;
+    border:1px dashed var(--border);
+    padding:12px;
+    border-radius:12px;
+    background:#f5f5ff;
+    min-height:140px;
+    font-size:.95rem;
+  }
+  .list{display:flex;flex-direction:column;gap:10px}
+  .item{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px;
+    background:#fcfcff;
+  }
+  .item .title{font-weight:700;margin-bottom:6px;font-size:.9rem}
+  .muted{color:var(--muted)}
+  .hr{height:1px;background:var(--border);margin:12px 0}
+  .alerta{margin-top:8px;font-weight:600;font-size:.9rem}
+  .alerta.ok{color:var(--ok)}
+  .alerta.bad{color:var(--bad)}
+  .no-print{display:inherit}
+  .copy-btn{
+    border:0;
+    padding:6px 11px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:.85rem;
+    background:#4f46e5;
+    color:#fff;
+  }
+  .copy-btn:hover{background:#4338ca}
+  .btn-outline{
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:999px;
+    font-size:.85rem;
+    padding:6px 11px;
+  }
+
+  /* FOOTER da plataforma */
+  footer.site-footer{
+    border-top:1px solid rgba(209,213,219,.7);
+    margin-top:22px;
+    padding:12px 20px 18px;
+    font-size:.8rem;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
+    max-width:1040px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  footer.site-footer strong{
+    font-weight:500;
+    color:#111827;
+  }
+
+  /* Responsivo header + page */
+  @media (max-width:640px){
+    .nav-inner{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .page{
+      padding:18px 12px 32px;
+    }
+  }
+
+  /* Impressão padrão (tudo) + modo especial apenas síntese */
+  @media print{
+    @page{size:A4;margin:12mm}
+    body{background:#fff}
+
+    header.site-header,
+    footer.site-footer,
+    .hero-soap{
+      display:none!important;
+    }
+
+    .no-print{display:none!important}
+
+    /* Ajuste geral para impressão completa (Ctrl+P) */
+    body:not(.print-sintese) .page{
+      max-width:none;
+      padding:0;
+    }
+    body:not(.print-sintese) .card-wrapper{
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+      padding:0;
+    }
+    body:not(.print-sintese) .shell{
+      max-width:none;
+      padding:0;
+    }
+    body:not(.print-sintese) .app-header{
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+    }
+    body:not(.print-sintese) .container{
+      background:#fff;
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+      padding:0;
+    }
+    body:not(.print-sintese) section.card{
+      box-shadow:none;
+      border:0;
+      padding:0;
+      margin:0 0 6px;
+    }
+
+    /* Quando clicar no botão "apenas síntese" */
+    body.print-sintese .page > *:not(.card-wrapper){display:none!important;}
+    body.print-sintese .card-wrapper > *:not(.shell){display:none!important;}
+    body.print-sintese .shell > *:not(.container){display:none!important;}
+    body.print-sintese .container > *:not(#sintese){display:none!important;}
+
+    body.print-sintese .card-wrapper,
+    body.print-sintese .shell,
+    body.print-sintese .container,
+    body.print-sintese #sintese{
+      background:#fff;
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+      padding:0;
+      margin:0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-text">
+        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-subtitle">USF • Prontuário SOAP</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-back">
+        <span>⬅</span>
+        <span>Voltar à USF</span>
+      </a>
+      <span class="nav-pill">SOAP – Registro clínico</span>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <!-- HERO -->
+  <section class="hero-soap">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      PRONTUÁRIO • SOAP
+    </div>
+    <h1 class="hero-title">
+      Nota SOAP na Atenção Primária
+      <span>Estruture o atendimento em Subjetivo, Objetivo, Avaliação e Plano.</span>
+    </h1>
+    <p class="hero-text">
+      Ferramenta de registro simplificado para UBS/ESF, pensada para uso acadêmico e prática supervisionada.
+      O plano pode ser vinculado aos problemas (A’s), favorecendo o raciocínio clínico e a continuidade do cuidado.
+    </p>
+  </section>
+
+  <!-- WRAPPER SOAP -->
+  <section class="card-wrapper">
+    <div class="shell">
+      <header class="app-header no-print">
+        <div class="app-title">
+          <h1>SOAP – Unidade de Saúde</h1>
+          <span>Prontuário simplificado para UBS / ESF</span>
+        </div>
+        <div class="pill">Versão: estudo / acadêmico</div>
+      </header>
+
+      <div class="container">
+        <p class="sub no-print" style="margin:0 0 14px;color:#4b5563;font-size:.92rem">
+          Registro clínico estruturado em <strong>Subjetivo, Objetivo, Avaliação e Plano</strong>, com vínculos entre P’s e A’s.
+        </p>
+
+        <!-- Cabeçalho do atendimento -->
+        <section class="card print-block">
+          <div class="grid">
+            <div class="col-4">
+              <label>Data</label>
+              <input type="date" id="dataAtd">
+            </div>
+            <div class="col-4">
+              <label>Profissional</label>
+              <input id="prof" placeholder="Ex.: Dr(a). Nome – CRM/COREN">
+            </div>
+            <div class="col-4">
+              <label>Paciente</label>
+              <input id="paciente" placeholder="Nome completo">
+            </div>
+            <div class="col-12">
+              <span class="hint">Dica: alterne entre Subjetivo em texto corrido ou tópicos S1, S2…</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subjetivo -->
+        <section class="card print-block">
+          <div class="row" style="justify-content:space-between;margin-bottom:8px">
+            <div class="hstack">
+              <div class="badge">S</div>
+              <strong>Subjetivo</strong>
+            </div>
+            <div class="hstack no-print">
+              <label for="modoS" class="muted">Modo</label>
+              <select id="modoS">
+                <option value="texto">Texto corrido</option>
+                <option value="topicos">Tópicos (S1, S2…)</option>
+              </select>
+            </div>
+          </div>
+          <div id="S-texto">
+            <label>História (HMA/Alergias/Medicações/HF/Contexto psicossocial)</label>
+            <textarea id="sTexto" placeholder="Queixa principal, HMA, sintomas, fatores de risco, adesão, barreiras, preferências…"></textarea>
+          </div>
+          <div id="S-topicos" style="display:none">
+            <div class="list" id="sList"></div>
+            <button class="btn small no-print" id="addS">+ adicionar tópico</button>
+          </div>
+        </section>
+
+        <!-- Objetivo -->
+        <section class="card print-block">
+          <div class="hstack" style="margin-bottom:8px">
+            <div class="badge">O</div>
+            <strong>Objetivo</strong>
+          </div>
+
+          <div class="obj-grid">
+            <div>
+              <label>Peso (kg)</label>
+              <input type="number" step="0.1" id="peso">
+            </div>
+            <div>
+              <label>Altura (cm)</label>
+              <input type="number" step="0.1" id="altura">
+            </div>
+            <div>
+              <label>IMC</label>
+              <input id="imc" readonly>
+            </div>
+            <div>
+              <label>Cintura (cm)</label>
+              <input type="number" step="0.1" id="cintura">
+            </div>
+
+            <div>
+              <label>PAS (mmHg)</label>
+              <input type="number" id="pas">
+            </div>
+            <div>
+              <label>PAD (mmHg)</label>
+              <input type="number" id="pad">
+            </div>
+            <div>
+              <label>FC (bpm)</label>
+              <input type="number" id="fc">
+            </div>
+            <div>
+              <label>FR (irpm)</label>
+              <input type="number" id="fr">
+            </div>
+
+            <div>
+              <label>Temp. (°C)</label>
+              <input type="number" step="0.1" id="temp">
+            </div>
+            <div>
+              <label>SpO₂ (%)</label>
+              <input type="number" step="0.1" id="spo2">
+            </div>
+
+            <div class="full">
+              <label>Exame físico / achados</label>
+              <input id="exFisico" placeholder="Ex.: orofaringe hiperemiada, sem exsudato; MV presente…">
+            </div>
+          </div>
+
+          <div class="kpi">
+            <div class="kpi-item">IMC: <span class="value" id="imcVal">–</span> <span class="muted" id="imcCat"></span></div>
+            <div class="kpi-item">PA: <span class="value" id="paVal">–</span></div>
+            <div class="kpi-item">Sinais vitais: <span class="muted" id="svResumo">preencha…</span></div>
+          </div>
+          <div id="alertas" class="alerta"></div>
+        </section>
+
+        <!-- Avaliação (A) -->
+        <section class="card print-block">
+          <div class="hstack" style="margin-bottom:8px">
+            <div class="badge">A</div>
+            <strong>Avaliação (Problemas/Diagnósticos)</strong>
+          </div>
+          <div id="aList" class="list"></div>
+          <div class="row no-print">
+            <button class="btn small" id="addA">+ A</button>
+            <span class="hint">A1, A2, A3, A4… (opcional: CID/gravidade)</span>
+          </div>
+        </section>
+
+        <!-- Plano (P) -->
+        <section class="card print-block">
+          <div class="hstack" style="margin-bottom:8px">
+            <div class="badge">P</div>
+            <strong>Plano</strong>
+          </div>
+          <div id="pList" class="list"></div>
+          <div class="row no-print">
+            <button class="btn small" id="addP">+ P</button>
+            <span class="hint">Vincule cada P aos A correspondentes (ex.: P2 → A1, A3).</span>
+          </div>
+        </section>
+
+        <!-- Síntese / Nota SOAP (embaixo) -->
+        <section class="card print-block" id="sintese">
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <strong>Síntese / Nota SOAP</strong>
+            <div class="hstack no-print">
+              <button class="btn-outline" id="printBtn">Imprimir / PDF apenas síntese</button>
+              <button class="copy-btn" id="copyBtn">Copiar nota</button>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <div class="result" id="preview">Preencha os campos para gerar a nota.</div>
+          <p class="hint no-print" style="margin-top:8px">
+            Para salvar em PDF, clique em “Imprimir / PDF apenas síntese” e, na janela de impressão, escolha “Salvar como PDF”.
+          </p>
+        </section>
+
+        <p class="hint no-print" style="margin-top:4px">
+          Referência metodológica: SOAP (Subjective, Objective, Assessment, Plan). Formulário adaptável à rotina da UBS/ESF.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+  <span>Módulo USF • Prontuário SOAP</span>
+</footer>
+
+<script>
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const state = {
+    sModo: 'texto',
+    sTexto: '',
+    sTopicos: [],
+    obj: {peso:'',altura:'',imc:'',cintura:'',pas:'',pad:'',fc:'',fr:'',temp:'',spo2:'',ex:''},
+    avaliacoes: [],
+    planos: []
+  };
+
+  const nextId = (prefix, list)=>{
+    let n = 1;
+    while(list.some(x=>x.id === prefix+n)) n++;
+    return prefix+n;
+  };
+
+  const imcCalc = ()=>{
+    const p = parseFloat(state.obj.peso);
+    const a_cm = parseFloat(state.obj.altura);
+    if(!p||!a_cm) return {val:'', cat:''};
+    const a_m = a_cm/100;
+    const imc = p/(a_m*a_m);
+    let cat='';
+    if(imc<18.5) cat='Baixo peso';
+    else if(imc<25) cat='Eutrofia';
+    else if(imc<30) cat='Sobrepeso';
+    else if(imc<35) cat='Obesidade I';
+    else if(imc<40) cat='Obesidade II';
+    else cat='Obesidade III';
+    return {val:imc.toFixed(1), cat};
+  };
+
+  const svResumo = ()=>{
+    const {fc, fr, temp, spo2} = state.obj; const parts=[];
+    if(fc) parts.push(`FC ${fc} bpm`);
+    if(fr) parts.push(`FR ${fr} irpm`);
+    if(temp) parts.push(`T ${temp} °C`);
+    if(spo2) parts.push(`SpO₂ ${spo2}%`);
+    return parts.length? parts.join(' · ') : 'preencha…';
+  };
+
+  const gerarAlertas = ()=>{
+    const f=parseFloat(state.obj.fc);
+    const r=parseFloat(state.obj.fr);
+    const t=parseFloat(state.obj.temp);
+    const o2=parseFloat(state.obj.spo2);
+    let avisos=[];
+    if(f){ if(f>100) avisos.push('Taquicárdico'); else if(f<60) avisos.push('Bradicárdico'); }
+    if(r){ if(r>20) avisos.push('Taquipneico'); else if(r<12) avisos.push('Bradipneico'); }
+    if(t){ if(t>=37.8) avisos.push('Febril'); else if(t<35.5) avisos.push('Hipotérmico'); }
+    if(o2){ if(o2<94) avisos.push('Dessaturação (<94%)'); }
+    const alertEl = $('alertas');
+    if(avisos.length===0){
+      alertEl.textContent='Sinais vitais dentro da normalidade.';
+      alertEl.className='alerta ok';
+    } else {
+      alertEl.textContent=avisos.join(' · ');
+      alertEl.className='alerta bad';
+    }
+    return avisos;
+  };
+
+  const renderIMC = ()=>{
+    const {val,cat} = imcCalc();
+    state.obj.imc = val || '';
+    $('imc').value = val || '';
+    const imcVal = $('imcVal');
+    const imcCat = $('imcCat');
+    if(imcVal) imcVal.textContent = val? val: '–';
+    if(imcCat) imcCat.textContent = cat;
+  };
+  const renderPA = ()=>{
+    const {pas,pad} = state.obj;
+    const paVal = $('paVal');
+    if(paVal) paVal.textContent = (pas&&pad)? `${pas}/${pad} mmHg` : '–';
+  };
+  const renderSV = ()=>{
+    const svEl = $('svResumo');
+    if(svEl) svEl.textContent = svResumo();
+    gerarAlertas();
+  };
+
+  const updatePreview = ()=>{
+    const nome = $('paciente').value?.trim();
+    const data = $('dataAtd').value;
+    const prof = $('prof').value?.trim();
+
+    let sBloco = 'S) Subjetivo\n';
+    if(state.sModo==='topicos'){
+      if(state.sTopicos.length){
+        sBloco += state.sTopicos.map((t,i)=>`${i+1}\n${t}`).join('\n');
+      } else { sBloco += '—'; }
+    } else {
+      sBloco += (state.sTexto?.trim()||'—');
+    }
+
+    const o = state.obj; const imc = imcCalc();
+    let oLinha = `Peso ${o.peso||'—'} kg; Altura ${o.altura||'—'} cm; IMC ${imc.val||'—'} (${imc.cat||'—'})`;
+    if(o.cintura) oLinha += ` · Cintura ${o.cintura} cm`;
+    if(o.pas||o.pad) oLinha += ` · PA ${o.pas||'—'}/${o.pad||'—'} mmHg`;
+    if(o.fc) oLinha += ` · FC ${o.fc} bpm`;
+    if(o.fr) oLinha += ` · FR ${o.fr} irpm`;
+    if(o.temp) oLinha += ` · T ${o.temp} °C`;
+    if(o.spo2) oLinha += ` · SpO₂ ${o.spo2}%`;
+
+    const avisos = gerarAlertas();
+    if(avisos.length) oLinha += ` (${avisos.join(' · ')})`;
+    if(o.ex) oLinha += ` · Exame físico: ${o.ex}`;
+
+    const oBloco = `O) Objetivo\n${oLinha}`;
+
+    const aBloco = 'A) Avaliação\n' + (state.avaliacoes.length
+      ? state.avaliacoes.map((a,i)=>
+          `(A${i+1}) - ${a.titulo||'—'}${a.cid?` (CID ${a.cid})`:''}${a.gravidade?` – ${a.gravidade}`:''}`
+        ).join('\n')
+      : '—');
+
+    const pBloco = 'P) Plano\n' + (state.planos.length
+      ? state.planos.map((p,i)=>{
+          const links = p.links && p.links.length? ` [→ ${p.links.join(', ')}]` : '';
+          return `(P${i+1}) - ${p.texto||'—'}${links}`;
+        }).join('\n')
+      : '—');
+
+    const nota =
+`Paciente: ${nome||'—'}  |  Data: ${data||'—'}  |  Profissional: ${prof||'—'}
+
+${sBloco}
+
+${oBloco}
+
+${aBloco}
+
+${pBloco}
+`;
+    $('preview').textContent = nota;
+  };
+
+  const renderSList = ()=>{
+    const root = $('sList'); root.innerHTML = '';
+    state.sTopicos.forEach((txt, idx)=>{
+      const wrap = document.createElement('div'); wrap.className = 'item';
+      wrap.innerHTML = `
+        <div class="row" style="justify-content:space-between">
+          <div class="title">S${idx+1}</div>
+          <div class="hstack no-print">
+            <button class="btn small ghost" data-act="up">↑</button>
+            <button class="btn small ghost" data-act="down">↓</button>
+            <button class="btn small" data-act="del">Remover</button>
+          </div>
+        </div>
+        <textarea data-field="s" placeholder="Conteúdo do tópico S${idx+1}"></textarea>
+      `;
+      wrap.querySelector('textarea').value = txt;
+      wrap.addEventListener('input', (e)=>{
+        if(e.target.dataset.field==='s'){
+          state.sTopicos[idx] = e.target.value;
+          updatePreview();
+        }
+      });
+      wrap.addEventListener('click', (e)=>{
+        const act = e.target.dataset.act;
+        if(!act) return;
+        if(act==='del'){
+          state.sTopicos.splice(idx,1);
+          renderSList();
+          updatePreview();
+        }
+        if(act==='up' && idx>0){
+          const t=state.sTopicos[idx-1];
+          state.sTopicos[idx-1]=state.sTopicos[idx];
+          state.sTopicos[idx]=t;
+          renderSList(); updatePreview();
+        }
+        if(act==='down' && idx<state.sTopicos.length-1){
+          const t=state.sTopicos[idx+1];
+          state.sTopicos[idx+1]=state.sTopicos[idx];
+          state.sTopicos[idx]=t;
+          renderSList(); updatePreview();
+        }
+      });
+      root.appendChild(wrap);
+    });
+  };
+
+  const renderAList = ()=>{
+    const root = $('aList'); root.innerHTML = '';
+    state.avaliacoes.forEach((a,i)=>{
+      const div = document.createElement('div'); div.className='item';
+      div.innerHTML = `
+        <div class="row" style="justify-content:space-between">
+          <div class="title">${a.id}</div>
+          <div class="hstack no-print">
+            <button class="btn small ghost" data-act="up">↑</button>
+            <button class="btn small ghost" data-act="down">↓</button>
+            <button class="btn small" data-act="del">Remover</button>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col-12"><label>Título / Problema</label><input data-k="titulo" placeholder="Ex.: Hipertensão arterial estágio 2"></div>
+          <div class="col-6"><label>CID (opcional)</label><input data-k="cid" placeholder="Ex.: I10"></div>
+          <div class="col-6"><label>Gravidade / Estágio (opcional)</label><input data-k="gravidade" placeholder="Ex.: estágio 2"></div>
+        </div>
+      `;
+      div.querySelector('[data-k="titulo"]').value = a.titulo||'';
+      div.querySelector('[data-k="cid"]').value = a.cid||'';
+      div.querySelector('[data-k="gravidade"]').value = a.gravidade||'';
+      div.addEventListener('input',(e)=>{
+        const k = e.target.dataset.k;
+        if(!k) return;
+        a[k] = e.target.value;
+        updatePreview();
+      });
+      div.addEventListener('click',(e)=>{
+        const act = e.target.dataset.act;
+        if(act==='del'){
+          state.avaliacoes.splice(i,1);
+          state.planos.forEach(p=>{
+            p.links = (p.links||[]).filter(id=>id!==a.id);
+          });
+          renderAList(); renderPList(); updatePreview();
+        }
+        if(act==='up' && i>0){
+          const t=state.avaliacoes[i-1];
+          state.avaliacoes[i-1]=state.avaliacoes[i];
+          state.avaliacoes[i]=t;
+          state.avaliacoes.forEach((x,idx)=>x.id='A'+(idx+1));
+          renderAList(); renderPList(); updatePreview();
+        }
+        if(act==='down' && i<state.avaliacoes.length-1){
+          const t=state.avaliacoes[i+1];
+          state.avaliacoes[i+1]=state.avaliacoes[i];
+          state.avaliacoes[i]=t;
+          state.avaliacoes.forEach((x,idx)=>x.id='A'+(idx+1));
+          renderAList(); renderPList(); updatePreview();
+        }
+      });
+      root.appendChild(div);
+    });
+  };
+
+  const renderPList = ()=>{
+    const root = $('pList'); root.innerHTML = '';
+    state.planos.forEach((p,i)=>{
+      const div = document.createElement('div'); div.className='item';
+      const aOptions = state.avaliacoes.map(a=>
+        `<label class="hstack" style="gap:6px"><input type="checkbox" data-aid="${a.id}"> ${a.id} – ${a.titulo||'sem título'}</label>`
+      ).join('') || '<span class="muted">Adicione A&#39;s para vincular</span>';
+      div.innerHTML = `
+        <div class="row" style="justify-content:space-between">
+          <div class="title">${p.id}</div>
+          <div class="hstack no-print">
+            <button class="btn small ghost" data-act="up">↑</button>
+            <button class="btn small ghost" data-act="down">↓</button>
+            <button class="btn small" data-act="del">Remover</button>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col-12"><label>Conduta / Plano</label><input data-k="texto" placeholder="Ex.: Iniciar IECA; MEV; retorno em 30 dias; solicito exames…"></div>
+          <div class="col-12"><label>Vincular a (A → P)</label><div class="row" style="gap:10px;flex-wrap:wrap">${aOptions}</div></div>
+        </div>
+      `;
+      div.querySelector('[data-k="texto"]').value = p.texto||'';
+      (p.links||[]).forEach(id=>{
+        const cb = div.querySelector(`[data-aid="${id}"]`);
+        if(cb) cb.checked = true;
+      });
+      div.addEventListener('input',(e)=>{
+        const k = e.target.dataset.k;
+        if(k){
+          p[k] = e.target.value;
+          updatePreview();
+          return;
+        }
+        if(e.target.dataset.aid){
+          const id = e.target.dataset.aid;
+          p.links = p.links || [];
+          if(e.target.checked && !p.links.includes(id)) p.links.push(id);
+          if(!e.target.checked) p.links = p.links.filter(x=>x!==id);
+          updatePreview();
+        }
+      });
+      div.addEventListener('click',(e)=>{
+        const act = e.target.dataset.act;
+        if(act==='del'){
+          state.planos.splice(i,1);
+          renderPList(); updatePreview();
+        }
+        if(act==='up' && i>0){
+          const t=state.planos[i-1];
+          state.planos[i-1]=state.planos[i];
+          state.planos[i]=t;
+          state.planos.forEach((x,idx)=>x.id='P'+(idx+1));
+          renderPList(); updatePreview();
+        }
+        if(act==='down' && i<state.planos.length-1){
+          const t=state.planos[i+1];
+          state.planos[i+1]=state.planos[i];
+          state.planos[i]=t;
+          state.planos.forEach((x,idx)=>x.id='P'+(idx+1));
+          renderPList(); updatePreview();
+        }
+      });
+      root.appendChild(div);
+    });
+  };
+
+  // Eventos principais
+  $('modoS').addEventListener('change', (e)=>{
+    state.sModo = e.target.value;
+    $('S-texto').style.display = state.sModo==='texto'? 'block':'none';
+    $('S-topicos').style.display = state.sModo==='topicos'? 'block':'none';
+    updatePreview();
+  });
+
+  $('sTexto').addEventListener('input', (e)=>{
+    state.sTexto = e.target.value;
+    updatePreview();
+  });
+
+  $('addS').addEventListener('click', ()=>{
+    state.sTopicos.push('');
+    renderSList();
+    updatePreview();
+  });
+
+  ['peso','altura','cintura','pas','pad','fc','fr','temp','spo2','exFisico'].forEach(id=>{
+    $(id).addEventListener('input',(e)=>{
+      const map = {exFisico:'ex'};
+      const key = map[id]||id;
+      state.obj[key] = e.target.value;
+      if(id==='peso' || id==='altura') renderIMC();
+      if(id==='pas' || id==='pad') renderPA();
+      renderSV(); updatePreview();
+    });
+  });
+
+  $('addA').addEventListener('click', ()=>{
+    if(state.avaliacoes.length>=12){
+      alert('Limite de 12 avaliações.');
+      return;
+    }
+    state.avaliacoes.push({id: nextId('A', state.avaliacoes), titulo:'', cid:'', gravidade:''});
+    state.avaliacoes.forEach((a,i)=>a.id='A'+(i+1));
+    renderAList(); renderPList(); updatePreview();
+  });
+
+  $('addP').addEventListener('click', ()=>{
+    if(state.planos.length>=16){
+      alert('Limite de 16 itens no plano.');
+      return;
+    }
+    state.planos.push({id: nextId('P', state.planos), texto:'', links:[]});
+    state.planos.forEach((p,i)=>p.id='P'+(i+1));
+    renderPList(); updatePreview();
+  });
+
+  // Copiar nota
+  $('copyBtn').addEventListener('click', ()=>{
+    const text = $('preview').textContent;
+    navigator.clipboard.writeText(text)
+      .then(()=>alert('Nota SOAP copiada para a área de transferência.'))
+      .catch(()=>alert('Não foi possível copiar automaticamente. Selecione o texto manualmente.'));
+  });
+
+  // Imprimir só síntese
+  $('printBtn').addEventListener('click', ()=>{
+    document.body.classList.add('print-sintese');
+    window.print();
+    setTimeout(()=>document.body.classList.remove('print-sintese'), 500);
+  });
+
+  // Inicialização
+  const today = new Date();
+  $('dataAtd').valueAsDate = today;
+  updatePreview();
+
+})();
+</script>
+</body>
+</html>

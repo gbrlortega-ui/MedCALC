@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escala de Zarit – Sobrecarga do Cuidador</title>
+<style>
+  :root{
+    --bg:#f7f7fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;
+    --ok:#065f46;--ok-bg:#d1fae5;--warn:#92400e;--warn-bg:#ffedd5;
+    --bad:#7f1d1d;--bad-bg:#fee2e2;
+  }
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  .container{max-width:900px;margin:0 auto;padding:24px 16px}
+  h1{margin:0 0 8px;font-size:1.9rem}
+  .sub{color:var(--muted);margin:0 0 18px}
+  section.card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)
+  }
+  .grid{display:grid;gap:16px;grid-template-columns:1fr}
+  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  label{display:block;margin:6px 0}
+  .q-title{font-weight:700;margin-bottom:6px}
+  input[type=radio]{transform:scale(1.05);margin-right:6px}
+  input[type=text]{
+    width:100%;padding:8px 10px;border:1px solid var(--border);
+    border-radius:8px;font-size:1rem;background:#fff
+  }
+  .result-panel{
+    border:1px solid var(--border);border-radius:12px;
+    padding:12px;background:#fff;margin-top:16px
+  }
+  .kpi{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .value{font-size:1.8rem;font-weight:800}
+  .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:.9rem;font-weight:700}
+  .pill-ok{background:var(--ok-bg);color:var(--ok)}
+  .pill-warn{background:var(--warn-bg);color:var(--warn)}
+  .pill-bad{background:var(--bad-bg);color:var(--bad)}
+  .small{font-size:.85rem;color:var(--muted)}
+  .hr{height:1px;background:var(--border);margin:10px 0}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Escala de Zarit – Avaliação da Sobrecarga do Cuidador</h1>
+  <p class="sub">
+    Instrumento para avaliar a sobrecarga de cuidadores de idosos. Não deve ser aplicado na presença do idoso.
+    Para cada afirmativa, o cuidador indica com que frequência se sente daquela forma (1–5). Escores mais altos indicam maior sobrecarga.
+  </p>
+
+  <section class="card">
+    <div class="grid">
+      <div>
+        <label class="q-title">Nome do cuidador</label>
+        <input id="cuidador" type="text" placeholder="Digite o nome de quem responde">
+      </div>
+      <div>
+        <label class="q-title">Nome do idoso cuidado</label>
+        <input id="paciente" type="text" placeholder="Digite o nome do idoso">
+      </div>
+      <div>
+        <label class="q-title">Observações</label>
+        <input id="obs" type="text" placeholder="UBS, data, contexto, etc.">
+      </div>
+    </div>
+  </section>
+
+  <form id="formZarit">
+    <section class="card">
+      <div class="q">
+        <div class="q-title">1) Por causa do tempo dedicado ao familiar/doente, sente que não tem tempo suficiente para você mesmo?</div>
+        <label><input type="radio" name="q1" value="1">Nunca</label>
+        <label><input type="radio" name="q1" value="2">Quase nunca</label>
+        <label><input type="radio" name="q1" value="3">Às vezes</label>
+        <label><input type="radio" name="q1" value="4">Frequentemente</label>
+        <label><input type="radio" name="q1" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">2) Sente-se estressado/angustiado por ter que cuidar do seu familiar/doente e ao mesmo tempo realizar outras tarefas?</div>
+        <label><input type="radio" name="q2" value="1">Nunca</label>
+        <label><input type="radio" name="q2" value="2">Quase nunca</label>
+        <label><input type="radio" name="q2" value="3">Às vezes</label>
+        <label><input type="radio" name="q2" value="4">Frequentemente</label>
+        <label><input type="radio" name="q2" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">3) Acha que a situação atual afeta suas relações com amigos ou familiares de forma negativa?</div>
+        <label><input type="radio" name="q3" value="1">Nunca</label>
+        <label><input type="radio" name="q3" value="2">Quase nunca</label>
+        <label><input type="radio" name="q3" value="3">Às vezes</label>
+        <label><input type="radio" name="q3" value="4">Frequentemente</label>
+        <label><input type="radio" name="q3" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">4) Sente-se exausto quando está junto do seu familiar/doente?</div>
+        <label><input type="radio" name="q4" value="1">Nunca</label>
+        <label><input type="radio" name="q4" value="2">Quase nunca</label>
+        <label><input type="radio" name="q4" value="3">Às vezes</label>
+        <label><input type="radio" name="q4" value="4">Frequentemente</label>
+        <label><input type="radio" name="q4" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">5) Sente que sua saúde tem sido afetada por cuidar do seu familiar/doente?</div>
+        <label><input type="radio" name="q5" value="1">Nunca</label>
+        <label><input type="radio" name="q5" value="2">Quase nunca</label>
+        <label><input type="radio" name="q5" value="3">Às vezes</label>
+        <label><input type="radio" name="q5" value="4">Frequentemente</label>
+        <label><input type="radio" name="q5" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">6) Sente que perdeu o controle da sua vida desde o início da doença do seu familiar/doente?</div>
+        <label><input type="radio" name="q6" value="1">Nunca</label>
+        <label><input type="radio" name="q6" value="2">Quase nunca</label>
+        <label><input type="radio" name="q6" value="3">Às vezes</label>
+        <label><input type="radio" name="q6" value="4">Frequentemente</label>
+        <label><input type="radio" name="q6" value="5">Quase sempre</label>
+      </div>
+
+      <div class="q">
+        <div class="q-title">7) No geral, sente-se muito sobrecarregado por cuidar do seu familiar/doente?</div>
+        <label><input type="radio" name="q7" value="1">Nunca</label>
+        <label><input type="radio" name="q7" value="2">Quase nunca</label>
+        <label><input type="radio" name="q7" value="3">Às vezes</label>
+        <label><input type="radio" name="q7" value="4">Frequentemente</label>
+        <label><input type="radio" name="q7" value="5">Quase sempre</label>
+      </div>
+    </section>
+  </form>
+
+  <div id="painel" class="result-panel">
+    Marque todas as respostas para calcular o escore total da Escala de Zarit.
+  </div>
+
+  <p class="small">
+    <b>Classificação:</b><br>
+    Leve: até 14 pontos · Moderada: 15–21 pontos · Grave: ≥ 22 pontos
+  </p>
+</div>
+
+<script>
+(function(){
+  const painel = document.getElementById('painel');
+  const inputs = document.querySelectorAll('input');
+
+  function calcular(){
+    let total = 0, respondidas = 0;
+    for(let i=1;i<=7;i++){
+      const sel = document.querySelector(`input[name=q${i}]:checked`);
+      if(sel){ total += Number(sel.value); respondidas++; }
+    }
+    if(respondidas < 7){
+      painel.innerHTML = `Responda às 7 questões (${respondidas}/7).`;
+      return;
+    }
+    let catTxt='', catCls='';
+    if(total <=14){catTxt='Sobrecarga leve';catCls='pill-ok';}
+    else if(total <=21){catTxt='Sobrecarga moderada';catCls='pill-warn';}
+    else{catTxt='Sobrecarga grave';catCls='pill-bad';}
+    const cuidador = document.getElementById('cuidador').value.trim();
+    const paciente = document.getElementById('paciente').value.trim();
+    const obs = document.getElementById('obs').value.trim();
+    painel.innerHTML = `
+      <div class="kpi">
+        <div><div class="small">Escore total</div><div class="value">${total}/35</div></div>
+        <span class="pill ${catCls}">${catTxt}</span>
+      </div>
+      <div class="hr"></div>
+      <div class="small">
+        ${cuidador?`<b>Cuidador:</b> ${cuidador} · `:''}
+        ${paciente?`<b>Idoso:</b> ${paciente} · `:''}
+        <b>Itens:</b> 7/7
+        ${obs?`<br><b>Observações:</b> ${obs}`:''}
+      </div>`;
+  }
+
+  inputs.forEach(i=>i.addEventListener('change',calcular));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conceito Familiar – Estrutural Sistêmico (Minuchin)</title>
+<style>
+:root{
+  --bg:#f5f5f7;
+  --card:#fff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --ok:#065f46;
+  --ok-bg:#d1fae5;
+  --warn:#92400e;
+  --warn-bg:#ffedd5;
+  --bad:#7f1d1d;
+  --bad-bg:#fee2e2;
+  --focus:#4f46e5;
+  --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+}
+
+*{box-sizing:border-box}
+
+/* FUNDO GERAL ESTILO "SITE" */
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  font-size:0.9rem;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* HEADER / NAVBAR */
+header.site-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+  border-bottom:1px solid rgba(209,213,219,.7);
+}
+
+.nav-inner{
+  max-width:900px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  border:1px solid #111827;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.brand-title{
+  font-size:.95rem;
+  font-weight:600;
+}
+
+.brand-subtitle{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-size:.82rem;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.78rem;
+  background:#ffffff;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s;
+}
+
+.nav-back span:first-child{
+  font-size:.9rem;
+  transform:translateY(1px);
+}
+
+.nav-back:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+
+.nav-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:#ffffff;
+}
+
+/* PAGE WRAPPER */
+.page{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+/* HERO */
+.hero-conceito{
+  margin-bottom:18px;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 11px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.5);
+  font-size:.75rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(18px);
+}
+
+.hero-badge-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#22c55e;
+  box-shadow:0 0 0 4px rgba(34,197,94,.2);
+}
+
+.hero-title{
+  margin:14px 0 4px;
+  font-size:clamp(1.7rem,2.3vw,2rem);
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+
+.hero-title span{
+  display:block;
+  font-weight:300;
+  color:var(--muted);
+}
+
+.hero-text{
+  margin:0;
+  margin-top:6px;
+  font-size:.92rem;
+  color:var(--muted);
+  max-width:650px;
+}
+
+/* CARD WRAPPER (onde entra o conteúdo original) */
+.card-wrapper{
+  background:var(--card);
+  border-radius:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-soft);
+  padding:16px 16px 18px;
+}
+
+/* CONTEÚDO ORIGINAL */
+.container{
+  max-width:650px;
+  margin:0 auto;
+  padding:0;
+}
+h1{
+  margin:0 0 4px;
+  font-size:1.4rem;
+}
+.sub{
+  color:var(--muted);
+  margin:0 0 12px;
+  font-size:0.85rem;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+.grid{
+  display:grid;
+  gap:10px;
+  grid-template-columns:1fr;
+}
+@media(min-width:900px){
+  .grid{grid-template-columns:1fr 1fr}
+}
+label{
+  display:block;
+  margin-bottom:3px;
+  font-weight:600;
+  font-size:0.85rem;
+}
+select,input{
+  width:100%;
+  padding:6px 8px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:0.85rem;
+}
+select:focus,input:focus{
+  border-color:var(--focus);
+  box-shadow:0 0 0 3px rgba(79,70,229,.15);
+  outline:none;
+}
+.section-title{
+  font-weight:800;
+  margin-top:4px;
+  font-size:0.85rem;
+}
+.small{
+  font-size:.78rem;
+  color:var(--muted);
+}
+.result-panel{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  background:#fff;
+  margin-top:10px;
+  font-size:0.85rem;
+}
+.kpis{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+@media(min-width:900px){
+  .kpis{grid-template-columns:1fr 1fr}
+}
+.kpi{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+}
+.value{
+  font-size:1rem;
+  font-weight:800;
+}
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:700;
+}
+.pill-ok{background:var(--ok-bg);color:var(--ok)}
+.pill-warn{background:var(--warn-bg);color:var(--warn)}
+.pill-bad{background:var(--bad-bg);color:var(--bad)}
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  font-size:.8rem;
+  color:var(--muted);
+}
+.err{
+  background:var(--bad-bg);
+  color:var(--bad);
+  border:1px solid #fecaca;
+}
+
+/* BLOCO LEITURA RÁPIDA */
+.tips{
+  margin-top:6px;
+}
+
+/* BOTÕES */
+.controls{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.btn{
+  background:var(--focus);
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:0.8rem;
+  font-weight:600;
+  box-shadow:0 4px 10px rgba(15,23,42,.2);
+  display:flex;
+  align-items:center;
+  gap:4px;
+  transition:background .2s, transform .08s, box-shadow .2s;
+}
+.btn:hover{
+  background:#3730a3;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(15,23,42,.25);
+}
+
+/* FOOTER */
+footer.site-footer{
+  border-top:1px solid rgba(209,213,219,.7);
+  margin-top:32px;
+  padding:14px 20px 20px;
+  font-size:.8rem;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+footer.site-footer strong{
+  font-weight:500;
+  color:#111827;
+}
+
+/* RESPONSIVO */
+@media(max-width:640px){
+  .nav-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .page{
+    padding:22px 16px 40px;
+  }
+}
+
+/* IMPRESSÃO: A5 retrato, compacto para 1 página */
+@media print{
+  @page{
+    size:A5 portrait;
+    margin:0.5cm;
+  }
+  header.site-header,
+  footer.site-footer,
+  .hero-conceito{
+    display:none !important;
+  }
+  body{
+    background:#fff;
+    font-size:0.8rem;
+  }
+  .page{
+    max-width:none;
+    padding:6px 6px;
+    margin:0;
+  }
+  .card-wrapper{
+    border:none;
+    box-shadow:none;
+    padding:0;
+  }
+  .container{
+    max-width:none;
+    padding:0;
+  }
+  h1{
+    font-size:1.1rem;
+    margin-bottom:2px;
+  }
+  .sub{
+    display:none !important;
+  }
+  .card,
+  .result-panel{
+    box-shadow:none;
+    border-color:#bbb;
+    padding:6px;
+    margin-top:6px;
+  }
+  .grid{
+    gap:4px;
+  }
+  label{
+    margin-bottom:2px;
+  }
+  .section-title{
+    margin-top:3px;
+    font-size:0.7rem;
+  }
+  select,input{
+    padding:4px 6px;
+    font-size:0.7rem;
+  }
+  .small{
+    font-size:0.6rem;
+  }
+  .value{
+    font-size:0.9rem;
+  }
+  .pill{
+    font-size:0.6rem;
+    padding:3px 6px;
+  }
+  .kpis{
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  .kpi{
+    padding:6px;
+    gap:6px;
+  }
+  .tips{
+    display:none !important;
+  }
+  .controls{
+    display:none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+  <!-- HEADER GLOBAL -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <div class="brand-title">Medicina Integrada</div>
+          <div class="brand-subtitle">USF • Conceito Familiar</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-back">
+          <span>⬅</span>
+          <span>Voltar à USF</span>
+        </a>
+        <span class="nav-pill">Estrutural sistêmico · Minuchin</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero-conceito">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AVALIAÇÃO FAMILIAR • ESTRUTURA
+      </div>
+      <h1 class="hero-title">
+        Conceito Familiar – Estrutural Sistêmico
+        <span>Leitura de fronteiras, hierarquia e coesão para orientar intervenções.</span>
+      </h1>
+      <p class="hero-text">
+        Instrumento baseado no modelo de Minuchin, explorando organização dos subsistemas familiares
+        (conjugal, parental, fraternal), padrões de comunicação, regras, flexibilidade e estressores
+        no contexto da Atenção Primária.
+      </p>
+    </section>
+
+    <!-- CARD PRINCIPAL -->
+    <section class="card-wrapper">
+      <div class="container">
+        <h1>Conceito Familiar – Estrutural Sistêmico</h1>
+        <p class="sub">
+          Modelo de <b>Minuchin</b>: leitura de <b>fronteiras</b>, <b>hierarquia</b>, <b>coesão</b>, <b>comunicação</b>, 
+          <b>regras</b>, <b>flexibilidade</b>, <b>alianças/coalizões</b>, <b>triangulação</b> e <b>estressores</b> — para orientar intervenções na APS.
+        </p>
+
+        <section class="card">
+          <div class="grid">
+            <!-- FRONTEIRAS -->
+            <div>
+              <label class="section-title">Fronteiras entre subsistemas</label>
+              <select id="fronteiras">
+                <option value="">Selecione</option>
+                <option value="difusas">Difusas (enredamento, invasão)</option>
+                <option value="claras">Claras (permeáveis e protetoras)</option>
+                <option value="rigidas">Rígidas (distanciamento, isolamento)</option>
+              </select>
+              <div class="small">Entre subsistemas conjugal, parental e fraternal.</div>
+            </div>
+
+            <!-- HIERARQUIA -->
+            <div>
+              <label class="section-title">Hierarquia parental</label>
+              <select id="hierarquia">
+                <option value="">Selecione</option>
+                <option value="adequada">Adequada (liderança parental estável)</option>
+                <option value="invertida">Invertida (filho/pai exerce poder sobre o parental)</option>
+                <option value="ausente">Ausência de liderança (caos/indefinição)</option>
+              </select>
+            </div>
+
+            <!-- COESÃO (3 itens 0–3) -->
+            <div>
+              <label class="section-title">Coesão – proximidade/apoio</label>
+              <select id="coesaoProx">
+                <option value="">0–3: proximidade</option>
+                <option value="0">0 – Muito distante</option>
+                <option value="1">1 – Distante</option>
+                <option value="2">2 – Próximo</option>
+                <option value="3">3 – Muito próximo</option>
+              </select>
+            </div>
+            <div>
+              <label class="section-title">Coesão – tempo juntos</label>
+              <select id="coesaoTempo">
+                <option value="">0–3: tempo</option>
+                <option value="0">0 – Quase nunca</option>
+                <option value="1">1 – Pouco</option>
+                <option value="2">2 – Frequente</option>
+                <option value="3">3 – Quase sempre</option>
+              </select>
+            </div>
+            <div>
+              <label class="section-title">Coesão – lealdade/pertencimento</label>
+              <select id="coesaoLeal">
+                <option value="">0–3: lealdade</option>
+                <option value="0">0 – Baixíssima</option>
+                <option value="1">1 – Baixa</option>
+                <option value="2">2 – Alta</option>
+                <option value="3">3 – Muito alta</option>
+              </select>
+            </div>
+
+            <!-- COMUNICAÇÃO -->
+            <div>
+              <label class="section-title">Comunicação</label>
+              <select id="comunicacao">
+                <option value="">Selecione</option>
+                <option value="clara">Clara/Assertiva</option>
+                <option value="indireta">Indireta/Ambígua</option>
+                <option value="hostil">Hostil/Violenta</option>
+              </select>
+            </div>
+
+            <!-- REGRAS -->
+            <div>
+              <label class="section-title">Regras familiares</label>
+              <select id="regras">
+                <option value="">Selecione</option>
+                <option value="explicitas">Explícitas/Compartilhadas</option>
+                <option value="implicitas">Implícitas/Veladas</option>
+                <option value="contraditorias">Contraditórias/Incoerentes</option>
+              </select>
+            </div>
+
+            <!-- FLEXIBILIDADE -->
+            <div>
+              <label class="section-title">Flexibilidade/Adaptação</label>
+              <select id="flex">
+                <option value="">Selecione</option>
+                <option value="rigida">Rígida (pouca adaptação)</option>
+                <option value="equilibrada">Equilibrada</option>
+                <option value="caotica">Caótica (mudanças imprevisíveis)</option>
+              </select>
+            </div>
+
+            <!-- ALIANÇAS/COALIZÕES -->
+            <div>
+              <label class="section-title">Alianças e coalizões</label>
+              <select id="aliancas">
+                <option value="">Selecione</option>
+                <option value="funcionais">Alianças funcionais (suporte sem exclusões)</option>
+                <option value="coalizoes">Coalizões disfuncionais (A+B contra C)</option>
+                <option value="nenhuma">Nenhuma relevante</option>
+              </select>
+            </div>
+
+            <!-- TRIANGULAÇÃO -->
+            <div>
+              <label class="section-title">Triangulação</label>
+              <select id="triang">
+                <option value="">Selecione</option>
+                <option value="nao">Não</option>
+                <option value="sim">Sim (terceiro é puxado para reduzir tensão)</option>
+              </select>
+            </div>
+
+            <!-- ESTRESSORES -->
+            <div>
+              <label class="section-title">Estressores atuais</label>
+              <select id="estressores">
+                <option value="">Selecione</option>
+                <option value="nenhum">Nenhum/Recurso adequado</option>
+                <option value="moderado">Moderado (situações manejáveis)</option>
+                <option value="severo">Severo (doença, perdas, crises múltiplas)</option>
+              </select>
+            </div>
+
+            <!-- OBS -->
+            <div style="grid-column:1/-1">
+              <label class="section-title">Observações</label>
+              <input id="obs" placeholder="Ex.: avós cuidadores, filho adulto retornando ao lar, presença de violência prévia, etc.">
+            </div>
+          </div>
+        </section>
+
+        <div id="painel" class="result-panel">
+          Preencha os campos para gerar o <b>perfil estrutural</b>.
+        </div>
+
+        <!-- Painel de Conceito Familiar -->
+        <div id="conceito" class="result-panel">
+          <div class="small"><b>1.3. Conceito Familiar – Síntese descritiva</b></div>
+          <p class="small">Preencha os campos acima para gerar uma descrição textual da organização familiar segundo o modelo estrutural sistêmico.</p>
+        </div>
+
+        <p class="small tips">
+          <b>Leitura rápida:</b> fronteiras <i>difusas</i> → risco de <u>enredamento</u>; fronteiras <i>rígidas</i> → risco de <u>desligamento</u>.
+          Hierarquia parental <i>invertida/ausente</i> → risco de <u>caos</u> e <u>triangulações</u>.
+          Coesão muito baixa → <u>desligamento</u>; coesão muito alta + fronteiras difusas → <u>enredamento</u>.
+        </p>
+
+        <!-- BOTÕES -->
+        <div class="controls">
+          <button class="btn" id="btnVoltar">⬅️ Voltar</button>
+          <button class="btn" id="btnPrint">🖨️ Imprimir</button>
+          <button class="btn" id="btnNext">➡️ Próximo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+    <span>Módulo USF • Conceito Familiar (Minuchin)</span>
+  </footer>
+
+<script>
+(function(){
+  const get = id => document.getElementById(id);
+  const painel = get('painel');
+  const conceito = get('conceito');
+  let avaliacaoPronta = false;
+
+  function toNum(id){
+    const v = Number(get(id).value);
+    return Number.isFinite(v) ? v : null;
+  }
+
+  function coesaoMedia(){
+    const a = toNum('coesaoProx');
+    const b = toNum('coesaoTempo');
+    const c = toNum('coesaoLeal');
+    if(a===null || b===null || c===null) return null;
+    return (a+b+c)/3;
+  }
+
+  function coesaoPerfil(){
+    const c = coesaoMedia();
+    if(c === null) return null;
+    if(c < 1) return 'desligada';
+    if(c <= 2) return 'equilibrada';
+    return 'enredada';
+  }
+
+  function textoConceito(perfil, eixoCoesao, fronteiras, hierarquia, comunicacao, regras, flex, estress, obs){
+    let intro;
+    if(perfil.includes('EQUILIBRADA')){
+      intro = 'Trata-se de uma família organizada e funcional, com estrutura geral favorecedora do cuidado e da convivência.';
+    } else if(perfil.includes('ENREDADA')){
+      intro = 'Trata-se de uma família com vínculos intensos e forte proximidade, porém com tendência ao enredamento entre seus membros.';
+    } else if(perfil.includes('DESLIGADA')){
+      intro = 'Trata-se de uma família mais distanciada, com menor integração entre os membros e risco de desligamento afetivo.';
+    } else if(perfil.includes('CAÓTICA')){
+      intro = 'Trata-se de uma família que se encontra em configuração mais caótica/desorganizada, com instabilidade na distribuição de funções e no manejo das relações.';
+    } else {
+      intro = 'Trata-se de uma família com arranjo estrutural intermediário, combinando aspectos organizados e pontos de vulnerabilidade.';
+    }
+
+    const partes = [];
+
+    if(fronteiras === 'claras' && eixoCoesao === 'equilibrada'){
+      partes.push('As fronteiras entre os subsistemas são claras e protetoras, permitindo coesão adequada sem perda de individualidade.');
+    } else if(fronteiras === 'difusas'){
+      partes.push('As fronteiras tendem a ser mais difusas, com maior envolvimento mútuo e menor diferenciação entre papéis e espaços individuais.');
+    } else if(fronteiras === 'rigidas'){
+      partes.push('As fronteiras apresentam-se mais rígidas, com tendência ao distanciamento e menor circulação afetiva entre os subsistemas.');
+    }
+
+    if(eixoCoesao === 'desligada'){
+      partes.push('A coesão é baixa, com pouca proximidade emocional e apoio compartilhado no cotidiano.');
+    } else if(eixoCoesao === 'enredada'){
+      partes.push('A coesão é muito alta, com grande intensidade de contato e envolvimento, o que pode dificultar movimentos de autonomia.');
+    } else if(eixoCoesao === 'equilibrada'){
+      partes.push('A coesão é equilibrada, favorecendo sensação de pertencimento e, ao mesmo tempo, preservando espaço para a autonomia.');
+    }
+
+    if(hierarquia === 'adequada'){
+      partes.push('A hierarquia parental se mantém adequada, com liderança relativamente estável na condução das decisões familiares.');
+    } else if(hierarquia === 'invertida'){
+      partes.push('Observa-se hierarquia parcialmente invertida, com membros em posição filial assumindo funções ou poder típico do subsistema parental.');
+    } else if(hierarquia === 'ausente'){
+      partes.push('Há fragilidade importante na hierarquia, com ausência de liderança clara e maior risco de caos nas decisões cotidianas.');
+    }
+
+    if(comunicacao === 'clara'){
+      partes.push('A comunicação tende a ser clara e assertiva, abrindo espaço para expressão de opiniões e negociação de acordos.');
+    } else if(comunicacao === 'indireta'){
+      partes.push('A comunicação é mais indireta ou ambígua, o que pode gerar mal-entendidos e dificultar o ajuste entre expectativas.');
+    } else if(comunicacao === 'hostil'){
+      partes.push('A comunicação apresenta elementos hostis ou agressivos, aumentando a tensão nas interações.');
+    }
+
+    if(regras === 'explicitas'){
+      partes.push('As regras familiares são, em geral, explícitas e compartilhadas, o que facilita a organização do convívio.');
+    } else if(regras === 'implicitas'){
+      partes.push('As regras tendem a ser implícitas ou pouco verbalizadas, exigindo leitura “nas entrelinhas” por parte dos membros.');
+    } else if(regras === 'contraditorias'){
+      partes.push('Existem regras contraditórias ou pouco coerentes, o que pode gerar confusão e insegurança quanto às expectativas familiares.');
+    }
+
+    if(flex === 'equilibrada'){
+      partes.push('A flexibilidade aparece de forma equilibrada, permitindo ajustes frente às mudanças sem perda de referências básicas.');
+    } else if(flex === 'rigida'){
+      partes.push('A família demonstra rigidez na adaptação, com dificuldade em rever padrões e acordos diante de novas demandas.');
+    } else if(flex === 'caotica'){
+      partes.push('A flexibilidade assume um padrão mais caótico, com mudanças bruscas e pouco previsíveis nas regras e rotinas.');
+    }
+
+    if(estress === 'nenhum'){
+      partes.push('Os estressores atuais parecem estar em nível manejável, com recursos internos suficientes para o enfrentamento.');
+    } else if(estress === 'moderado'){
+      partes.push('Há presença de estressores moderados, demandando atenção para que não ultrapassem a capacidade adaptativa da família.');
+    } else if(estress === 'severo'){
+      partes.push('Estressores severos estão presentes, exigindo suporte ampliado e maior monitoramento da sobrecarga familiar.');
+    }
+
+    let resumoObs = '';
+    if(obs){
+      resumoObs = `<p class="small"><b>Resumo da família/caso:</b> ${obs}</p>`;
+    }
+
+    return `
+      <div class="small"><b>1.3. Conceito Familiar – Síntese descritiva</b></div>
+      ${resumoObs}
+      <p class="small">${intro}</p>
+      <p class="small">${partes.join(' ')}</p>
+    `;
+  }
+
+  function classificarEstrutura(){
+    const fronteiras = get('fronteiras').value;
+    const hierarquia = get('hierarquia').value;
+    const comunicacao = get('comunicacao').value;
+    const regras = get('regras').value;
+    const flex = get('flex').value;
+    const aliancas = get('aliancas').value;
+    const triang = get('triang').value;
+    const estress = get('estressores').value;
+    const obs = get('obs').value.trim();
+    const eixoCoesao = coesaoPerfil();
+
+    const faltando = [fronteiras,hierarquia,comunicacao,regras,flex,aliancas,triang,estress,eixoCoesao]
+      .some(v=>v==='' || v===null);
+    if(faltando){
+      avaliacaoPronta = false;
+      painel.textContent = 'Preencha todos os campos (inclua os 3 itens de coesão).';
+      conceito.innerHTML = `
+        <div class="small"><b>1.3. Conceito Familiar – Síntese descritiva</b></div>
+        <p class="small">Preencha os campos acima para gerar uma descrição textual da organização familiar segundo o modelo estrutural sistêmico.</p>
+      `;
+      return;
+    }
+
+    const flags = [];
+    const contextos = [];
+
+    if(fronteiras==='difusas') flags.push('Fronteiras difusas (risco de enredamento)');
+    if(fronteiras==='rigidas') flags.push('Fronteiras rígidas (risco de desligamento)');
+    if(fronteiras==='claras') contextos.push('Fronteiras claras');
+
+    if(hierarquia==='invertida') flags.push('Hierarquia invertida');
+    else if(hierarquia==='ausente') flags.push('Ausência de liderança parental');
+    else contextos.push('Hierarquia parental adequada');
+
+    if(comunicacao==='indireta') flags.push('Comunicação indireta/ambígua');
+    if(comunicacao==='hostil') flags.push('Comunicação hostil/violenta');
+    if(comunicacao==='clara') contextos.push('Comunicação clara');
+
+    if(regras==='implicitas') flags.push('Regras implícitas/veladas');
+    if(regras==='contraditorias') flags.push('Regras contraditórias/incoerentes');
+    if(regras==='explicitas') contextos.push('Regras explícitas');
+
+    if(flex==='rigida') flags.push('Baixa flexibilidade');
+    if(flex==='caotica') flags.push('Flexibilidade caótica');
+    if(flex==='equilibrada') contextos.push('Flexibilidade equilibrada');
+
+    if(aliancas==='coalizoes') flags.push('Coalizões disfuncionais');
+    if(triang==='sim') flags.push('Triangulação presente');
+    if(aliancas==='funcionais') contextos.push('Alianças funcionais');
+
+    if(estress==='moderado') flags.push('Estressores moderados');
+    if(estress==='severo') flags.push('Estressores severos');
+    if(estress==='nenhum') contextos.push('Estressores controlados');
+
+    let perfil = 'Estrutura equilibrada';
+    let pill = 'pill-ok';
+
+    const eixo = eixoCoesao;
+
+    if(eixo==='enredada' && fronteiras==='difusas'){
+      perfil = 'Estrutura ENREDADA';
+      pill = 'pill-warn';
+    }
+    if(eixo==='desligada' && fronteiras==='rigidas'){
+      perfil = 'Estrutura DESLIGADA';
+      pill = 'pill-warn';
+    }
+    if((hierarquia==='ausente' || hierarquia==='invertida') &&
+       (flex==='caotica' || comunicacao==='hostil' || aliancas==='coalizoes' || triang==='sim')){
+      perfil = 'Estrutura CAÓTICA / DESORGANIZADA';
+      pill = 'pill-bad';
+    }
+    if(fronteiras==='claras' && hierarquia==='adequada' && flex==='equilibrada' &&
+       comunicacao==='clara' && eixo==='equilibrada'){
+      perfil = 'Estrutura EQUILIBRADA';
+      pill = 'pill-ok';
+    }
+
+    let foco = 'Revisar rotinas, clarificar regras e fortalecer comunicação.';
+    if(perfil.includes('ENREDADA')) foco = 'Trabalhar fronteiras (diferenciação), incentivar autonomia individual e regras explícitas.';
+    else if(perfil.includes('DESLIGADA')) foco = 'Aumentar coesão/pertencimento, criar espaços de convivência e comunicação afetiva.';
+    else if(perfil.includes('CAÓTICA')) foco = 'Restaurar hierarquia parental, acordar regras claras, reduzir triangulações e coalizões disfuncionais.';
+    else if(perfil.includes('EQUILIBRADA')) foco = 'Manter fatores protetores; monitorar estressores e transições do ciclo de vida.';
+
+    // salvar no localStorage
+    localStorage.setItem('perfilEstrutural', perfil);
+    localStorage.setItem('eixoCoesao', eixo);
+    localStorage.setItem('fronteiras', fronteiras);
+    localStorage.setItem('hierarquia', hierarquia);
+    localStorage.setItem('comunicacao', comunicacao);
+    localStorage.setItem('regras', regras);
+    localStorage.setItem('flex', flex);
+    localStorage.setItem('aliancas', aliancas);
+    localStorage.setItem('triang', triang);
+    localStorage.setItem('estressoresNivel', estress);
+    localStorage.setItem('conceitoObs', obs);
+
+    avaliacaoPronta = true;
+
+    painel.className='result-panel';
+    painel.innerHTML = `
+      <div class="kpis">
+        <div class="kpi">
+          <div>
+            <div class="small">Perfil estrutural (síntese)</div>
+            <div class="value">${perfil}</div>
+            <div class="small">Coesão: <b>${eixo}</b> · Fronteiras: <b>${fronteiras}</b> · Hierarquia: <b>${hierarquia}</b></div>
+          </div>
+          <span class="pill ${pill}">${perfil}</span>
+        </div>
+
+        <div class="kpi">
+          <div>
+            <div class="small">Comunicação · Regras · Flexibilidade</div>
+            <div class="value">${comunicacao} · ${regras} · ${flex}</div>
+            <div class="small">Alianças/Coalizões: <b>${aliancas}</b> · Triangulação: <b>${triang}</b></div>
+          </div>
+          <span class="pill ${(comunicacao==='clara' && regras==='explicitas' && flex==='equilibrada') ? 'pill-ok' : 'pill-warn'}">
+            ${(comunicacao==='clara' && regras==='explicitas' && flex==='equilibrada') ? 'Organização saudável' : 'Pontos a ajustar'}
+          </span>
+        </div>
+      </div>
+
+      <div class="small" style="margin-top:6px"><b>Estressores:</b> ${estress}${estress!=='nenhum'?' — considerar ampliar rede/recursos.':''}</div>
+      ${flags.length?`<div class="small" style="margin-top:8px;color:#7f1d1d"><b>Sinais de alerta:</b><br>• ${flags.join('<br>• ')}</div>`:''}
+      <div class="small" style="margin-top:8px"><b>Foco de intervenção:</b> ${foco}</div>
+      ${obs?`<div class="small" style="margin-top:8px">Obs.: ${obs}</div>`:''}
+    `;
+
+    conceito.innerHTML = textoConceito(perfil, eixo, fronteiras, hierarquia, comunicacao, regras, flex, estress, obs);
+  }
+
+  document.addEventListener('change', e=>{
+    const ids=['fronteiras','hierarquia','comunicacao','regras','flex','aliancas','triang','estressores','coesaoProx','coesaoTempo','coesaoLeal'];
+    if(ids.includes(e.target.id)) classificarEstrutura();
+  });
+  document.addEventListener('input', e=>{
+    if(['obs'].includes(e.target.id)) classificarEstrutura();
+  });
+
+  // Botões Voltar / Imprimir / Próximo
+  document.getElementById('btnVoltar').addEventListener('click', ()=> history.back());
+  document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
+  document.getElementById('btnNext').addEventListener('click', ()=>{
+    if(!avaliacaoPronta){
+      alert('Preencha todos os campos (incluindo os 3 itens de coesão) antes de continuar.');
+      return;
+    }
+    window.location.href = 'determinantesemsaude.html';
+  });
+})();
+</script>
+</body>
+</html>

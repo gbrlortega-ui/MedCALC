@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pediatria – Calculadora de Dose por Peso (mg/kg)</title>
+
+<style>
+:root{
+  --bg:#f5f5f7;
+  --bg-section:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --focus:#4f46e5;
+  --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:.9rem;
+}
+
+/* HEADER / NAVBAR */
+header.site-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+  border-bottom:1px solid rgba(209,213,219,.7);
+}
+.nav-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brand-mark{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  border:1px solid #111827;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:600;
+}
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+.brand-title{
+  font-size:.95rem;
+  font-weight:600;
+}
+.brand-subtitle{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-size:.82rem;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+.nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.78rem;
+  background:#ffffff;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s;
+}
+.nav-back span:first-child{
+  font-size:.9rem;
+  transform:translateY(1px);
+}
+.nav-back:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+.nav-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:#ffffff;
+}
+
+/* MAIN */
+.page{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+h1{
+  margin:0 0 4px;
+  font-size:1.6rem;
+  letter-spacing:.02em;
+}
+.sub{
+  color:var(--muted);
+  margin:0 0 18px;
+  font-size:.9rem;
+}
+
+/* CARD / SEÇÃO */
+.section-block{
+  background:var(--bg-section);
+  border:1px solid rgba(209,213,219,.9);
+  border-radius:20px;
+  padding:18px 20px 20px;
+  box-shadow:var(--shadow-soft);
+}
+
+/* GRID */
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:780px){
+  .grid{grid-template-columns:repeat(12,1fr)}
+}
+.col-3{grid-column:span 3}
+.col-4{grid-column:span 4}
+.col-6{grid-column:span 6}
+.col-8{grid-column:span 8}
+.col-12{grid-column:1/-1}
+
+/* FORM */
+label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:650;
+  font-size:.9rem;
+}
+input,select,textarea{
+  width:100%;
+  padding:9px 10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:.9rem;
+  background:#fff;
+}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--focus);
+  box-shadow:0 0 0 3px rgba(79,70,229,.15);
+  outline:none;
+}
+
+/* RESULTADOS */
+.result-box{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:8px;
+}
+.result-pill{
+  flex:1 1 180px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  padding:10px 12px;
+  background:#f9fafb;
+}
+.result-label{
+  font-size:.8rem;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.result-value{
+  font-size:1.2rem;
+  font-weight:700;
+}
+.result-status-ok{color:#15803d}
+.result-status-warn{color:#b45309}
+
+.hint{
+  color:var(--muted);
+  font-size:.8rem;
+  margin-top:2px;
+}
+.hr{
+  height:1px;
+  background:var(--border);
+  margin:14px 0;
+}
+.formula-box{
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.8rem;
+  background:#f9fafb;
+  border-radius:8px;
+  padding:6px 8px;
+}
+
+/* FOOTER */
+footer.site-footer{
+  border-top:1px solid rgba(209,213,219,.7);
+  margin-top:32px;
+  padding:14px 20px 20px;
+  font-size:.8rem;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:980px;
+  margin-left:auto;
+  margin-right:auto;
+}
+footer.site-footer strong{
+  font-weight:500;
+  color:#111827;
+}
+
+/* RESPONSIVO HEADER */
+@media (max-width:640px){
+  .nav-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .page{
+    padding:22px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="brand-title">Medicina Integrada</div>
+        <div class="brand-subtitle">Módulo • Pediatria</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-back">
+        <span>⬅</span>
+        <span>Voltar à Pediatria</span>
+      </a>
+      <span class="nav-pill">Dose mg/kg</span>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <h1>Calculadora de Dose por Peso (mg/kg)</h1>
+  <p class="sub">
+    Ferramenta para cálculo rápido de dose com base em mg/kg, incluindo verificação de dose máxima.
+    Sempre confronte com protocolos e bula atualizados.
+  </p>
+
+  <section class="section-block">
+    <div class="grid">
+      <div class="col-8">
+        <label>Medicamento (opcional)</label>
+        <input id="med_nome" list="med_sugestoes" placeholder="ex.: Amoxicilina, Dipirona, etc.">
+        <datalist id="med_sugestoes"></datalist>
+        <div class="hint" id="med_hint">Selecione ou digite um medicamento para carregar o esquema de referência.</div>
+      </div>
+      <div class="col-4">
+        <label>Esquema</label>
+        <select id="esquema">
+          <option value="dose">mg/kg por dose</option>
+          <option value="dia">mg/kg por dia</option>
+        </select>
+      </div>
+
+      <div class="col-4">
+        <label>Peso (kg)</label>
+        <input id="peso" type="number" step="0.01" placeholder="ex.: 18.4">
+      </div>
+      <div class="col-4">
+        <label>Dose recomendada (por kg)</label>
+        <input id="dose_mgkg" type="number" step="0.01" placeholder="ex.: 10">
+        <div class="hint" id="dose_unidade_hint"></div>
+      </div>
+      <div class="col-4">
+        <label>Dose máxima total</label>
+        <input id="dose_max" type="number" step="1" placeholder="opcional">
+      </div>
+
+      <div class="col-4" id="tomadas_col">
+        <label>Nº de tomadas/dia</label>
+        <input id="tomadas" type="number" min="1" step="1" placeholder="ex.: 3">
+        <div class="hint">Usado apenas se o esquema for &quot;por dia&quot;.</div>
+      </div>
+
+      <div class="col-12"><div class="hr"></div></div>
+
+      <div class="col-12">
+        <div class="result-box">
+          <div class="result-pill">
+            <div class="result-label">Dose calculada</div>
+            <div class="result-value" id="dose_calc">—</div>
+          </div>
+          <div class="result-pill">
+            <div class="result-label">Dose máxima considerada</div>
+            <div class="result-value" id="dose_max_label">—</div>
+          </div>
+          <div class="result-pill">
+            <div class="result-label">Dose final a prescrever</div>
+            <div class="result-value" id="dose_final">—</div>
+          </div>
+          <div class="result-pill">
+            <div class="result-label">Situação</div>
+            <div class="result-value" id="status_dose">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12"><div class="hr"></div></div>
+
+      <div class="col-6">
+        <label>Fórmula utilizada</label>
+        <div class="formula-box" id="formula_text">
+          Dose calculada = Peso (kg) × Dose (por kg)
+        </div>
+      </div>
+      <div class="col-6">
+        <label>Resumo para prontuário/prescrição</label>
+        <textarea id="resumo" readonly></textarea>
+        <div class="hint">Copie/ajuste de acordo com o protocolo institucional.</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="hint" style="margin-top:12px">
+    * Esta calculadora é um apoio à prática clínica, não substitui o julgamento profissional nem a consulta a fontes oficiais.
+  </p>
+</main>
+
+<footer class="site-footer">
+  <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+  <span>Módulo Pediatria • Plataforma USF</span>
+</footer>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // LISTA DE REFERÊNCIA (vitaminas e vacinas removidas)
+  const MEDICAMENTOS = [
+    {"nome":"Amoxicilina","dose":50,"unidade":"mg/kg/dia","max":3000,"div":3,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Amoxicilina + Clavulanato","dose":45,"unidade":"mg/kg/dia (amox)","max":3000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefalexina","dose":50,"unidade":"mg/kg/dia","max":4000,"div":4,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefuroxima Axetil","dose":30,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefaclor","dose":40,"unidade":"mg/kg/dia","max":1500,"div":3,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefprozil","dose":30,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefpodoxima","dose":10,"unidade":"mg/kg/dia","max":800,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Ceftriaxona","dose":80,"unidade":"mg/kg/dia","max":2000,"div":1,"via":"IV/IM","cat":"Antibiótico"},
+    {"nome":"Cefotaxima","dose":150,"unidade":"mg/kg/dia","max":12000,"div":4,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Ceftazidima","dose":150,"unidade":"mg/kg/dia","max":6000,"div":3,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Cefepima","dose":100,"unidade":"mg/kg/dia","max":6000,"div":2,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Azitromicina","dose":10,"unidade":"mg/kg/dia (1º dia)","max":500,"div":1,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Claritromicina","dose":15,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Eritromicina","dose":40,"unidade":"mg/kg/dia","max":4000,"div":4,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Clindamicina","dose":30,"unidade":"mg/kg/dia","max":2700,"div":3,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Vancomicina","dose":45,"unidade":"mg/kg/dia","max":2000,"div":3,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Linezolida","dose":30,"unidade":"mg/kg/dia","max":1200,"div":2,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Meropenem","dose":60,"unidade":"mg/kg/dia","max":6000,"div":3,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Imipenem","dose":60,"unidade":"mg/kg/dia","max":4000,"div":4,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Piperacilina + Tazobactam","dose":300,"unidade":"mg/kg/dia (pip)","max":16000,"div":3,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Penicilina G Cristalina","dose":200000,"unidade":"UI/kg/dia","max":24000000,"div":4,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Penicilina G Benzatina","dose":600000,"unidade":"UI (≤20kg)","max":1200000,"div":1,"via":"IM","cat":"Antibiótico"},
+    {"nome":"Ampicilina","dose":100,"unidade":"mg/kg/dia","max":12000,"div":4,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Oxacilina","dose":150,"unidade":"mg/kg/dia","max":12000,"div":4,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Gentamicina","dose":7.5,"unidade":"mg/kg/dia","max":360,"div":1,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Amicacina","dose":15,"unidade":"mg/kg/dia","max":1500,"div":1,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Tobramicina","dose":6,"unidade":"mg/kg/dia","max":360,"div":1,"via":"IV","cat":"Antibiótico"},
+    {"nome":"Metronidazol","dose":30,"unidade":"mg/kg/dia","max":2000,"div":3,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Trimetoprima + Sulfametoxazol","dose":8,"unidade":"mg/kg/dia (TMP)","max":320,"div":2,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Doxiciclina","dose":4,"unidade":"mg/kg/dia","max":200,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Ciprofloxacino","dose":30,"unidade":"mg/kg/dia","max":1500,"div":2,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Levofloxacino","dose":10,"unidade":"mg/kg/dia","max":750,"div":1,"via":"VO/IV","cat":"Antibiótico"},
+    {"nome":"Rifampicina","dose":15,"unidade":"mg/kg/dia","max":600,"div":1,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Isoniazida","dose":10,"unidade":"mg/kg/dia","max":300,"div":1,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Pirazinamida","dose":30,"unidade":"mg/kg/dia","max":2000,"div":1,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Etambutol","dose":20,"unidade":"mg/kg/dia","max":1600,"div":1,"via":"VO","cat":"Antibiótico"},
+
+    {"nome":"Oseltamivir","dose":3,"unidade":"mg/kg/dose","max":75,"div":2,"via":"VO","cat":"Antiviral"},
+    {"nome":"Aciclovir VO","dose":20,"unidade":"mg/kg/dose","max":800,"div":4,"via":"VO","cat":"Antiviral"},
+    {"nome":"Aciclovir IV","dose":15,"unidade":"mg/kg/dose","max":500,"div":3,"via":"IV","cat":"Antiviral"},
+    {"nome":"Valaciclovir","dose":20,"unidade":"mg/kg/dose","max":1000,"div":3,"via":"VO","cat":"Antiviral"},
+    {"nome":"Ganciclovir","dose":10,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"IV","cat":"Antiviral"},
+    {"nome":"Ribavirina","dose":15,"unidade":"mg/kg/dia","max":1200,"div":2,"via":"VO","cat":"Antiviral"},
+    {"nome":"Zidovudina","dose":4,"unidade":"mg/kg/dose","max":300,"div":2,"via":"VO","cat":"Antiviral"},
+    {"nome":"Lamivudina","dose":4,"unidade":"mg/kg/dia","max":300,"div":1,"via":"VO","cat":"Antiviral"},
+
+    {"nome":"Anfotericina B Lipossomal","dose":3,"unidade":"mg/kg/dia","max":300,"div":1,"via":"IV","cat":"Antifúngico"},
+    {"nome":"Fluconazol","dose":12,"unidade":"mg/kg/dia","max":800,"div":1,"via":"VO/IV","cat":"Antifúngico"},
+    {"nome":"Voriconazol","dose":9,"unidade":"mg/kg/dose","max":400,"div":2,"via":"VO/IV","cat":"Antifúngico"},
+    {"nome":"Caspofungina","dose":50,"unidade":"mg/m²/dia","max":70,"div":1,"via":"IV","cat":"Antifúngico"},
+
+    {"nome":"Paracetamol","dose":15,"unidade":"mg/kg/dose","max":1000,"div":4,"via":"VO/IV","cat":"Analgésico"},
+    {"nome":"Dipirona","dose":15,"unidade":"mg/kg/dose","max":1000,"div":4,"via":"VO/IV","cat":"Analgésico"},
+    {"nome":"Ibuprofeno","dose":10,"unidade":"mg/kg/dose","max":400,"div":3,"via":"VO","cat":"Anti-inflamatório"},
+    {"nome":"Naproxeno","dose":10,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Anti-inflamatório"},
+    {"nome":"Cetoprofeno","dose":1,"unidade":"mg/kg/dose","max":75,"div":3,"via":"IV","cat":"Anti-inflamatório"},
+    {"nome":"Tramadol","dose":1.5,"unidade":"mg/kg/dose","max":50,"div":4,"via":"VO/IV","cat":"Analgésico"},
+    {"nome":"Codeína","dose":1,"unidade":"mg/kg/dose","max":60,"div":4,"via":"VO","cat":"Analgésico"},
+    {"nome":"Morfina","dose":0.1,"unidade":"mg/kg/dose","max":5,"div":4,"via":"IV","cat":"Analgésico"},
+    {"nome":"Fentanil IV","dose":1,"unidade":"mcg/kg/dose","max":50,"div":1,"via":"IV","cat":"Analgésico"},
+    {"nome":"Fentanil Transdérmico","dose":12.5,"unidade":"mcg/h","max":100,"div":1,"via":"Patch","cat":"Analgésico"},
+
+    {"nome":"Lidocaína 2% s/ vaso","dose":4,"unidade":"mg/kg","max":300,"div":1,"via":"Infiltr","cat":"Anestésico Local"},
+    {"nome":"Lidocaína 1% c/ vaso","dose":7,"unidade":"mg/kg","max":500,"div":1,"via":"Infiltr","cat":"Anestésico Local"},
+    {"nome":"Bupivacaína 0.25%","dose":2,"unidade":"mg/kg","max":150,"div":1,"via":"Infiltr","cat":"Anestésico Local"},
+    {"nome":"Ropivacaína","dose":2,"unidade":"mg/kg","max":200,"div":1,"via":"Infiltr","cat":"Anestésico Local"},
+
+    {"nome":"Propofol","dose":2.5,"unidade":"mg/kg","max":350,"div":1,"via":"IV","cat":"Anestésico Geral"},
+    {"nome":"Midazolam IV","dose":0.1,"unidade":"mg/kg","max":5,"div":1,"via":"IV","cat":"Sedativo"},
+    {"nome":"Midazolam Nasal","dose":0.3,"unidade":"mg/kg","max":10,"div":1,"via":"Nasal","cat":"Sedativo"},
+    {"nome":"Cetamina","dose":1.5,"unidade":"mg/kg","max":100,"div":1,"via":"IV/IM","cat":"Anestésico"},
+
+    {"nome":"Salbutamol NEB","dose":0.15,"unidade":"mg/kg/dose","max":5,"div":1,"via":"NEB","cat":"Broncodilatador"},
+    {"nome":"Salbutamol Spray","dose":2,"unidade":"jatos (100mcg)","max":8,"div":1,"via":"INAL","cat":"Broncodilatador"},
+    {"nome":"Terbutalina","dose":0.01,"unidade":"mg/kg/dose","max":0.5,"div":1,"via":"SC","cat":"Broncodilatador"},
+    {"nome":"Ipratrópio NEB","dose":0.25,"unidade":"mg/dose","max":0.5,"div":3,"via":"NEB","cat":"Broncodilatador"},
+
+    {"nome":"Budesonida NEB","dose":0.5,"unidade":"mg/dose","max":1,"div":2,"via":"NEB","cat":"Corticosteroide"},
+    {"nome":"Fluticasona Spray","dose":50,"unidade":"mcg/dose","max":400,"div":2,"via":"INAL","cat":"Corticosteroide"},
+    {"nome":"Montelukaste","dose":4,"unidade":"mg/noite","max":10,"div":1,"via":"VO","cat":"Antiasmático"},
+    {"nome":"Prednisona","dose":1,"unidade":"mg/kg/dia","max":60,"div":1,"via":"VO","cat":"Corticosteroide"},
+    {"nome":"Dexametasona","dose":0.15,"unidade":"mg/kg/dose","max":10,"div":1,"via":"IV/VO","cat":"Corticosteroide"},
+    {"nome":"Hidrocortisona","dose":5,"unidade":"mg/kg/dose","max":100,"div":4,"via":"IV","cat":"Corticosteroide"},
+    {"nome":"Metilprednisolona","dose":1,"unidade":"mg/kg/dose","max":1000,"div":1,"via":"IV","cat":"Corticosteroide"},
+
+    {"nome":"Fenitoína","dose":20,"unidade":"mg/kg carga","max":1000,"div":1,"via":"IV","cat":"Anticonvulsivante"},
+    {"nome":"Fenobarbital","dose":20,"unidade":"mg/kg carga","max":1000,"div":1,"via":"IV","cat":"Anticonvulsivante"},
+    {"nome":"Levetiracetam","dose":40,"unidade":"mg/kg/dia","max":3000,"div":2,"via":"IV/VO","cat":"Anticonvulsivante"},
+    {"nome":"Valproato","dose":30,"unidade":"mg/kg/dia","max":3000,"div":3,"via":"VO/IV","cat":"Anticonvulsivante"},
+    {"nome":"Carbamazepina","dose":20,"unidade":"mg/kg/dia","max":1200,"div":3,"via":"VO","cat":"Anticonvulsivante"},
+
+    {"nome":"Ondansetrona","dose":0.15,"unidade":"mg/kg/dose","max":8,"div":1,"via":"IV/VO","cat":"Antiemético"},
+    {"nome":"Metoclopramida","dose":0.1,"unidade":"mg/kg/dose","max":10,"div":3,"via":"IV/VO","cat":"Antiemético"},
+    {"nome":"Domperidona","dose":0.3,"unidade":"mg/kg/dose","max":30,"div":3,"via":"VO","cat":"Antiemético"},
+
+    {"nome":"Omeprazol","dose":1,"unidade":"mg/kg/dia","max":40,"div":1,"via":"VO","cat":"Gastroprotetor"},
+    {"nome":"Ranitidina","dose":5,"unidade":"mg/kg/dia","max":300,"div":2,"via":"IV","cat":"Gastroprotetor"},
+    {"nome":"Lansoprazol","dose":1,"unidade":"mg/kg/dia","max":30,"div":1,"via":"VO","cat":"Gastroprotetor"},
+
+    {"nome":"Adrenalina 1:1000","dose":0.01,"unidade":"mg/kg","max":0.3,"div":1,"via":"IM","cat":"Emergência"},
+    {"nome":"Solução Fisiológica Bolus","dose":20,"unidade":"mL/kg","max":1000,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Glicose 10% Bolus","dose":2,"unidade":"mL/kg","max":200,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Bicarbonato de Sódio 8.4%","dose":1,"unidade":"mEq/kg","max":50,"div":1,"via":"IV","cat":"Emergência"},
+
+    {"nome":"Furosemida","dose":1,"unidade":"mg/kg/dose","max":80,"div":1,"via":"IV","cat":"Diurético"},
+    {"nome":"Espironolactona","dose":2,"unidade":"mg/kg/dia","max":100,"div":2,"via":"VO","cat":"Diurético"},
+
+    {"nome":"Captopril","dose":1,"unidade":"mg/kg/dia","max":150,"div":3,"via":"VO","cat":"Anti-hipertensivo"},
+    {"nome":"Enalapril","dose":0.2,"unidade":"mg/kg/dia","max":40,"div":1,"via":"VO","cat":"Anti-hipertensivo"},
+    {"nome":"Propranolol","dose":2,"unidade":"mg/kg/dia","max":320,"div":3,"via":"VO","cat":"Cardiovascular"},
+    {"nome":"Digoxina","dose":0.01,"unidade":"mg/kg/dose","max":0.25,"div":2,"via":"VO","cat":"Cardiovascular"},
+
+    {"nome":"Albumina 20%","dose":1,"unidade":"g/kg","max":50,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Imunoglobulina IV","dose":2,"unidade":"g/kg","max":100,"div":1,"via":"IV","cat":"Imunoterapia"},
+
+    {"nome":"Vincristina","dose":1.5,"unidade":"mg/m²","max":2,"div":1,"via":"IV","cat":"Quimioterápico"},
+    {"nome":"Ciclofosfamida","dose":1000,"unidade":"mg/m²","max":2000,"div":1,"via":"IV","cat":"Quimioterápico"},
+    {"nome":"Metotrexato","dose":5000,"unidade":"mg/m²","max":5000,"div":1,"via":"IV","cat":"Quimioterápico"},
+    {"nome":"Cisplatina","dose":100,"unidade":"mg/m²","max":100,"div":1,"via":"IV","cat":"Quimioterápico"},
+    {"nome":"Dactinomicina","dose":0.045,"unidade":"mg/kg","max":2.5,"div":1,"via":"IV","cat":"Quimioterápico"},
+    {"nome":"Doxorrubicina","dose":60,"unidade":"mg/m²","max":450,"div":1,"via":"IV","cat":"Quimioterápico"},
+
+    {"nome":"Filgrastim (G-CSF)","dose":5,"unidade":"mcg/kg/dia","max":300,"div":1,"via":"SC","cat":"Hematológico"},
+    {"nome":"Ferro Dextran","dose":50,"unidade":"mg/dose","max":100,"div":1,"via":"IM","cat":"Hematológico"},
+    {"nome":"Vitamina K (Fitomenadiona)","dose":1,"unidade":"mg","max":10,"div":1,"via":"IM","cat":"Hematológico"},
+
+    {"nome":"Heparina","dose":75,"unidade":"UI/kg bolus","max":5000,"div":1,"via":"IV","cat":"Anticoagulante"},
+    {"nome":"Enoxaparina","dose":1.5,"unidade":"mg/kg/dose","max":120,"div":2,"via":"SC","cat":"Anticoagulante"},
+
+    {"nome":"Ringer Lactato Bolus","dose":20,"unidade":"mL/kg","max":1000,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Dextrose 5% Manutenção","dose":4,"unidade":"mL/kg/h","max":100,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Cloreto de Potássio","dose":0.3,"unidade":"mEq/kg/dose","max":40,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Cálcio Gluconato 10%","dose":1,"unidade":"mL/kg","max":10,"div":1,"via":"IV","cat":"Reposição"},
+    {"nome":"Magnesio Sulfato","dose":50,"unidade":"mg/kg/dose","max":2000,"div":1,"via":"IV","cat":"Reposição"},
+
+    {"nome":"N-acetilcisteína (Paracetamol)","dose":150,"unidade":"mg/kg carga","max":15000,"div":1,"via":"IV","cat":"Antídoto"},
+    {"nome":"Flumazenil","dose":0.01,"unidade":"mg/kg","max":1,"div":1,"via":"IV","cat":"Antídoto"},
+    {"nome":"Naloxona","dose":0.1,"unidade":"mg/kg","max":2,"div":1,"via":"IV","cat":"Antídoto"},
+    {"nome":"Desferroxamina","dose":15,"unidade":"mg/kg/h","max":6000,"div":1,"via":"IV","cat":"Antídoto"},
+
+    {"nome":"Amoxicilina Suspensão 250mg/5mL","dose":50,"unidade":"mg/kg/dia","max":3000,"div":3,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Amoxicilina Suspensão 400mg/5mL","dose":50,"unidade":"mg/kg/dia","max":3000,"div":3,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefalexina Suspensão 250mg/5mL","dose":50,"unidade":"mg/kg/dia","max":4000,"div":4,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Azitromicina Suspensão 200mg/5mL","dose":10,"unidade":"mg/kg/dia","max":500,"div":1,"via":"VO","cat":"Antibiótico"},
+
+    {"nome":"Paracetamol Gotas 100mg/mL","dose":15,"unidade":"mg/kg/dose","max":1000,"div":4,"via":"VO","cat":"Analgésico"},
+    {"nome":"Ibuprofeno Gotas 50mg/mL","dose":10,"unidade":"mg/kg/dose","max":400,"div":3,"via":"VO","cat":"Anti-inflamatório"},
+    {"nome":"Dipirona Gotas 500mg/mL","dose":15,"unidade":"mg/kg/dose","max":1000,"div":4,"via":"VO","cat":"Analgésico"},
+
+    {"nome":"Salbutamol Xarope 2mg/5mL","dose":0.15,"unidade":"mg/kg/dose","max":5,"div":3,"via":"VO","cat":"Broncodilatador"},
+    {"nome":"Prednisona Xarope 3mg/mL","dose":1,"unidade":"mg/kg/dia","max":60,"div":1,"via":"VO","cat":"Corticosteroide"},
+    {"nome":"Oseltamivir Suspensão 6mg/mL","dose":3,"unidade":"mg/kg/dose","max":75,"div":2,"via":"VO","cat":"Antiviral"},
+
+    {"nome":"Nistatina Suspensão 100000UI/mL","dose":1,"unidade":"mL 4x/dia","max":5,"div":4,"via":"VO","cat":"Antifúngico"},
+
+    {"nome":"Clonazepam Gotas 2.5mg/mL","dose":0.05,"unidade":"mg/kg/dose","max":1,"div":3,"via":"VO","cat":"Anticonvulsivante"},
+    {"nome":"Loratadina Xarope 1mg/mL","dose":0.2,"unidade":"mg/kg/dia","max":10,"div":1,"via":"VO","cat":"Antialérgico"},
+    {"nome":"Desloratadina Xarope 0.5mg/mL","dose":0.1,"unidade":"mg/kg/dia","max":5,"div":1,"via":"VO","cat":"Antialérgico"},
+    {"nome":"Fexofenadina Suspensão","dose":30,"unidade":"mg/dose","max":180,"div":2,"via":"VO","cat":"Antialérgico"},
+
+    {"nome":"Bromoprida Gotas","dose":0.2,"unidade":"mg/kg/dose","max":40,"div":3,"via":"VO","cat":"Antiemético"},
+    {"nome":"Dimeticona Gotas","dose":40,"unidade":"mg/dose","max":240,"div":4,"via":"VO","cat":"Antiflatulento"},
+    {"nome":"Simeticona Gotas 75mg/mL","dose":0.5,"unidade":"mL/dose","max":2,"div":4,"via":"VO","cat":"Antiflatulento"},
+
+    {"nome":"Lactulose Xarope","dose":1,"unidade":"mL/kg/dia","max":60,"div":1,"via":"VO","cat":"Laxante"},
+    {"nome":"Glicerina Supositório Infantil","dose":1,"unidade":"supositório","max":1,"div":1,"via":"Retal","cat":"Laxante"},
+
+    {"nome":"Hidróxido de Alumínio Suspensão","dose":1,"unidade":"mL/kg/dose","max":40,"div":4,"via":"VO","cat":"Antiácido"},
+    {"nome":"Ranitidina Xarope 15mg/mL","dose":5,"unidade":"mg/kg/dia","max":300,"div":2,"via":"VO","cat":"Gastroprotetor"},
+    {"nome":"Omeprazol Cápsula 20mg","dose":1,"unidade":"mg/kg/dia","max":40,"div":1,"via":"VO","cat":"Gastroprotetor"},
+
+    {"nome":"Amoxicilina + Clavulanato Suspensão","dose":45,"unidade":"mg/kg/dia","max":3000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Cefuroxima Suspensão 125mg/5mL","dose":30,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Clarithromicina Suspensão","dose":15,"unidade":"mg/kg/dia","max":1000,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Trimetoprima + Sulfametoxazol Suspensão","dose":8,"unidade":"mg/kg/dia (TMP)","max":320,"div":2,"via":"VO","cat":"Antibiótico"},
+    {"nome":"Metronidazol Suspensão 40mg/mL","dose":30,"unidade":"mg/kg/dia","max":2000,"div":3,"via":"VO","cat":"Antibiótico"},
+
+    {"nome":"Nistatina Creme","dose":1,"unidade":"aplicação","max":4,"div":4,"via":"Tópico","cat":"Antifúngico"},
+    {"nome":"Clotrimazol Creme","dose":1,"unidade":"aplicação","max":3,"div":3,"via":"Tópico","cat":"Antifúngico"},
+    {"nome":"Miconazol Creme","dose":1,"unidade":"aplicação","max":3,"div":3,"via":"Tópico","cat":"Antifúngico"},
+
+    {"nome":"Hidrocortisona Creme 1%","dose":1,"unidade":"aplicação","max":2,"div":2,"via":"Tópico","cat":"Corticosteroide"},
+    {"nome":"Betametasona Creme 0.1%","dose":1,"unidade":"aplicação","max":2,"div":2,"via":"Tópico","cat":"Corticosteroide"},
+
+    {"nome":"Fucidine Pomada","dose":1,"unidade":"aplicação","max":3,"div":3,"via":"Tópico","cat":"Antibiótico"},
+    {"nome":"Mupirocina Pomada","dose":1,"unidade":"aplicação","max":3,"div":3,"via":"Tópico","cat":"Antibiótico"},
+    {"nome":"Neomicina + Bacitracina Pomada","dose":1,"unidade":"aplicação","max":3,"div":3,"via":"Tópico","cat":"Antibiótico"},
+
+    {"nome":"Permetrina Loção 1%","dose":1,"unidade":"aplicação","max":1,"div":1,"via":"Tópico","cat":"Antiparasitário"},
+    {"nome":"Ivermectina VO","dose":0.2,"unidade":"mg/kg","max":12,"div":1,"via":"VO","cat":"Antiparasitário"},
+    {"nome":"Albendazol","dose":400,"unidade":"mg","max":400,"div":1,"via":"VO","cat":"Antiparasitário"},
+    {"nome":"Mebendazol","dose":100,"unidade":"mg","max":100,"div":2,"via":"VO","cat":"Antiparasitário"},
+    {"nome":"Praziquantel","dose":20,"unidade":"mg/kg","max":2400,"div":1,"via":"VO","cat":"Antiparasitário"}
+  ];
+
+  // Preenche datalist com os nomes
+  const datalist = $('med_sugestoes');
+  MEDICAMENTOS.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.nome;
+    datalist.appendChild(opt);
+  });
+
+  function parseNum(v){
+    if(!v) return NaN;
+    return parseFloat(v.toString().replace(',','.'));
+  }
+
+  function encontrarMedicamento(nome){
+    if(!nome) return null;
+    const alvo = nome.trim().toLowerCase();
+    if(!alvo) return null;
+    return MEDICAMENTOS.find(m => m.nome.toLowerCase() === alvo) || null;
+  }
+
+  function unidadeBaseDe(med){
+    if(!med || !med.unidade) return 'mg';
+    const primeiraParte = med.unidade.split(' ')[0];
+    return primeiraParte.split('/')[0];
+  }
+
+  function atualizarFormulaText(){
+    const esquema = $('esquema').value;
+    if(esquema === 'dose'){
+      $('formula_text').innerHTML =
+        'Dose calculada = Peso (kg) × Dose (por kg, por dose)';
+    }else{
+      $('formula_text').innerHTML =
+        'Dose diária total = Peso (kg) × Dose (por kg/dia)<br>' +
+        'Dose por tomada = Dose diária total ÷ nº de tomadas/dia';
+    }
+  }
+
+  function aplicarEsquemaDoMedicamento(){
+    const nome = $('med_nome').value;
+    const med = encontrarMedicamento(nome);
+
+    const hint = $('med_hint');
+    const doseHint = $('dose_unidade_hint');
+
+    if(!med){
+      hint.textContent = 'Medicamento não encontrado na tabela. Digite manualmente a dose e a dose máxima.';
+      doseHint.textContent = '';
+      return;
+    }
+
+    $('dose_mgkg').value = med.dose;
+    $('dose_max').value  = med.max;
+    $('tomadas').value   = med.div;
+
+    const unidade = med.unidade.toLowerCase();
+    if(unidade.includes('dia')){
+      $('esquema').value = 'dia';
+    }else{
+      $('esquema').value = 'dose';
+    }
+
+    hint.textContent =
+      `Categoria: ${med.cat} • Esquema ref.: ${med.dose} ${med.unidade}, máx ${med.max}, ` +
+      `${med.div}x/dia, via ${med.via}.`;
+    doseHint.textContent = `Unidade de referência: ${med.unidade}`;
+
+    atualizarFormulaText();
+  }
+
+  function update(){
+    const esquema = $('esquema').value;
+    const peso     = parseNum($('peso').value);
+    const doseKg   = parseNum($('dose_mgkg').value);
+    const doseMax  = parseNum($('dose_max').value);
+    const tomadas  = parseNum($('tomadas').value);
+    const medNome  = ($('med_nome').value || '').trim();
+
+    atualizarFormulaText();
+
+    const medRef = encontrarMedicamento(medNome);
+    const unidadeBase = unidadeBaseDe(medRef);
+    const unidadeTexto = unidadeBase || 'unid.';
+
+    let doseCalculada = null;
+
+    if(isFinite(peso) && peso>0 && isFinite(doseKg) && doseKg>0){
+      if(esquema === 'dose'){
+        doseCalculada = peso * doseKg;
+      }else{
+        if(isFinite(tomadas) && tomadas>0){
+          const doseDia = peso * doseKg;
+          doseCalculada = doseDia / tomadas;
+        }else{
+          doseCalculada = peso * doseKg;
+        }
+      }
+    }
+
+    let doseCalcTxt  = '—';
+    let doseFinalTxt = '—';
+    let doseMaxTxt   = '—';
+    let statusTxt    = '—';
+
+    if(doseCalculada != null){
+      doseCalcTxt = doseCalculada.toFixed(1) + ' ' + unidadeTexto;
+
+      let doseFinal = doseCalculada;
+      let ajustou = false;
+
+      if(isFinite(doseMax) && doseMax>0){
+        doseMaxTxt = doseMax.toFixed(1) + ' ' + unidadeBase;
+        if(doseCalculada > doseMax){
+          doseFinal = doseMax;
+          ajustou = true;
+        }
+      }else{
+        doseMaxTxt = 'não informado';
+      }
+
+      doseFinalTxt = doseFinal.toFixed(1) + ' ' + unidadeBase;
+
+      if(isFinite(doseMax) && doseMax>0){
+        if(ajustou){
+          statusTxt = 'Ajustada pela dose máxima';
+          $('status_dose').classList.remove('result-status-ok');
+          $('status_dose').classList.add('result-status-warn');
+        }else{
+          statusTxt = 'Dentro da dose máxima';
+          $('status_dose').classList.remove('result-status-warn');
+          $('status_dose').classList.add('result-status-ok');
+        }
+      }else{
+        statusTxt = 'Sem dose máxima definida';
+        $('status_dose').classList.remove('result-status-ok','result-status-warn');
+      }
+
+      const nomeMed = medNome || 'Medicamento';
+
+      let esquemaTxt = '';
+      if(esquema === 'dose'){
+        esquemaTxt = `${isFinite(doseKg)? doseKg+' por kg por dose':'—'}`;
+      }else{
+        esquemaTxt = `${isFinite(doseKg)? doseKg+' por kg/dia':'—'}`;
+        if(isFinite(tomadas) && tomadas>0){
+          esquemaTxt += `, dividido em ${tomadas} tomadas`;
+        }
+      }
+
+      let refTxt = '';
+      if(medRef){
+        refTxt =
+          `Referência: ${medRef.cat} • ${medRef.dose} ${medRef.unidade}, ` +
+          `máx ${medRef.max} (${medRef.div}x/dia, via ${medRef.via}).\n`;
+      }
+
+      $('resumo').value =
+        `${nomeMed}: ${esquemaTxt} (${unidadeTexto}).\n` +
+        `Peso: ${isFinite(peso)? peso+' kg':'—'}.\n` +
+        `Dose calculada: ${doseCalcTxt}.\n` +
+        `Dose máxima considerada: ${doseMaxTxt}.\n` +
+        `Dose final sugerida: ${doseFinalTxt} (${statusTxt.toLowerCase()}).\n` +
+        refTxt;
+    }else{
+      $('status_dose').classList.remove('result-status-ok','result-status-warn');
+      $('resumo').value = '';
+    }
+
+    $('dose_calc').textContent      = doseCalcTxt;
+    $('dose_max_label').textContent = doseMaxTxt;
+    $('dose_final').textContent     = doseFinalTxt;
+    $('status_dose').textContent    = statusTxt;
+  }
+
+  ['med_nome','esquema','peso','dose_mgkg','dose_max','tomadas'].forEach(id=>{
+    $(id)?.addEventListener('input', update);
+    $(id)?.addEventListener('change', update);
+  });
+
+  $('med_nome').addEventListener('change', function(){
+    aplicarEsquemaDoMedicamento();
+    update();
+  });
+  $('med_nome').addEventListener('blur', function(){
+    aplicarEsquemaDoMedicamento();
+    update();
+  });
+
+  atualizarFormulaText();
+  update();
+})();
+</script>
+</body>
+</html>

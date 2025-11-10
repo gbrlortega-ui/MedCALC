@@ -1,0 +1,63 @@
+Aqui está a **lista completa e organizada** de tudo que sugeri para o seu site de Pediatria, pronta para copiar/colar em planejamento, protótipo ou desenvolvimento:
+
+---
+
+### **LISTA DE FUNCIONALIDADES PARA O SITE DE PEDIATRICA (ALUNOS DE MEDICINA)**
+
+#### **1. Anamnese por Faixa Etária (já existente)**
+- [x] Recém-nascido (RN)  
+- [x] Lactente  
+- [x] Pré-escolar  
+- [x] Escolar  
+- [x] Adolescente  
+
+---
+
+#### **2. Calculadoras Clínicas**
+- [x] Percentil de crescimento (OMS/CDC) – peso, estatura, PC, IMC  
+- [x] Z-score automático (interpretação nutricional)  
+- [x] Superfície corporal (Du Bois / Mosteller)  
+- [x] Dose por peso (mg/kg) com dose máxima  
+- [x] Correção de sódio (hiponatremia – Adrogué)  
+- [x] Escores de gravidade: PRISM, PELOD, Downes, Silverman-Anderson  
+- [x] Idade corrigida para prematuridade (até 24 meses)  
+- [x] Déficit hídrico + reposição (desidratação)  
+- [x] Clearance de creatinina (Schwartz / Bedside)  
+- [x] Risco de sepse neonatal (escore Kaiser)  
+
+---
+
+#### **4. Exame Físico Guiado**
+- [ ] Escala de Apgar (com contagem automática)  
+- [ ] Reflexos primitivos (passo a passo)  
+- [ ] Manobras de Ortolani/Barlow (vídeo + descrição)  
+- [ ] Escala de Ballard / Capurro (maturidade gestacional)  
+- [ ] Escala de dor: FLACC, Wong-Baker, EVA  
+- [ ] Escala de coma pediátrico  
+- [ ] Denver II – marcos do desenvolvimento (checklist interativo)  
+
+---
+
+#### **5. Vacinação**
+- [ ] Calendário SBP 2025 (público/privado/prematuros/comorbidades)  
+- [ ] Calculadora de doses especiais (ex: Hep B em RN < 2kg)  
+- [ ] Catch-up vacinal automático  
+
+---
+
+#### **6. Emergências Pediátricas**
+- [ ] PCR pediátrica (AHA com cronômetro)  
+- [ ] Choque: bolus de cristaloides (cálculo automático)  
+- [ ] Crise convulsiva (doses de midazolam, fenitoína, etc.)  
+- [ ] Intoxicação por paracetamol → dose de N-acetilcisteína  
+
+---
+
+#### **7. Nutrição e Aleitamento**
+- [ ] Calculadora de calorias diárias  
+- [ ] Volume de leite (materno/artificial) por idade/peso  
+- [ ] Introdução alimentar (cronograma + alimentos de risco)  
+- [ ] Reposição hídrica (manutenção + déficit)  
+
+
+

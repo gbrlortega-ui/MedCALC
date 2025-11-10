@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escala de Coelho-Savassi – Risco Familiar</title>
+<style>
+:root{
+  --bg:#f5f5f7;
+  --card:#fff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --ok:#065f46;
+  --ok-bg:#d1fae5;
+  --warn:#92400e;
+  --warn-bg:#ffedd5;
+  --bad:#7f1d1d;
+  --bad-bg:#fee2e2;
+  --focus:#4f46e5;
+  --shadow-soft:0 18px 45px rgba(15,23,42,.12);
+}
+
+*{box-sizing:border-box}
+
+/* Fundo geral estilo “site” */
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#e5f0ff 0,#f5f5f7 45%,#f9fafb 100%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  font-size:0.9rem;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* HEADER / NAVBAR */
+header.site-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(245,245,247,.95),rgba(245,245,247,.86));
+  border-bottom:1px solid rgba(209,213,219,.7);
+}
+
+.nav-inner{
+  max-width:900px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  border:1px solid #111827;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.brand-title{
+  font-size:.95rem;
+  font-weight:600;
+}
+
+.brand-subtitle{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--muted);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-size:.82rem;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.78rem;
+  background:#ffffff;
+  cursor:pointer;
+  transition:background .15s,transform .12s,color .15s;
+}
+
+.nav-back span:first-child{
+  font-size:.9rem;
+  transform:translateY(1px);
+}
+
+.nav-back:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+}
+
+.nav-pill{
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:#ffffff;
+}
+
+/* PAGE WRAPPER */
+.page{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+/* HERO */
+.hero-coelho{
+  margin-bottom:18px;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 11px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.5);
+  font-size:.75rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(18px);
+}
+
+.hero-badge-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#22c55e;
+  box-shadow:0 0 0 4px rgba(34,197,94,.2);
+}
+
+.hero-title{
+  margin:14px 0 4px;
+  font-size:clamp(1.7rem,2.3vw,2rem);
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+
+.hero-title span{
+  display:block;
+  font-weight:300;
+  color:var(--muted);
+}
+
+.hero-text{
+  margin:0;
+  margin-top:6px;
+  font-size:.92rem;
+  color:var(--muted);
+  max-width:640px;
+}
+
+/* CARD WRAPPER (onde entra o conteúdo original) */
+.card-wrapper{
+  background:var(--card);
+  border-radius:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-soft);
+  padding:16px 16px 18px;
+}
+
+/* CONTEÚDO ORIGINAL */
+.container{
+  max-width:650px;
+  margin:0 auto;
+  padding:0;
+}
+h1{
+  margin:0 0 4px;
+  font-size:1.4rem;
+}
+.sub{
+  color:var(--muted);
+  margin:0 0 12px;
+  font-size:0.85rem;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:6px;
+  font-size:0.85rem;
+}
+th,td{
+  padding:6px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+}
+th{
+  background:#f9fafb;
+  font-weight:600;
+  font-size:.8rem;
+  text-align:center;
+}
+input[type=checkbox]{
+  transform:scale(1.1);
+  margin-right:6px;
+}
+input[type=number]{
+  width:80px;
+  padding:4px 6px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  text-align:center;
+  font-size:0.85rem;
+}
+input:focus{
+  border-color:var(--focus);
+  box-shadow:0 0 0 3px rgba(79,70,229,.15);
+  outline:none;
+}
+.result-panel{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  background:#fff;
+  margin-top:10px;
+  font-size:0.9rem;
+}
+.kpi{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.value{
+  font-size:1.4rem;
+  font-weight:800;
+}
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:700;
+}
+.pill-ok{background:var(--ok-bg);color:var(--ok)}
+.pill-warn{background:var(--warn-bg);color:var(--warn)}
+.pill-bad{background:var(--bad-bg);color:var(--bad)}
+.small{
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* BOTÕES */
+.btns{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+button{
+  background:var(--focus);
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:0.8rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  box-shadow:0 4px 10px rgba(15,23,42,.2);
+  transition:background .2s, transform .08s, box-shadow .2s;
+}
+button:hover{
+  background:#3730a3;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(15,23,42,.25);
+}
+
+/* FOOTER */
+footer.site-footer{
+  border-top:1px solid rgba(209,213,219,.7);
+  margin-top:32px;
+  padding:14px 20px 20px;
+  font-size:.8rem;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+footer.site-footer strong{
+  font-weight:500;
+  color:#111827;
+}
+
+/* RESPONSIVO */
+@media (max-width:640px){
+  .nav-inner{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .page{
+    padding:22px 16px 40px;
+  }
+}
+
+/* IMPRESSÃO – A5 compacto */
+@media print{
+  @page{
+    size:A5 portrait;
+    margin:0.3cm;
+  }
+  header.site-header,
+  footer.site-footer,
+  .hero-coelho{
+    display:none !important;
+  }
+  body{
+    background:#fff;
+    font-size:0.7rem;
+  }
+  .page{
+    max-width:none;
+    padding:4px 3px;
+    margin:0;
+  }
+  .card-wrapper{
+    border:none;
+    box-shadow:none;
+    padding:0;
+  }
+  .container{
+    max-width:none;
+    padding:0;
+  }
+  h1{
+    font-size:1rem;
+    margin-bottom:2px;
+  }
+  .sub,
+  .btns{
+    display:none !important;
+  }
+  .card,
+  .result-panel{
+    box-shadow:none;
+    border-color:#bbb;
+    padding:4px;
+    margin-top:4px;
+  }
+  table{
+    font-size:0.6rem;
+    margin-top:4px;
+  }
+  th,td{
+    padding:2px 3px;
+  }
+  th{
+    font-size:0.6rem;
+  }
+  td{
+    font-size:0.6rem;
+  }
+  input[type=checkbox]{
+    transform:scale(0.9);
+  }
+  input[type=number]{
+    width:60px;
+    padding:2px 3px;
+    font-size:0.6rem;
+  }
+  .value{
+    font-size:0.9rem;
+  }
+  .pill{
+    font-size:0.55rem;
+    padding:2px 4px;
+  }
+  .small{
+    font-size:0.55rem;
+  }
+}
+</style>
+</head>
+<body>
+
+  <!-- HEADER GLOBAL -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <div class="brand-title">Medicina Integrada</div>
+          <div class="brand-subtitle">USF • Coelho-Savassi</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-back">
+          <span>⬅</span>
+          <span>Voltar à USF</span>
+        </a>
+        <span class="nav-pill">Escala de risco familiar</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero-coelho">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AVALIAÇÃO FAMILIAR • RISCO
+      </div>
+      <h1 class="hero-title">
+        Escala de Coelho-Savassi
+        <span>Estratificação de risco familiar na Atenção Primária.</span>
+      </h1>
+      <p class="hero-text">
+        Instrumento para estimar vulnerabilidade familiar a partir de condições clínicas, sociais
+        e da relação morador/cômodo. Útil para priorizar visitas domiciliares e planejar seguimento.
+      </p>
+    </section>
+
+    <!-- CARD PRINCIPAL COM O FORM -->
+    <section class="card-wrapper">
+      <div class="container">
+        <h1>Escala de Coelho-Savassi</h1>
+        <p class="sub">
+          Instrumento de <b>estratificação de risco familiar</b> utilizado na Atenção Primária à Saúde (APS)
+          segundo a Escala de Coelho &amp; Savassi (2004).
+        </p>
+
+        <section class="card">
+          <table>
+            <tr><th>Condição</th><th>Pontuação</th></tr>
+            <tr><td><label><input type="checkbox" data-pontos="3">Acamado</label></td><td>3</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="3">Deficiência física</label></td><td>3</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="3">Deficiência mental</label></td><td>3</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="3">Baixas condições de saneamento</label></td><td>3</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="3">Desnutrição (grave)</label></td><td>3</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="2">Drogadição</label></td><td>2</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="2">Desemprego</label></td><td>2</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="1">Analfabetismo</label></td><td>1</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="1">Menor de 6 meses</label></td><td>1</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="1">Maior de 70 anos</label></td><td>1</td></tr>
+            <tr><td><label><input type="checkbox" data-pontos="1">Hipertensão arterial sistêmica</label></td><td>1</td></tr>
+          </table>
+
+          <div style="margin-top:8px">
+            <label class="small"><b>Relação morador/cômodo</b></label><br>
+            <input type="number" id="moradores" placeholder="Moradores">
+            /
+            <input type="number" id="comodos" placeholder="Cômodos">
+            <span id="relacaoTxt" class="small" style="margin-left:8px;"></span>
+          </div>
+        </section>
+
+        <div id="painel" class="result-panel">
+          Marque as condições e insira os dados de morador/cômodo.
+        </div>
+
+        <p class="small" style="margin-top:8px">
+          <b>Classificação de risco familiar:</b><br>
+          🟢 <b>R0</b> – Sem risco (0–4 pontos): família com boas condições gerais.<br>
+          🟡 <b>R1</b> – Risco leve (5–6 pontos): necessidade de acompanhamento anual.<br>
+          🟠 <b>R2</b> – Risco moderado (7–8 pontos): acompanhamento semestral e intervenções específicas.<br>
+          🔴 <b>R3</b> – Risco alto (&gt;9 pontos): vulnerabilidade acentuada, prioridade no acompanhamento domiciliar e social.<br>
+          <br>Fonte: Escala de Coelho (COELHO, SAVASSI, 2004).
+        </p>
+
+        <!-- BOTÕES -->
+        <div class="btns">
+          <button id="btnVoltar">⬅️ Voltar</button>
+          <button id="btnPrint">🖨️ Imprimir</button>
+          <button id="btnNext">➡️ Próximo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Desenvolvido por <strong>Gabriel Ortega Antonio</strong></span>
+    <span>Módulo USF • Escala Coelho-Savassi</span>
+  </footer>
+
+<script>
+(function(){
+  const painel=document.getElementById('painel');
+  const checkboxes=document.querySelectorAll('input[type=checkbox]');
+  const mor=document.getElementById('moradores');
+  const com=document.getElementById('comodos');
+  const relTxt=document.getElementById('relacaoTxt');
+  let avaliacaoPronta = false;
+
+  function calc(){
+    let total=0;
+    checkboxes.forEach(cb=>{if(cb.checked) total+=Number(cb.dataset.pontos)});
+
+    const m=Number(mor.value), c=Number(com.value);
+    let relScore=0, relDesc='', relVal=null;
+
+    if(m>0 && c>0){
+      const rel=m/c;
+      relVal = rel;
+      if(rel>1){relScore=3;relDesc='> 1 → 3 pts';}
+      else if(rel===1){relScore=2;relDesc='= 1 → 2 pts';}
+      else{relScore=0;relDesc='< 1 → 0 pts';}
+      relTxt.textContent=`Relação ${rel.toFixed(2)} (${relDesc})`;
+    } else {
+      relTxt.textContent='';
+    }
+
+    const escore=total+relScore;
+
+    let cat={txt:'Sem risco (R0)',pill:'pill-ok'};
+    if(escore>=5 && escore<=6) cat={txt:'Risco leve (R1)',pill:'pill-ok'};
+    else if(escore>=7 && escore<=8) cat={txt:'Risco moderado (R2)',pill:'pill-warn'};
+    else if(escore>9) cat={txt:'Risco alto (R3)',pill:'pill-bad'};
+
+    painel.innerHTML=`
+      <div class="kpi">
+        <div>
+          <div class="small">Escore total</div>
+          <div class="value">${escore}</div>
+        </div>
+        <span class="pill ${cat.pill}">${cat.txt}</span>
+      </div>
+      <div class="small" style="margin-top:6px">
+        Itens marcados: ${total} pts · Relação morador/cômodo: ${relScore} pts
+      </div>`;
+
+    if(relVal !== null){
+      avaliacaoPronta = true;
+      // salva no localStorage para síntese global
+      localStorage.setItem('coelhoTotal', escore);
+      localStorage.setItem('coelhoCategoria', cat.txt);
+      localStorage.setItem('coelhoItens', total);
+      localStorage.setItem('coelhoRelScore', relScore);
+      localStorage.setItem('coelhoRelacao', relVal.toFixed(2));
+    } else {
+      avaliacaoPronta = false;
+    }
+  }
+
+  document.addEventListener('input', calc);
+
+  // Botões navegação
+  document.getElementById('btnVoltar').addEventListener('click', ()=>history.back());
+  document.getElementById('btnPrint').addEventListener('click', ()=>window.print());
+  document.getElementById('btnNext').addEventListener('click', ()=>{
+    if(!avaliacaoPronta){
+      alert('Preencha a relação morador/cômodo (moradores e cômodos) antes de continuar.');
+      return;
+    }
+    window.location.href = 'firo.html';
+  });
+})();
+</script>
+</body>
+</html>
